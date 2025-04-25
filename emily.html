@@ -1,0 +1,278 @@
+<html>
+    <head>
+        <title>Final Project </title>
+
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+
+        <style>
+
+        .gridlines .domain {
+            display: none;
+            }
+            
+        .gridlines line {
+            stroke: #9a9a9a;
+        }
+
+        .tooltip {
+            pointer-events: none;
+            visibility: hidden;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            /* direction: rtl;
+            text-align: right; */
+            /* offset-anchor: end; */
+            /* lazy way to make sure tooltip is always on top */
+            z-index: 9999;
+
+        }
+    
+        </style>
+    </head>
+
+    <body>
+        <h1>Major Layoffs</h1>
+
+        <svg id="barchart" height="500" width="800" style="background: rgb(195, 195, 195);"> </svg>
+        <div id="tooltip" class="tooltip"></div>
+
+        <svg id="scatterplot" height="500" width="800" style="background: rgb(195, 195, 195);"> </svg>
+
+        <script>
+            //  BARCHART ------------------------------------------------------------------------------------------------------------------------------
+            const barsvg = d3.select("#barchart");
+            const barWidth = barsvg.attr("width");
+            const barHeight = barsvg.attr("height");
+            const barMargin = {top: 20, right: 60, bottom: 30, left: 100};
+
+            const barAreaWidth = barWidth - barMargin.left - barMargin.right;
+            const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
+
+            const barChartArea = barsvg.append("g")
+                .attr("transform", "translate("+(barMargin.left)+","+barMargin.top+")");
+
+            const annotations = barChartArea.append('g')
+
+            const requestBarChartData = async function() {
+
+                majorLayoffs = await d3.csv("datasets/majorLayoffs.csv", d3.autoType)
+                console.log(majorLayoffs)
+
+                companies = []
+
+                majorLayoffs.forEach(d => {
+                    companies.push(d.Company);
+                });
+
+               
+                // Y axis: Counts
+
+                layoffExtent = d3.extent(majorLayoffs, d=>d["Number of Layoffs"])
+
+                const countScale = d3.scaleLinear()
+                    .domain(layoffExtent)
+                    .range([barAreaHeight, 0])
+
+                let leftAxis = d3.axisLeft(countScale)
+                    .tickFormat(d3.format("~f")) // no commas
+
+                let leftGridlines = d3.axisLeft(countScale)
+                            .tickSize(-barAreaWidth+10)
+                            .tickFormat("")
+                
+                annotations.append("g")
+                    .attr("class", "y axis")
+                    .attr("transform",`translate(${-10},${0})`)
+                    .call(leftAxis)
+
+                annotations.append("g")
+                 .attr("class", "y gridlines")
+                 .attr("transform",`translate(${-10},${0})`)
+                 .call(leftGridlines);
+
+                 // X axis: Years
+
+                 const yearScale = d3.scaleBand()
+                    .domain(companies)
+                    .range([0, barAreaWidth])
+                    .padding(0.1);
+
+                let bottomAxis = d3.axisBottom(yearScale)
+
+                annotations.append('g')
+                    .attr('class', 'x axis')
+                    .attr("transform",`translate(0,${barAreaHeight})`)
+                    .call(bottomAxis);
+
+
+                // draw bars
+
+
+                // UNIQUE SHIPS
+                uniqueShips = barChartArea.selectAll('rect.ship').data(majorLayoffs)
+                    .join('rect')
+                    .attr('class', 'bar')
+                    .attr('fill', 'steelblue')
+                    .attr('x', d => yearScale(d['Company']))
+                    .attr('y', d => countScale(d['Number of Layoffs']))
+                    .attr('height', d => countScale(layoffExtent[0]) - countScale(d["Number of Layoffs"]))
+                    .attr('width', yearScale.bandwidth())
+                    .attr('company', d => d['Company'])
+
+                // HOVERS
+                const tooltip = d3.select("#tooltip");
+
+
+                function highlightBar(event, d) {
+
+                    uniqueShips.filter(data => data.company === d["Company"])
+                        .attr("stroke", "black")
+                        .attr("stroke-width", "5")
+
+
+                    tooltip.transition()
+                        .duration(100)
+                        .style("visibility", "visible")
+                        .style("opacity", 1);
+                        
+                    tooltip.html(`
+                    <strong># Layoffs:</strong> ${d["Number of Layoffs"]}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 20) + "px");
+                    
+
+                }
+                function undoHighlightBar(event, d) {
+
+                    uniqueShips.filter(data => data.year === d.year)
+                        .attr("stroke", "none")
+                        .attr("stroke-width", "5")
+
+                    tooltip.transition()
+                    .duration(100)
+                    .style("visibility", "hidden")
+                    .style("opacity", 0);
+
+                }   
+
+                uniqueShips.on("mouseover", function (event, d) {
+                   highlightBar(event, d)
+                }).on("mouseout", function(event, d) {
+                    undoHighlightBar(event,d)
+                })
+
+
+            }
+
+            requestBarChartData();
+
+
+            // SCATTERPLOT
+
+            const scattersvg = d3.select("#scatterplot");
+            const scatterWidth = scattersvg.attr("width");
+            const scatterHeight = scattersvg.attr("height");
+            const scatterMargin = {top: 20, right: 60, bottom: 30, left: 100};
+
+            const scatterAreaWidth = scatterWidth - scatterMargin.left - scatterMargin.right;
+            const scatterAreaHeight = scatterHeight - scatterMargin.top - scatterMargin.bottom;
+
+            const scatterChartArea = scattersvg.append("g")
+                .attr("transform", "translate("+(scatterMargin.left)+","+scatterMargin.top+")");
+
+            const scatterAnnotations = scatterChartArea.append('g')
+
+            const requestscatterData = async function() {
+
+                TopMetacritic = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType)
+                console.log(TopMetacritic)
+
+                // Y axis: Scores
+
+                scoreExtent = d3.extent(TopMetacritic, d=>d['metascore'])
+
+                const scoreScale = d3.scaleLinear()
+                    .domain(scoreExtent)
+                    .range([scatterAreaHeight, 0])
+
+                let leftAxis = d3.axisLeft(scoreScale)
+                    .tickFormat(d3.format("~f")) // no commas
+
+                let leftGridlines = d3.axisLeft(scoreScale)
+                            .tickSize(-scatterAreaWidth+10)
+                            .tickFormat("")
+                
+                scatterAnnotations.append("g")
+                    .attr("class", "y axis")
+                    .attr("transform",`translate(${-10},${0})`)
+                    .call(leftAxis)
+
+                scatterAnnotations.append("g")
+                 .attr("class", "y gridlines")
+                 .attr("transform",`translate(${-10},${0})`)
+                 .call(leftGridlines);
+
+                 // X axis: Years
+
+            //      const yearExtent = d3.extent(tempData, d => d['Year']);
+            // const yearScale = d3.scaleLinear()
+            //     .domain(yearExtent)
+            //     .range([0, trendAreaWidth]);
+
+            // let bottomAxis = d3.axisBottom(yearScale)
+            //     .tickFormat(d3.format("~f"));  // exact value without commas
+
+                 yearExtent = d3.extent(TopMetacritic, d=>d['releaseDate'])
+
+                 const yearScale = d3.scaleLinear()
+                    .domain(yearExtent)
+                    .range([0, scatterAreaWidth])
+
+                let bottomAxis = d3.axisBottom(yearScale)
+                    .tickFormat(d3.format("~f"));  // exact value without commas
+
+                scatterAnnotations.append('g')
+                    .attr('class', 'x axis')
+                    .attr("transform",`translate(0,${scatterAreaHeight})`)
+                    .call(bottomAxis);
+
+
+                // draw scatters
+
+                let videogames = scatterChartArea.selectAll('circle.topGames').data(TopMetacritic)
+                    .join('circle')
+                    .attr('fill', 'steelblue')
+                    .attr('cx', d => yearScale(d['releaseDate']))
+                    .attr('cy', d => scoreScale(d['metascore']))
+                    .attr('r', 5)
+
+
+                videogames.on("mouseover", function (event, d) {
+
+                    d3.select(this)
+                        .attr('r', 10)
+
+                    console.log(d)
+                    
+                }).on("mouseout", function(event, d) {
+                    
+                    d3.select(this)
+                        .attr('r', 5)
+                })
+
+
+
+            
+
+
+            }
+
+            requestscatterData()
+            
+
+
+
+
+        </script>
+    </body>
+</html>
