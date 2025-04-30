@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Final Project</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        .leaderboard {
+            position: absolute;
+            top: 120px;
+            left: 1000px;
+            width: 300px;
+            padding: 10px;
+        }
+
+        .leaderboard h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .leaderboard .item {
+            cursor: pointer;
+            padding: 8px;
+            margin: 10px 0;
+            background: #f3f3f3;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.2s;
+        }
+
+        .leaderboard .item:hover {
+            background: #e0e0e0;
+        }
+
+        .leaderboard .item.active {
+            background: #d1c4e9;
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border-radius: 5px;
+            pointer-events: none;
+            display: none;
+        }
+
+        .axis-label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="leaderboard">
+        <h2>Top 10 Games</h2>
+        <div id="leaderboard-list"></div>
+    </div>
+
+    <p> A metascore is a weighted average of reviews from critics and users. The score is calculated based on the
+        reviews of the game, with a higher score indicating a better reception. </p>
+    <p>The scatterplot shows the
+        relationship between the release year and the metascore of the top 10 games. Click on a game in the leaderboard
+        to highlight it.</p>
+        
+    <svg id="scatterplot" height="500" width="800"></svg>
+
+    <script>
+        const scattersvg = d3.select("#scatterplot");
+        const scatterWidth = scattersvg.attr("width");
+        const scatterHeight = scattersvg.attr("height");
+        const scatterMargin = { top: 20, right: 20, bottom: 50, left: 100 };
+
+        const scatterAreaWidth = scatterWidth - scatterMargin.left - scatterMargin.right;
+        const scatterAreaHeight = scatterHeight - scatterMargin.top - scatterMargin.bottom;
+
+        const scatterChartArea = scattersvg.append("g")
+            .attr("transform", `translate(${scatterMargin.left},${scatterMargin.top})`);
+
+        const scatterAnnotations = scatterChartArea.append("g");
+
+        const tooltip = d3.select("body").append("div").attr("class", "tooltip");
+
+        let currentActive = null;
+
+        const requestscatterData = async function () {
+            const TopMetacritic = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType);
+
+            TopMetacritic.forEach(d => {
+                d.releaseYear = new Date(d.releaseDate).getFullYear();
+            });
+    
+            console.log(TopMetacritic);
+
+            const topGames = TopMetacritic.sort((a, b) => b.metascore - a.metascore).slice(0, 10);
+
+            console.log(topGames);
+
+            const leaderboard = d3.select("#leaderboard-list");
+            leaderboard.selectAll("div")
+                .data(topGames)
+                .join("div")
+                .attr("class", "item")
+                .text(d => d.title)
+                .on("click", function (event, d) {
+                    scatterChartArea.selectAll("circle")
+                        .attr("fill", "steelblue");
+
+                    leaderboard.selectAll(".item").classed("active", false);
+                    d3.select(this).classed("active", true);
+
+                    scatterChartArea.selectAll("circle")
+                        .filter(cd => cd.title === d.title)
+                        .attr("fill", "red");
+                });
+
+            const scoreScale = d3.scaleLinear()
+                .domain([50, 100])
+                .range([scatterAreaHeight, 0]);
+
+            const leftAxis = d3.axisLeft(scoreScale).tickFormat(d3.format(""));
+            scatterAnnotations.append("g").attr("class", "y axis").call(leftAxis);
+
+            const yearExtent = d3.extent(TopMetacritic, d => d.releaseYear);
+            const paddedExtent = [Math.floor(yearExtent[0]), Math.ceil(yearExtent[1])];
+            const yearScale = d3.scaleLinear()
+                .domain(paddedExtent)
+                .range([0, scatterAreaWidth]);
+
+            const bottomAxis = d3.axisBottom(yearScale)
+                .tickFormat(d3.format("d"))
+                .ticks(paddedExtent[1] - paddedExtent[0]);
+
+            scatterAnnotations.append("g")
+                .attr("class", "x axis")
+                .attr("transform", `translate(0,${scatterAreaHeight})`)
+                .call(bottomAxis);
+
+            scattersvg.append("text")
+                .attr("class", "axis-label")
+                .attr("x", scatterMargin.left + scatterAreaWidth / 2)
+                .attr("y", scatterHeight - 5)
+                .text("Release Year");
+
+            scattersvg.append("text")
+                .attr("class", "axis-label")
+                .attr("x", -(scatterMargin.top + scatterAreaHeight / 2))
+                .attr("y", 20)
+                .attr("transform", "rotate(-90)")
+                .text("Metascore");
+
+            scatterChartArea.selectAll("circle")
+                .data(TopMetacritic)
+                .join("circle")
+                .attr("fill", "steelblue")
+                .attr("cx", d => yearScale(d.releaseYear))
+                .attr("cy", d => scoreScale(d.metascore))
+                .attr("r", 5)
+                .on("mouseover", function (event, d) {
+                    d3.select(this)
+                    .attr("r", 8);
+
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 30) + "px")
+                        .style("display", "inline-block")
+                        .html(`<strong>${d.title}</strong><br/>Year: ${d.releaseYear}<br/>Score: ${d.metascore}`);
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                    .attr("r", 5);
+                    
+                    tooltip.style("display", "none");
+                });
+        };
+
+        requestscatterData();
+    </script>
+
+</body>
+
+</html>
