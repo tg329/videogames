@@ -33,17 +33,15 @@
     <body>
         <h1>Major Layoffs</h1>
 
-        <svg id="barchart" height="500" width="800" style="background: rgb(195, 195, 195);"> </svg>
+        <svg id="barchart" height="500" width="800" style="background: rgb(235, 235, 235);"> </svg>
         <div id="tooltip" class="tooltip"></div>
-
-        <svg id="scatterplot" height="500" width="800" style="background: rgb(195, 195, 195);"> </svg>
 
         <script>
             //  BARCHART ------------------------------------------------------------------------------------------------------------------------------
             const barsvg = d3.select("#barchart");
             const barWidth = barsvg.attr("width");
             const barHeight = barsvg.attr("height");
-            const barMargin = {top: 20, right: 60, bottom: 30, left: 100};
+            const barMargin = {top: 20, right: 60, bottom: 130, left: 60};
 
             const barAreaWidth = barWidth - barMargin.left - barMargin.right;
             const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
@@ -67,7 +65,9 @@
                
                 // Y axis: Counts
 
-                layoffExtent = d3.extent(majorLayoffs, d=>d["Number of Layoffs"])
+                layoffMax = d3.max(majorLayoffs, d=>d["Number of Layoffs"])
+                layoffExtent = d3.extent([0, layoffMax])
+                console.log(layoffExtent)
 
                 const countScale = d3.scaleLinear()
                     .domain(layoffExtent)
@@ -92,43 +92,98 @@
 
                  // X axis: Years
 
-                 const yearScale = d3.scaleBand()
+                 const companyScale = d3.scaleBand()
                     .domain(companies)
                     .range([0, barAreaWidth])
-                    .padding(0.1);
+                    .padding(0.1)
 
-                let bottomAxis = d3.axisBottom(yearScale)
+
+                let bottomAxis = d3.axisBottom(companyScale)
+             
 
                 annotations.append('g')
                     .attr('class', 'x axis')
                     .attr("transform",`translate(0,${barAreaHeight})`)
-                    .call(bottomAxis);
-
+                    .call(bottomAxis)
+                    .selectAll("text")
+                    .attr("transform", "translate(-5,0)rotate(-40)")
+                    .style("text-anchor", "end")
+                    .style("font-size", 12)
 
                 // draw bars
-
-
-                // UNIQUE SHIPS
-                uniqueShips = barChartArea.selectAll('rect.ship').data(majorLayoffs)
+                layoffBars = barChartArea.selectAll('rect.layoff').data(majorLayoffs)
                     .join('rect')
                     .attr('class', 'bar')
-                    .attr('fill', 'steelblue')
-                    .attr('x', d => yearScale(d['Company']))
+                    .attr('fill', 'black')
+                    .attr('x', d => companyScale(d['Company']))
                     .attr('y', d => countScale(d['Number of Layoffs']))
                     .attr('height', d => countScale(layoffExtent[0]) - countScale(d["Number of Layoffs"]))
-                    .attr('width', yearScale.bandwidth())
+                    .attr('width', companyScale.bandwidth())
                     .attr('company', d => d['Company'])
+
+                // add circles to bars to represent a single person
+
+                function getCircleRadius() {
+
+                    selectedBar = layoffBars.filter(d => d['Company'] === companies[0])
+                    height = selectedBar.attr('height')
+                    width = selectedBar.attr('width')
+                    numCircles = selectedBar.datum()['Number of Layoffs']
+                    diameter = Math.sqrt((height * width) / (numCircles))
+                    return diameter / 2
+
+                }
+
+                
+                // calculate circle radius
+                function drawCircles(company, radius) {
+
+                    diameter = radius * 2
+
+                    selectedBar = layoffBars.filter(d => d['Company'] === company)
+                    height = selectedBar.attr('height')
+                    width = selectedBar.attr('width')
+                    numCircles = selectedBar.datum()['Number of Layoffs']
+
+                    // number of circles per row
+                    perRow = width / diameter
+                    perColumn = height / diameter
+
+                    data = Array(numCircles)
+
+                    startX = companyScale(company) + radius;
+                    startY = countScale(0) - radius
+
+                    circles = barChartArea.selectAll('circles.layoff').select(company).data(data)
+                        .join(
+                            enter => enter.append('circle')
+                                .attr("fill", 'steelblue')
+                                .attr("cx", (d, i) => startX + (diameter * Math.floor(i % perRow)))
+                                .attr("cy", (d, i) => startY - (diameter * Math.floor(i / perRow)))
+                                .attr("r",radius)
+                        )
+
+                }  
+
+                
+                let radius = getCircleRadius();
+
+                companies.forEach(d => {
+                    drawCircles(d, radius)
+                });
+
+
 
                 // HOVERS
                 const tooltip = d3.select("#tooltip");
 
 
+
                 function highlightBar(event, d) {
 
-                    uniqueShips.filter(data => data.company === d["Company"])
+                    layoffBars.filter(data => data.company === d["Company"])
                         .attr("stroke", "black")
                         .attr("stroke-width", "5")
-
 
                     tooltip.transition()
                         .duration(100)
@@ -144,7 +199,7 @@
                 }
                 function undoHighlightBar(event, d) {
 
-                    uniqueShips.filter(data => data.year === d.year)
+                    layoffBars.filter(data => data.year === d.year)
                         .attr("stroke", "none")
                         .attr("stroke-width", "5")
 
@@ -155,7 +210,7 @@
 
                 }   
 
-                uniqueShips.on("mouseover", function (event, d) {
+                layoffBars.on("mouseover", function (event, d) {
                    highlightBar(event, d)
                 }).on("mouseout", function(event, d) {
                     undoHighlightBar(event,d)
@@ -165,114 +220,7 @@
             }
 
             requestBarChartData();
-
-
-            // SCATTERPLOT
-
-            const scattersvg = d3.select("#scatterplot");
-            const scatterWidth = scattersvg.attr("width");
-            const scatterHeight = scattersvg.attr("height");
-            const scatterMargin = {top: 20, right: 60, bottom: 30, left: 100};
-
-            const scatterAreaWidth = scatterWidth - scatterMargin.left - scatterMargin.right;
-            const scatterAreaHeight = scatterHeight - scatterMargin.top - scatterMargin.bottom;
-
-            const scatterChartArea = scattersvg.append("g")
-                .attr("transform", "translate("+(scatterMargin.left)+","+scatterMargin.top+")");
-
-            const scatterAnnotations = scatterChartArea.append('g')
-
-            const requestscatterData = async function() {
-
-                TopMetacritic = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType)
-                console.log(TopMetacritic)
-
-                // Y axis: Scores
-
-                scoreExtent = d3.extent(TopMetacritic, d=>d['metascore'])
-
-                const scoreScale = d3.scaleLinear()
-                    .domain(scoreExtent)
-                    .range([scatterAreaHeight, 0])
-
-                let leftAxis = d3.axisLeft(scoreScale)
-                    .tickFormat(d3.format("~f")) // no commas
-
-                let leftGridlines = d3.axisLeft(scoreScale)
-                            .tickSize(-scatterAreaWidth+10)
-                            .tickFormat("")
-                
-                scatterAnnotations.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform",`translate(${-10},${0})`)
-                    .call(leftAxis)
-
-                scatterAnnotations.append("g")
-                 .attr("class", "y gridlines")
-                 .attr("transform",`translate(${-10},${0})`)
-                 .call(leftGridlines);
-
-                 // X axis: Years
-
-            //      const yearExtent = d3.extent(tempData, d => d['Year']);
-            // const yearScale = d3.scaleLinear()
-            //     .domain(yearExtent)
-            //     .range([0, trendAreaWidth]);
-
-            // let bottomAxis = d3.axisBottom(yearScale)
-            //     .tickFormat(d3.format("~f"));  // exact value without commas
-
-                 yearExtent = d3.extent(TopMetacritic, d=>d['releaseDate'])
-
-                 const yearScale = d3.scaleLinear()
-                    .domain(yearExtent)
-                    .range([0, scatterAreaWidth])
-
-                let bottomAxis = d3.axisBottom(yearScale)
-                    .tickFormat(d3.format("~f"));  // exact value without commas
-
-                scatterAnnotations.append('g')
-                    .attr('class', 'x axis')
-                    .attr("transform",`translate(0,${scatterAreaHeight})`)
-                    .call(bottomAxis);
-
-
-                // draw scatters
-
-                let videogames = scatterChartArea.selectAll('circle.topGames').data(TopMetacritic)
-                    .join('circle')
-                    .attr('fill', 'steelblue')
-                    .attr('cx', d => yearScale(d['releaseDate']))
-                    .attr('cy', d => scoreScale(d['metascore']))
-                    .attr('r', 5)
-
-
-                videogames.on("mouseover", function (event, d) {
-
-                    d3.select(this)
-                        .attr('r', 10)
-
-                    console.log(d)
-                    
-                }).on("mouseout", function(event, d) {
-                    
-                    d3.select(this)
-                        .attr('r', 5)
-                })
-
-
-
-            
-
-
-            }
-
-            requestscatterData()
-            
-
-
-
-
+        
         </script>
     </body>
 </html>
