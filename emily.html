@@ -19,9 +19,7 @@
             visibility: hidden;
             position: absolute;
             background: rgba(255, 255, 255, 0.8);
-            /* direction: rtl;
-            text-align: right; */
-            /* offset-anchor: end; */
+            transform: translate(-50%, -130%);
             /* lazy way to make sure tooltip is always on top */
             z-index: 9999;
 
@@ -33,7 +31,7 @@
     <body>
         <h1>Major Layoffs</h1>
 
-        <svg id="barchart" height="500" width="800" style="background: rgb(235, 235, 235);"> </svg>
+        <svg id="barchart" height="400" width="700" style="background: rgb(235, 235, 235);"> </svg>
         <div id="tooltip" class="tooltip"></div>
 
         <script>
@@ -55,6 +53,8 @@
 
                 majorLayoffs = await d3.csv("datasets/majorLayoffs.csv", d3.autoType)
                 console.log(majorLayoffs)
+
+                // majorLayoffs = d3.sort(majorLayoffs, (d) => d["Number of Layoffs"])
 
                 companies = []
 
@@ -95,7 +95,7 @@
                  const companyScale = d3.scaleBand()
                     .domain(companies)
                     .range([0, barAreaWidth])
-                    .padding(0.1)
+                    .padding(0.05)
 
 
                 let bottomAxis = d3.axisBottom(companyScale)
@@ -103,7 +103,7 @@
 
                 annotations.append('g')
                     .attr('class', 'x axis')
-                    .attr("transform",`translate(0,${barAreaHeight})`)
+                    .attr("transform",`translate(0,${barAreaHeight + 1})`)
                     .call(bottomAxis)
                     .selectAll("text")
                     .attr("transform", "translate(-5,0)rotate(-40)")
@@ -146,22 +146,35 @@
                     numCircles = selectedBar.datum()['Number of Layoffs']
 
                     // number of circles per row
-                    perRow = width / diameter
-                    perColumn = height / diameter
-
+                    perRow = Math.ceil(width / diameter)
+                
                     data = Array(numCircles)
 
-                    startX = companyScale(company) + radius;
+                    startX = companyScale(company) + radius
                     startY = countScale(0) - radius
 
                     circles = barChartArea.selectAll('circles.layoff').select(company).data(data)
                         .join(
                             enter => enter.append('circle')
                                 .attr("fill", 'steelblue')
-                                .attr("cx", (d, i) => startX + (diameter * Math.floor(i % perRow)))
+                                .attr("cx", (d, i) => startX + (diameter * (i % perRow)))
                                 .attr("cy", (d, i) => startY - (diameter * Math.floor(i / perRow)))
                                 .attr("r",radius)
                         )
+
+                    circles.on("mouseover", function (event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(100)
+                            .attr("r",radius*2)
+
+                    }).on("mouseout", function(event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(1000)
+                            .attr("r",radius)
+                    })
+
 
                 }  
 
@@ -172,48 +185,32 @@
                     drawCircles(d, radius)
                 });
 
-
-
                 // HOVERS
                 const tooltip = d3.select("#tooltip");
 
-
-
-                function highlightBar(event, d) {
-
-                    layoffBars.filter(data => data.company === d["Company"])
-                        .attr("stroke", "black")
-                        .attr("stroke-width", "5")
-
-                    tooltip.transition()
-                        .duration(100)
-                        .style("visibility", "visible")
-                        .style("opacity", 1);
-                        
-                    tooltip.html(`
-                    <strong># Layoffs:</strong> ${d["Number of Layoffs"]}`)
-                        .style("left", (event.pageX + 10) + "px")
-                        .style("top", (event.pageY - 20) + "px");
-                    
-
-                }
-                function undoHighlightBar(event, d) {
-
-                    layoffBars.filter(data => data.year === d.year)
-                        .attr("stroke", "none")
-                        .attr("stroke-width", "5")
-
-                    tooltip.transition()
-                    .duration(100)
-                    .style("visibility", "hidden")
-                    .style("opacity", 0);
-
-                }   
-
                 layoffBars.on("mouseover", function (event, d) {
-                   highlightBar(event, d)
+                    console.log(d3.select(this))
+
+                    const rect = this.getBoundingClientRect(); // Get screen position of the bar
+
+                    tooltip
+                    .style("visibility", "visible")
+                    .style("opacity", 1)
+                    .html(`<strong># Layoffs:</strong> ${d["Number of Layoffs"]}`)
+                    .style("left", `${rect.left + rect.width / 2}px`)
+                    .style("top", `${rect.top}px`); // 40px above the bar
+
+
+                    
+                   
                 }).on("mouseout", function(event, d) {
-                    undoHighlightBar(event,d)
+
+                    // we cant have mouseovers for 2 things at once. Have the tooltuip appear when entering the rect, stay there until another rect is moused over. 
+                    
+                    // tooltip.transition()
+                    // .duration(100)
+                    // .style("visibility", "hidden")
+                    // .style("opacity", 0);
                 })
 
 
