@@ -50,6 +50,19 @@
       flex-shrink: 0;
     }
 
+    .month-box {
+      stroke: rgb(17, 46, 92);
+      transition: transform 0.2s ease;
+      transform-origin: center;
+    }
+
+    .month-box:hover {
+      transform: scale(1.02);
+      z-index: 100;
+      stroke: #d6d6d6;
+      stroke-width:   2px;
+    }
+
     .calendar-chart {
       display: flex;
       gap: 30px;
@@ -77,9 +90,9 @@
 
     .scroll-icon {
       position: absolute;
-      top: -58px;
+      top: -80px;
       left: calc(var(--scroll-progress) - 15px);
-      width: 70px;
+      width: 100px;
       /* pointer-events: none; */
       z-index: 100;
       /* transition: left 0.1s linear; */
@@ -185,9 +198,10 @@
             .attr("y", y)
             .attr("width", monthBoxSize)
             .attr("height", monthBoxSize)
-            .attr("fill", colorScale(count));
+            .attr("fill", colorScale(count))
+            .attr("class", "month-box");
 
-          // Add tooltip
+          // tooltip
           heatmapSvg.append("title")
             .text(`${year}-${String(monthIndex + 1).padStart(2, '0')}: ${count} games`);
         }
