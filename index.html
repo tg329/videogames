@@ -7,11 +7,13 @@
 
   <style>
     body {
+      background-color: rgb(0, 0, 0);
       display: flex;
       flex-direction: column;
       height: 100vh;
       width: 100vw;
       overflow: hidden;
+      font-family: monospace;
     }
 
     .static-box {
@@ -54,7 +56,8 @@
     .month-box:hover {
       transform: scale(1.02);
       z-index: 100;
-      stroke: #d6d6d6;
+      stroke: rgb(209, 253, 201);
+      ;
       stroke-width: 2px;
     }
 
@@ -67,18 +70,16 @@
       position: relative;
       width: 92vw;
       height: 10px;
-      background-color: #ddd;
-      border-radius: 5px;
-      margin-top: 10px;
+      background-color: #4b7159;
+      /* border-radius: 5px; */
     }
 
     .scroll-progress-bar {
       height: 100%;
-      background-color: steelblue;
+      background-color: rgb(255, 0, 0);
       width: var(--scroll-progress);
       position: absolute;
       top: -4px;
-      left: -5px;
     }
 
     .scroll-icon {
@@ -92,6 +93,17 @@
     .year-container svg {
       width: auto;
       height: auto;
+    }
+
+    .month-label {
+      text-align: center;
+      fill: rgb(209, 253, 201);
+      cursor: default;
+      transition: transform 0.2s ease;
+    }
+
+    .month-box:hover+.month-label {
+      transform: scale(1.03) translate(-1%, -2%);
     }
   </style>
 </head>
@@ -144,12 +156,14 @@
       );
 
       const years = Array.from(releaseCountsByYearMonth.keys()).sort();
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 
       const maxGameCount = d3.max(Array.from(releaseCountsByYearMonth.values(), monthMap =>
         d3.max(Array.from(monthMap.values()))
       ));
 
-      const colorScale = d3.scaleSequential(d3.interpolateBlues)
+      const colorScale = d3.scaleSequential(d3.interpolateGreens)
         .domain([0, maxGameCount]);
 
       // set calendar box size here
@@ -159,6 +173,7 @@
       const yearBoxHeight = monthBoxSize * 2 + 20; // 2 rows of months
 
       const chartContainer = d3.select(".calendar-chart");
+
 
       // one calendar box per year
       years.forEach(year => {
@@ -195,9 +210,14 @@
             .attr("fill", colorScale(count))
             .attr("class", "month-box");
 
-          // tooltip
-          heatmapSvg.append("title")
-            .text(`${year}-${String(monthIndex + 1).padStart(2, '0')}: ${count} games`);
+          heatmapSvg.append("text")
+            .attr("x", x + monthBoxSize / 2)
+            .attr("y", y + monthBoxSize / 2)
+            .attr("dy", ".35em")
+            .attr("dx", "-1em")
+            .text(monthNames[monthIndex])
+            .attr("class", "month-label");
+
         }
       });
     });
