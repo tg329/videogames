@@ -301,6 +301,18 @@
                     .attr("stroke-width", 2)
                     .attr("d", lineGen);
 
+                // add dots to graph to indicate news
+
+                let newsSources = timelineChartArea.selectAll("circles.news").data(companyLayoffs)
+                    .join("circle")
+                    .attr("fill", "steelblue")
+                    .attr('cy', d => headcountScale(d["Headcount"]))
+                    .attr('cx', d=> yearScale(d['Date']))
+                    .attr('r', 4)
+
+
+            
+                    
 
                 // Second Y Axis: Games
 
@@ -349,7 +361,41 @@
                     d3.select(this)
                         .attr('r', 3)
 
+                    tooltip
+                    .style("visibility", "visible")
+                    .style("opacity", 0)
+
                 })
+
+
+                newsSources.on("mouseover", function (event, d) {
+
+                    d3.select(this)
+                        .attr('r', 5)
+
+                    const rect = this.getBoundingClientRect(); // Get screen position of the bar
+
+                    tooltip
+                        .style("visibility", "visible")
+                        .style("opacity", 1)
+                        .html(`<strong> Layoffs </strong>: ${d['Headcount']} `)
+                        .style("left", `${rect.right + 10}px`)
+                        .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
+
+
+                }).on("mouseout", function(event, d) {
+
+                    d3.select(this)
+                        .attr('r', 4)
+
+                    tooltip
+                    .style("visibility", "visible")
+                    .style("opacity", 0)
+
+                })
+
+
+                
 
                 
             }
