@@ -68,8 +68,8 @@
       width: 92vw;
       height: 10px;
       background-color: #4b7159;
-      top: -3px;
       /* border-radius: 5px; */
+      bottom: -12px;
     }
 
     .scroll-progress-bar {
@@ -77,12 +77,12 @@
       background-color: rgb(255, 0, 0);
       width: var(--scroll-progress);
       position: absolute;
-      top: -2px;
+
     }
 
     .scroll-icon {
       position: absolute;
-      top: -110px;
+      top: -130px;
       left: calc(var(--scroll-progress) - 15px);
       width: 118px;
       z-index: 100;
@@ -166,6 +166,7 @@
 </head>
 
 <body>
+
   <div class="static-box">
     <div class="graph1">
 
@@ -184,10 +185,6 @@
 
     </div>
   </div>
-  <div class="scroll-progress-container">
-    <div class="scroll-progress-bar" id="progress-bar"></div>
-    <img src="images/moving.gif" alt="link progress" class="scroll-icon" id="progress-icon">
-  </div>
 
   <div class="page" id="page2">
 
@@ -199,6 +196,12 @@
     </div>
 
   </div>
+
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="progress-bar"></div>
+    <img src="images/moving.gif" alt="link progress" class="scroll-icon" id="progress-icon">
+  </div>
+
 
 
 
@@ -343,156 +346,6 @@
     }, { passive: false });
 
     // ----------- CALENDAR HEATMAP END -----------------------------------
-
-    ////////////////////////////////////////////////////////////////////////////
-    ////// PAGE 2
-    ////////////////////////////////////////////////////////////////////////////
-
-    // ----------- BARCHART START -----------------------------------------
-    const barsvg = d3.select("#barchart");
-    const barWidth = barsvg.attr("width");
-    const barHeight = barsvg.attr("height");
-    const barMargin = { top: 20, right: 60, bottom: 130, left: 60 };
-
-    const barAreaWidth = barWidth - barMargin.left - barMargin.right;
-    const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
-
-    const barChartArea = barsvg.append("g")
-      .attr("transform", "translate(" + (barMargin.left) + "," + barMargin.top + ")");
-
-    const annotations = barChartArea.append('g')
-
-    const requestBarChartData = async function () {
-
-      majorLayoffs = await d3.csv("datasets/majorLayoffs.csv", d3.autoType)
-      companies = []
-      majorLayoffs.forEach(d => {
-        companies.push(d.Company);
-      });
-
-      // Y axis: Counts
-      layoffMax = d3.max(majorLayoffs, d => d["Number of Layoffs"])
-      layoffExtent = d3.extent([0, layoffMax])
-
-      const countScale = d3.scaleLinear()
-        .domain(layoffExtent)
-        .range([barAreaHeight, 0])
-
-      let leftAxis = d3.axisLeft(countScale)
-        .tickFormat(d3.format("~f")) // no commas
-
-      let leftGridlines = d3.axisLeft(countScale)
-        .tickSize(-barAreaWidth + 10)
-        .tickFormat("")
-
-      annotations.append("g")
-        .attr("class", "y axis")
-        .attr("transform", `translate(${-10},${0})`)
-        .call(leftAxis)
-
-      annotations.append("g")
-        .attr("class", "y gridlines")
-        .attr("transform", `translate(${-10},${0})`)
-        .call(leftGridlines);
-
-      // X axis: Years
-      const companyScale = d3.scaleBand()
-        .domain(companies)
-        .range([0, barAreaWidth])
-        .padding(0.05)
-
-      let bottomAxis = d3.axisBottom(companyScale)
-
-      annotations.append('g')
-        .attr('class', 'x axis')
-        .attr("transform", `translate(0,${barAreaHeight + 1})`)
-        .call(bottomAxis)
-        .selectAll("text")
-        .attr("transform", "translate(-5,0)rotate(-40)")
-        .style("text-anchor", "end")
-        .style("font-size", 12)
-
-      // draw bars
-      layoffBars = barChartArea.selectAll('rect.layoff').data(majorLayoffs)
-        .join('rect')
-        .attr('class', 'bar')
-        .attr('fill', 'black')
-        .attr('x', d => companyScale(d['Company']))
-        .attr('y', d => countScale(d['Number of Layoffs']))
-        .attr('height', d => countScale(layoffExtent[0]) - countScale(d["Number of Layoffs"]))
-        .attr('width', companyScale.bandwidth())
-        .attr('company', d => d['Company'])
-
-      // add circles to bars to represent a single person
-      function getCircleRadius() {
-        selectedBar = layoffBars.filter(d => d['Company'] === companies[0])
-        height = selectedBar.attr('height')
-        width = selectedBar.attr('width')
-        numCircles = selectedBar.datum()['Number of Layoffs']
-        diameter = Math.sqrt((height * width) / (numCircles))
-        return diameter / 2
-      }
-
-      // calculate circle radius
-      function drawCircles(company, radius) {
-        diameter = radius * 2
-        selectedBar = layoffBars.filter(d => d['Company'] === company)
-        height = selectedBar.attr('height')
-        width = selectedBar.attr('width')
-        numCircles = selectedBar.datum()['Number of Layoffs']
-
-        // number of circles per row
-        perRow = Math.ceil(width / diameter)
-        data = Array(numCircles)
-        startX = companyScale(company) + radius
-        startY = countScale(0) - radius
-
-        circles = barChartArea.selectAll('circles.layoff').select(company).data(data)
-          .join(
-            enter => enter.append('circle')
-              .attr("fill", 'steelblue')
-              .attr("cx", (d, i) => startX + (diameter * (i % perRow)))
-              .attr("cy", (d, i) => startY - (diameter * Math.floor(i / perRow)))
-              .attr("r", radius)
-          )
-
-        circles.on("mouseover", function (event, d) {
-          d3.select(this)
-            .transition()
-            .duration(28)
-            .attr("r", radius * 4)
-        }).on("mouseout", function (event, d) {
-          d3.select(this)
-            .transition()
-            .duration(1350)
-            .attr("r", radius)
-        })
-
-
-      }
-      let radius = getCircleRadius();
-      companies.forEach(d => {
-        drawCircles(d, radius)
-      });
-
-      // HOVERS
-      const tooltip = d3.select("#tooltip");
-      layoffBars.on("mouseover", function (event, d) {
-        const rect = this.getBoundingClientRect(); // Get screen position of the bar
-        tooltip
-          .style("visibility", "visible")
-          .style("opacity", 1)
-          .html(`<strong># Layoffs:</strong> ${d["Number of Layoffs"]}`)
-          .style("left", `${rect.left + rect.width / 2}px`)
-          .style("top", `${rect.top}px`); // 40px above the bar
-      }).on("mouseout", function (event, d) {
-        // we cant have mouseovers for 2 things at once. Have the tooltuip appear when entering the rect, stay there until another rect is moused over. 
-      })
-
-
-    }
-
-    requestBarChartData();
 
   </script>
 
