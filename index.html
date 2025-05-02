@@ -6,34 +6,29 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
 
   <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+
     .static-box {
       display: flex;
-
+      flex: 0 0 6%;
       background-color: lightgray;
-      padding: 15vw;
+      padding: 14vw;
       padding-left: 0px;
       padding-right: 0px;
     }
 
-
-    /* .graph1 {
-      background-color: white;
-      width: 300px;
-      height: 100px;
-      margin-left: 30px;
-    } */
-
-
-
-
     .horizontal-scroll {
+      flex: 1 1 10%;
       overflow-x: auto;
       display: flex;
       flex-direction: row;
-      width: 95vw;
       gap: 20px;
-      padding: 20px;
-
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
@@ -60,7 +55,7 @@
       transform: scale(1.02);
       z-index: 100;
       stroke: #d6d6d6;
-      stroke-width:   2px;
+      stroke-width: 2px;
     }
 
     .calendar-chart {
@@ -75,27 +70,23 @@
       background-color: #ddd;
       border-radius: 5px;
       margin-top: 10px;
-      /* overflow: hidden; */
     }
 
     .scroll-progress-bar {
       height: 100%;
       background-color: steelblue;
       width: var(--scroll-progress);
-      border-radius: 5px;
       position: absolute;
-      top: 0;
-      left: 0;
+      top: -4px;
+      left: -5px;
     }
 
     .scroll-icon {
       position: absolute;
-      top: -80px;
+      top: -110px;
       left: calc(var(--scroll-progress) - 15px);
-      width: 100px;
-      /* pointer-events: none; */
+      width: 118px;
       z-index: 100;
-      /* transition: left 0.1s linear; */
     }
 
     .year-container svg {
@@ -128,6 +119,9 @@
     <div class="scroll-progress-bar" id="progress-bar"></div>
     <img src="images/moving.gif" alt="link progress" class="scroll-icon" id="progress-icon">
   </div>
+
+  </div>
+
 
   <script>
     // ----------- CALENDAR HEATMAP START -----------------------------------
@@ -219,8 +213,20 @@
       const progress = scrollLeft / maxScrollLeft;
 
       document.documentElement.style.setProperty('--scroll-progress', `${progress * 100}%`);
-      // ----------- CALENDAR HEATMAP END -----------------------------------
+
     });
+
+    // will horizontal scroll no matter where on page
+    document.addEventListener("wheel", function (e) {
+      const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+      if (isHorizontalScroll || e.shiftKey) {
+        const scrollContainer = document.getElementById("scroll-container");
+        scrollContainer.scrollLeft += e.deltaY + e.deltaX;
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // ----------- CALENDAR HEATMAP END -----------------------------------
   </script>
 
 </body>
