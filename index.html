@@ -272,7 +272,7 @@
       <div id="tooltip" class="tooltip">
       </div>
       <div id="gameTooltip" class="tooltipgame"></div>
-        <svg id="toptimeline" height="200" width="700"> </svg>
+        <svg id="toptimeline" height="300" width="700"> </svg>
     </div>
 
   </div>
@@ -584,7 +584,7 @@
      const timelinesvg = d3.select("#toptimeline");
     const timelineWidth = timelinesvg.attr("width");
     const timelineHeight = timelinesvg.attr("height");
-    const timelineMargin = {top: 10, right: 60, bottom: 30, left: 60};
+    const timelineMargin = {top: 10, right: 60, bottom: 130, left: 60};
 
     const timelineAreaWidth = timelineWidth - timelineMargin.left - timelineMargin.right;
     const timelineAreaHeight = timelineHeight - timelineMargin.top - timelineMargin.bottom;
