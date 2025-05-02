@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Video Games Layoffs</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+    .static-box {
+      display: flex;
+
+      background-color: lightgray;
+      padding: 15vw;
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+
+
+    /* .graph1 {
+      background-color: white;
+      width: 300px;
+      height: 100px;
+      margin-left: 30px;
+    } */
+
+
+
+
+    .horizontal-scroll {
+      overflow-x: auto;
+      display: flex;
+      flex-direction: row;
+      width: 95vw;
+      gap: 20px;
+      padding: 20px;
+
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .horizontal-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    svg {
+      flex-shrink: 0;
+    }
+
+    .year-container {
+      flex-shrink: 0;
+    }
+
+    .calendar-chart {
+      display: flex;
+      gap: 30px;
+    }
+
+    .scroll-progress-container {
+      position: relative;
+      width: 92vw;
+      height: 10px;
+      background-color: #ddd;
+      border-radius: 5px;
+      margin-top: 10px;
+      /* overflow: hidden; */
+    }
+
+    .scroll-progress-bar {
+      height: 100%;
+      background-color: steelblue;
+      width: var(--scroll-progress);
+      border-radius: 5px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .scroll-icon {
+      position: absolute;
+      top: -58px;
+      left: calc(var(--scroll-progress) - 15px);
+      width: 70px;
+      /* pointer-events: none; */
+      z-index: 100;
+      /* transition: left 0.1s linear; */
+    }
+
+    .year-container svg {
+      width: auto;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="static-box">
+    <div class="graph1">
+
+
+    </div>
+
+
+    <div class="graph2">
+
+
+    </div>
+
+  </div>
+  <div class="horizontal-scroll" id="scroll-container">
+    <div class="calendar-chart">
+
+    </div>
+  </div>
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="progress-bar"></div>
+    <img src="images/moving.gif" alt="link progress" class="scroll-icon" id="progress-icon">
+  </div>
+
+  <script>
+    // ----------- CALENDAR HEATMAP START -----------------------------------
+    d3.csv("datasets/metacritic-time.csv", row => {
+
+      const parsedDate = new Date(row.releaseDate);
+      const releaseYear = parsedDate.getFullYear();
+      if (releaseYear < 2020) return null;
+
+      return {
+        year: releaseYear,
+        month: parsedDate.getMonth()
+      };
+    }).then(data => {
+      const releaseCountsByYearMonth = d3.rollup(
+        data,
+        group => group.length,
+        d => d.year,
+        d => d.month
+      );
+
+      const years = Array.from(releaseCountsByYearMonth.keys()).sort();
+
+      const maxGameCount = d3.max(Array.from(releaseCountsByYearMonth.values(), monthMap =>
+        d3.max(Array.from(monthMap.values()))
+      ));
+
+      const colorScale = d3.scaleSequential(d3.interpolateBlues)
+        .domain([0, maxGameCount]);
+
+      // set calendar box size here
+      const monthBoxSize = 100;
+      const monthsPerRow = 6;
+      const yearBoxWidth = monthBoxSize * monthsPerRow;
+      const yearBoxHeight = monthBoxSize * 2 + 20; // 2 rows of months
+
+      const chartContainer = d3.select(".calendar-chart");
+
+      // one calendar box per year
+      years.forEach(year => {
+        const monthlyCounts = releaseCountsByYearMonth.get(year);
+
+        const yearContainer = chartContainer.append("div")
+          .attr("class", "year-container");
+
+        const heatmapSvg = yearContainer.append("svg")
+          .attr("width", yearBoxWidth)
+          .attr("height", yearBoxHeight + 20);
+
+        heatmapSvg.append("text")
+          .attr("x", yearBoxWidth / 2)
+          .attr("y", 12)
+          .text(year)
+          .attr("class", "label");
+
+        // 12 month boxes
+        for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
+          const col = monthIndex % monthsPerRow;
+          const row = Math.floor(monthIndex / monthsPerRow);
+
+          const x = col * monthBoxSize;
+          const y = row * monthBoxSize + 20;
+
+          const count = monthlyCounts?.get(monthIndex) || 0;
+
+          heatmapSvg.append("rect")
+            .attr("x", x)
+            .attr("y", y)
+            .attr("width", monthBoxSize)
+            .attr("height", monthBoxSize)
+            .attr("fill", colorScale(count));
+
+          // Add tooltip
+          heatmapSvg.append("title")
+            .text(`${year}-${String(monthIndex + 1).padStart(2, '0')}: ${count} games`);
+        }
+      });
+    });
+
+
+    // SCROLL BAR --
+    const scrollContainer = document.getElementById("scroll-container");
+
+    scrollContainer.addEventListener("scroll", () => {
+      const content = scrollContainer.querySelector(".calendar-chart");
+      const maxScrollLeft = content.scrollWidth - scrollContainer.clientWidth;
+      const scrollLeft = scrollContainer.scrollLeft;
+      const progress = scrollLeft / maxScrollLeft;
+
+      document.documentElement.style.setProperty('--scroll-progress', `${progress * 100}%`);
+      // ----------- CALENDAR HEATMAP END -----------------------------------
+    });
+  </script>
+
+</body>
+
+</html>
