@@ -185,6 +185,37 @@
     .bar-title {
       text-align: center;
     }
+/* 
+    .gridlines .domain {
+          display: none;
+          }
+          
+      .gridlines line {
+          stroke: #9a9a9a;
+      } */
+
+    .tooltip {
+        pointer-events: none;
+        visibility: hidden;
+        position: absolute;
+        background: rgba(0, 0, 0, 0.8);
+        transform: translate(-50%, -130%);  /* this is the only way i can translate the text for some reason */
+        /* lazy way to make sure tooltip is always on top */
+        z-index: 9999;
+    }
+
+    .tooltipgame {
+        pointer-events: none;
+        visibility: hidden;
+        position: absolute;
+        background: rgba(0, 0, 0, 0.8);
+        /* lazy way to make sure tooltip is always on top */
+        z-index: 9999;
+    }
+
+
+
+
   </style>
 </head>
 
@@ -237,9 +268,11 @@
 
     <div class="bar-display">
       <h2 class="bar-title">Major Game Company Layoffs</h2>
-      <svg id="barchart" height="600" width="1000"> </svg>
+      <svg id="barchart" height="400" width="700"> </svg>
       <div id="tooltip" class="tooltip">
       </div>
+      <div id="gameTooltip" class="tooltipgame"></div>
+        <svg id="toptimeline" height="200" width="700"> </svg>
     </div>
 
   </div>
@@ -545,6 +578,194 @@
     }
 
     requestBarChartData();
+
+     // ----------- LINECHART/TIMELINE START -----------------------------------------
+
+     const timelinesvg = d3.select("#toptimeline");
+    const timelineWidth = timelinesvg.attr("width");
+    const timelineHeight = timelinesvg.attr("height");
+    const timelineMargin = {top: 10, right: 60, bottom: 30, left: 60};
+
+    const timelineAreaWidth = timelineWidth - timelineMargin.left - timelineMargin.right;
+    const timelineAreaHeight = timelineHeight - timelineMargin.top - timelineMargin.bottom;
+
+    const timelineChartArea = timelinesvg.append("g")
+        .attr("transform", "translate("+(timelineMargin.left)+","+timelineMargin.top+")");
+
+    const timelineAnnotations = timelineChartArea.append('g')
+
+    const requestTimelineData = async function() {
+        
+        companyLayoffs = await d3.csv("datasets/all-layoffs.csv", d3.autoType)
+        companyGames = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType)
+
+        const parseDate = d3.timeParse("%Y-%m-%d");
+        companyLayoffs.forEach(d => d.date = parseDate(d.date));
+        companyLayoffs = companyLayoffs.filter(d => d['Parent'] === "Electronic Arts")
+
+
+        companyGames = companyGames.filter(d => d['publisher'].includes("Electronic Arts"))
+        // companyGames.forEach(d => d['releaseDate'] = parseDate(d['releaseDate']));
+
+
+        // Y axis: Counts
+        companyLayoffExtent = d3.extent([0, d3.max(companyLayoffs, d=>d["Headcount"])])
+
+        const headcountScale = d3.scaleLinear()
+            .domain(companyLayoffExtent)
+            .range([timelineAreaHeight, 0])
+
+        let leftAxis = d3.axisLeft(headcountScale)
+            .tickFormat(d3.format("~f")) // no commas
+
+        let leftGridlines = d3.axisLeft(headcountScale)
+                    .tickSize(-barAreaWidth+10)
+                    .tickFormat("")
+        
+        timelineAnnotations.append("g")
+            .attr("class", "y axis")
+            .attr("transform",`translate(${-10},${0})`)
+            .call(leftAxis)
+
+        // timelineAnnotations.append("g")
+        //  .attr("class", "y gridlines")
+        //  .attr("transform",`translate(${-10},${0})`)
+        //  .call(leftGridlines);
+
+          // X axis: Years
+        
+        const yearExtent = d3.extent(companyLayoffs, d => d['Date']);
+        const yearScale = d3.scaleLinear()
+            .domain(yearExtent)
+            .range([0, timelineAreaWidth]);
+
+        let bottomAxis = d3.axisBottom(yearScale)
+        .tickFormat(d3.timeFormat("%Y"));
+        // .tickFormat(d3.format("~f"));  // exact value without commas         
+
+        timelineAnnotations.append('g')
+            .attr('class', 'x axis')
+            .attr("transform",`translate(0,${timelineAreaHeight + 1})`)
+            .call(bottomAxis)
+        
+        // Draw trend line
+
+        var lineGen = d3.line()
+            .x( d => yearScale(d['Date']) )
+            .y( d => headcountScale(d['Headcount'] ? d['Headcount'] : 0) )
+            // .curve(d3.curveMonotoneX);  
+        
+        timelineChartArea.append("path")
+            .datum(companyLayoffs)
+            .attr("class", "line")
+            .attr("fill", "none")  
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 2)
+            .attr("d", lineGen);
+
+        // add dots to graph to indicate news
+
+        let newsSources = timelineChartArea.selectAll("circles.news").data(companyLayoffs)
+            .join("circle")
+            .attr("fill", "steelblue")
+            .attr('cy', d => headcountScale(d["Headcount"]))
+            .attr('cx', d=> yearScale(d['Date']))
+            .attr('r', 4)
+
+
+    
+            
+
+        // Second Y Axis: Games
+
+        metacriticExtent = d3.extent(companyGames, d=>d["metascore"])
+
+        const metacriticScale = d3.scaleLinear()
+            .domain(metacriticExtent)
+            .range([timelineAreaHeight, 0])
+
+        let rightAxis = d3.axisRight(metacriticScale)
+            .tickFormat(d3.format("~f")) // no commas
+
+        timelineAnnotations.append("g")
+            .attr("class", "y axis")
+            .attr("transform",`translate(${timelineAreaWidth},${0})`)
+            .call(rightAxis)
+
+        let gameCircles = timelineChartArea.selectAll("circles.games").data(companyGames)
+            .join("circle")
+            .attr('cy', d => metacriticScale(d["metascore"]))
+            .attr('cx', d=> yearScale(d['releaseDate']))
+            .attr('r', 3)
+            .attr('fill', 'white')
+
+
+        // Hover Controls   
+
+        const tooltip = d3.select("#gameTooltip");
+
+        gameCircles.on("mouseover", function (event, d) {
+
+            d3.select(this)
+                .attr('r', 5)
+
+            const rect = this.getBoundingClientRect(); // Get screen position of the bar
+
+            tooltip
+                .style("visibility", "visible")
+                .style("opacity", 1)
+                .html(`<strong> ${d["title"]} </strong>: ${d['metascore']} `)
+                .style("left", `${rect.right + 10}px`)
+                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
+        
+            
+        }).on("mouseout", function(event, d) {
+
+            d3.select(this)
+                .attr('r', 3)
+
+            tooltip
+            .style("visibility", "visible")
+            .style("opacity", 0)
+
+        })
+
+
+        newsSources.on("mouseover", function (event, d) {
+
+            d3.select(this)
+                .attr('r', 5)
+
+            const rect = this.getBoundingClientRect(); // Get screen position of the bar
+
+            tooltip
+                .style("visibility", "visible")
+                .style("opacity", 1)
+                .html(`<strong> Layoffs </strong>: ${d['Headcount']} `)
+                .style("left", `${rect.right + 10}px`)
+                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
+
+
+        }).on("mouseout", function(event, d) {
+
+            d3.select(this)
+                .attr('r', 4)
+
+            tooltip
+            .style("visibility", "visible")
+            .style("opacity", 0)
+
+        })
+
+
+        
+
+        
+    }
+
+    requestTimelineData();
+
+
 
   </script>
 
