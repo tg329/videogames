@@ -68,8 +68,8 @@
       width: 92vw;
       height: 10px;
       background-color: #4b7159;
+      top: -3px;
       /* border-radius: 5px; */
-      bottom: -12px;
     }
 
     .scroll-progress-bar {
@@ -77,12 +77,12 @@
       background-color: rgb(255, 0, 0);
       width: var(--scroll-progress);
       position: absolute;
-
+      top: -2px;
     }
 
     .scroll-icon {
       position: absolute;
-      top: -130px;
+      top: -110px;
       left: calc(var(--scroll-progress) - 15px);
       width: 118px;
       z-index: 100;
@@ -166,7 +166,6 @@
 </head>
 
 <body>
-
   <div class="static-box">
     <div class="graph1">
 
@@ -181,9 +180,29 @@
 
   </div>
   <div class="horizontal-scroll" id="scroll-container">
+    <!-- legend -->
+    <div class="heatmap-legend-container">
+      <h2 class="heatmap-title">Yearly Number of Game Releases</h2>
+      <svg class="heatmap-legend" width="200" height="30">
+        <defs>
+          <linearGradient id="legend-gradient">
+            <stop offset="0%" stop-color="#e5f5e0"></stop>
+            <stop offset="100%" stop-color="#238b45"></stop>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="10" width="200" height="10" fill="url(#legend-gradient)" />
+        <text x="0" y="25" fill="white" font-size="10px">Fewer</text>
+        <text x="160" y="25" fill="white" font-size="10px">More</text>
+      </svg>
+    </div>
+    <!-- calendar heatmap -->
     <div class="calendar-chart">
 
     </div>
+  </div>
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="progress-bar"></div>
+    <img src="images/moving.gif" alt="link progress" class="scroll-icon" id="progress-icon">
   </div>
 
   <div class="page" id="page2">
@@ -196,12 +215,6 @@
     </div>
 
   </div>
-
-  <div class="scroll-progress-container">
-    <div class="scroll-progress-bar" id="progress-bar"></div>
-    <img src="images/moving.gif" alt="link progress" class="scroll-icon" id="progress-icon">
-  </div>
-
 
 
 
@@ -346,6 +359,7 @@
     }, { passive: false });
 
     // ----------- CALENDAR HEATMAP END -----------------------------------
+
 
   </script>
 
