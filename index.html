@@ -16,15 +16,7 @@
       font-family: monospace;
     }
 
-    .static-box {
-      display: flex;
-      flex: 0 0 6%;
-      background-color: lightgray;
-      padding: 14vw;
-      padding-left: 0px;
-      padding-right: 0px;
-    }
-
+    /* HORIZONTAL SCROLL AND HEATMAP ---------------------------------------- */
     .horizontal-scroll {
       flex: 1 1 10%;
       overflow-x: auto;
@@ -72,6 +64,7 @@
       height: 10px;
       background-color: #4b7159;
       /* border-radius: 5px; */
+      bottom: -12px;
     }
 
     .scroll-progress-bar {
@@ -79,7 +72,7 @@
       background-color: rgb(255, 0, 0);
       width: var(--scroll-progress);
       position: absolute;
-      top: -4px;
+
     }
 
     .scroll-icon {
@@ -105,10 +98,60 @@
     .month-box:hover+.month-label {
       transform: scale(1.03) translate(-1%, -2%);
     }
+
+
+    /* STATIC GRAPHS -------------------------------------------------------- */
+    .static-box {
+      display: flex;
+      flex: 0 0 6%;
+      background-color: lightgray;
+      padding: 14vw;
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+
+
+    /* PAGE TWO ------------------------------------------------------------- */
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+
+    .fade-in {
+      opacity: 1;
+      transition: opacity 0.6s ease;
+      pointer-events: auto;
+    }
+
+    #page2 {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: black;
+      width: 100vw;
+      height: 100vh;
+      opacity: 0;
+      z-index: -1;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    #page2.visible {
+      opacity: 1;
+      z-index: 2;
+      pointer-events: auto;
+    }
+
+    .static-box.hidden,
+    .horizontal-scroll.hidden {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
+
   <div class="static-box">
     <div class="graph1">
 
@@ -127,12 +170,18 @@
 
     </div>
   </div>
+
+  <div class="page" id="page2">
+    blank
+
+  </div>
+
   <div class="scroll-progress-container">
     <div class="scroll-progress-bar" id="progress-bar"></div>
     <img src="images/moving.gif" alt="link progress" class="scroll-icon" id="progress-icon">
   </div>
 
-  </div>
+
 
 
   <script>
@@ -225,6 +274,12 @@
 
     // SCROLL BAR --
     const scrollContainer = document.getElementById("scroll-container");
+    const page2 = document.getElementById("page2");
+    const staticBox = document.querySelector(".static-box");
+    const calendar = document.querySelector(".horizontal-scroll");
+    const progressIcon = document.getElementById("progress-icon");
+
+    let onPage2 = false;
 
     scrollContainer.addEventListener("scroll", () => {
       const content = scrollContainer.querySelector(".calendar-chart");
@@ -234,6 +289,29 @@
 
       document.documentElement.style.setProperty('--scroll-progress', `${progress * 100}%`);
 
+      // page 2
+      if (progress >= 0.99 && !onPage2) {
+        onPage2 = true;
+        staticBox.classList.remove("fade-in");
+        calendar.classList.remove("fade-in");
+        staticBox.classList.add("fade-out");
+        calendar.classList.add("fade-out");
+
+        page2.classList.add("visible");
+        progressIcon.src = "images/idle.gif";
+      }
+
+      // page 1
+      if (progress < 0.99 && onPage2) {
+        onPage2 = false;
+        staticBox.classList.remove("fade-out");
+        calendar.classList.remove("fade-out");
+        staticBox.classList.add("fade-in");
+        calendar.classList.add("fade-in");
+
+        page2.classList.remove("visible");
+        progressIcon.src = "images/moving.gif";
+      }
     });
 
     // will horizontal scroll no matter where on page
