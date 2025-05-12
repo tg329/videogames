@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Final Project</title>
+    <title>Final Project - Date Picker & Number Input</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         body {
@@ -45,8 +45,9 @@
             margin-bottom: 10px;
         }
 
-        input[type="range"] {
-            width: 300px;
+        input[type="date"],
+        input[type="number"] {
+            margin: 0 5px;
         }
     </style>
 </head>
@@ -61,28 +62,38 @@
         <button id="reset-btn">Reset View</button>
 
         <div class="slider-container">
-            <label class="slider-label" for="date-slider">Release Date:</label>
-            <input type="range" id="date-slider" />
-            <span id="date-slider-label"></span>
+            <label class="slider-label">Release Date Range:</label>
+            From: <input type="date" id="date-start" />
+            To: <input type="date" id="date-end" />
         </div>
 
         <div class="slider-container">
-            <label class="slider-label" for="score-slider">Score Max:</label>
-            <input type="range" id="score-slider" />
-            <span id="score-slider-label"></span>
+            <label class="slider-label">Score Range:</label>
+            From: <input type="number" id="score-min" />
+            To: <input type="number" id="score-max" />
         </div>
     </div>
 
-    <p>This scatterplot shows the relationship between video game release dates and their ratings. Choose between user or critic scores using the dropdown above. Use the sliders to filter data.</p>
+    <p>This scatterplot shows the relationship between video game release dates and their ratings. Choose between user or critic scores using the dropdown above. Use the inputs to filter data.</p>
 
     <svg id="scatterplot" height="500" width="800"></svg>
 
     <div id="game-details" style="margin-top: 20px; font-size: 16px;">
-        <h3>Game Details</h3>
-        <p id="game-title">Click on a point to view game details.</p>
-        <p id="game-release-date"></p>
-        <p id="game-score"></p>
+    <h3>Game Details</h3>
+    <div id="details-content">
+        <p><strong>Title:</strong> <span id="detail-title">Click a point to view details.</span></p>
+        <p><strong>Release Date:</strong> <span id="detail-release-date"></span></p>
+        <p><strong>Rating:</strong> <span id="detail-rating"></span></p>
+        <p><strong>Genres:</strong> <span id="detail-genres"></span></p>
+        <p><strong>Description:</strong> <span id="detail-description"></span></p>
+        <p><strong>Platforms:</strong> <span id="detail-platforms"></span></p>
+        <p><strong>Metascore:</strong> <span id="detail-metascore"></span> (<span id="detail-metascore-sentiment"></span> from <span id="detail-metascore-count"></span> reviews)</p>
+        <p><strong>User Score:</strong> <span id="detail-userscore"></span> (<span id="detail-userscore-sentiment"></span> from <span id="detail-userscore-count"></span> reviews)</p>
+        <p><strong>Developer:</strong> <span id="detail-developer"></span></p>
+        <p><strong>Publisher:</strong> <span id="detail-publisher"></span></p>
     </div>
+</div>
+
 
     <script>
         const scattersvg = d3.select("#scatterplot");
@@ -102,9 +113,9 @@
         let xScale, yScale;
 
         let dateExtent = [0, 0];
-        let selectedDateMax = 0;
+        let selectedDateMin = 0, selectedDateMax = 0;
         let scoreExtent = [0, 0];
-        let selectedScoreMax = 0;
+        let selectedScoreMin = 0, selectedScoreMax = 0;
 
         function updateScatter(scoreType, dataToUse = fullData) {
             currentData = dataToUse;
@@ -122,18 +133,13 @@
                 .domain(d3.extent(dataToUse, d => d.date))
                 .range([0, scatterAreaWidth]);
 
-            const xDomain = xScale.domain();
-            const timeSpan = xDomain[1] - xDomain[0];
-            const maxTicks = 5;
-
+            const timeSpan = xScale.domain()[1] - xScale.domain()[0];
             const yAxis = d3.axisLeft(yScale);
             const xAxis = d3.axisBottom(xScale)
-                .ticks(Math.min(Math.max(scatterAreaWidth / 80, 5), maxTicks))
-                .tickFormat(d => {
-                    return timeSpan < 1000 * 60 * 60 * 24 * 90
-                        ? d3.timeFormat("%b %d, %Y")(d)
-                        : d3.timeFormat("%b %Y")(d);
-                });
+                .ticks(Math.min(Math.max(scatterAreaWidth / 80, 5), 5))
+                .tickFormat(d => timeSpan < 1000 * 60 * 60 * 24 * 90
+                    ? d3.timeFormat("%b %d, %Y")(d)
+                    : d3.timeFormat("%b %Y")(d));
 
             scatterAnnotations.append("g")
                 .attr("class", "y axis")
@@ -162,8 +168,7 @@
             function getRadius(numPoints) {
                 const maxRadius = 5;
                 const minRadius = 2;
-                const radius = Math.max(minRadius, Math.min(maxRadius, maxRadius * (1 / Math.sqrt(numPoints / 1000))));
-                return radius;
+                return Math.max(minRadius, Math.min(maxRadius, maxRadius * (1 / Math.sqrt(numPoints / 1000))));
             }
 
             scatterChartArea.selectAll("circle")
@@ -188,59 +193,73 @@
                     tooltip.style("display", "none");
                 })
                 .on("click", function (event, d) {
-                    document.getElementById("game-title").textContent = `Title: ${d.title}`;
-                    document.getElementById("game-release-date").textContent = `Release Date: ${d3.timeFormat("%B %d, %Y")(d.date)}`;
-                    document.getElementById("game-score").textContent = `${scoreType === "userscore" ? "User Score" : "Meta Score"}: ${d[scoreType]}`;
+                    d3.select("#detail-title").text(d.title);
+                    d3.select("#detail-release-date").text(d3.timeFormat("%B %d, %Y")(d.date));
+                    d3.select("#detail-rating").text(d.rating || "N/A");
+                    d3.select("#detail-genres").text(d.genres || "N/A");
+                    d3.select("#detail-description").text(d.description || "No description available.");
+                    d3.select("#detail-platforms").text(d.platforms || "N/A");
+
+                    d3.select("#detail-metascore").text(d.metascore !== null ? d.metascore : "N/A");
+                    d3.select("#detail-metascore-count").text(d.metascore_count || "0");
+                    d3.select("#detail-metascore-sentiment").text(d.metascore_sentiment || "N/A");
+
+                    d3.select("#detail-userscore").text(d.userscore !== null ? d.userscore : "N/A");
+                    d3.select("#detail-userscore-count").text(d.userscore_count || "0");
+                    d3.select("#detail-userscore-sentiment").text(d.userscore_sentiment || "N/A");
+
+                    d3.select("#detail-developer").text(d.developer || "N/A");
+                    d3.select("#detail-publisher").text(d.publisher || "N/A");
                 });
+
         }
 
-        function setupSliders(scoreType) {
-            const dateSlider = document.getElementById("date-slider");
-            const scoreSlider = document.getElementById("score-slider");
+        function setupInputs(scoreType) {
+            const dateStartInput = document.getElementById("date-start");
+            const dateEndInput = document.getElementById("date-end");
+            const scoreMinInput = document.getElementById("score-min");
+            const scoreMaxInput = document.getElementById("score-max");
 
             const timestamps = fullData.map(d => d.date.getTime());
             dateExtent = d3.extent(timestamps);
+            selectedDateMin = dateExtent[0];
             selectedDateMax = dateExtent[1];
 
             const scores = fullData.map(d => d[scoreType]);
             scoreExtent = d3.extent(scores);
-            selectedScoreMax = scoreExtent[1];
+            selectedScoreMin = Math.floor(scoreExtent[0]);
+            selectedScoreMax = Math.ceil(scoreExtent[1]);
 
-            dateSlider.min = dateExtent[0];
-            dateSlider.max = dateExtent[1];
-            dateSlider.step = 24 * 60 * 60 * 1000;
-            dateSlider.value = selectedDateMax;
+            dateStartInput.valueAsDate = new Date(selectedDateMin);
+            dateEndInput.valueAsDate = new Date(selectedDateMax);
+            scoreMinInput.value = selectedScoreMin;
+            scoreMaxInput.value = selectedScoreMax;
+            scoreMinInput.min = scoreExtent[0];
+            scoreMaxInput.max = scoreExtent[1];
 
-            scoreSlider.min = Math.floor(scoreExtent[0]);
-            scoreSlider.max = Math.ceil(scoreExtent[1]);
-            scoreSlider.step = 1;
-            scoreSlider.value = selectedScoreMax;
+            function updateAndFilter() {
+                const start = new Date(dateStartInput.value).getTime();
+                const end = new Date(dateEndInput.value).getTime();
+                if (!isNaN(start) && !isNaN(end)) {
+                    selectedDateMin = start;
+                    selectedDateMax = end;
+                }
 
-            updateSliderLabels();
-
-            dateSlider.oninput = () => {
-                selectedDateMax = parseInt(dateSlider.value);
-                updateSliderLabels();
+                selectedScoreMin = parseInt(scoreMinInput.value);
+                selectedScoreMax = parseInt(scoreMaxInput.value);
                 applyFilters(scoreType);
-            };
+            }
 
-            scoreSlider.oninput = () => {
-                selectedScoreMax = parseInt(scoreSlider.value);
-                updateSliderLabels();
-                applyFilters(scoreType);
-            };
-        }
-
-        function updateSliderLabels() {
-            document.getElementById("date-slider-label").textContent =
-                d3.timeFormat("%b %d, %Y")(new Date(selectedDateMax));
-            document.getElementById("score-slider-label").textContent =
-                selectedScoreMax;
+            [dateStartInput, dateEndInput, scoreMinInput, scoreMaxInput].forEach(input =>
+                input.addEventListener("input", updateAndFilter)
+            );
         }
 
         function applyFilters(scoreType) {
             const filtered = fullData.filter(d =>
+                d.date.getTime() >= selectedDateMin &&
                 d.date.getTime() <= selectedDateMax &&
+                d[scoreType] >= selectedScoreMin &&
                 d[scoreType] <= selectedScoreMax
             );
             updateScatter(scoreType, filtered);
@@ -249,19 +268,19 @@
         async function loadData() {
             fullData = await d3.csv("datasets/filtered_file.csv", d3.autoType);
             fullData.forEach(d => d.date = new Date(d.releaseDate));
-            setupSliders("userscore");
+            setupInputs("userscore");
             updateScatter("userscore");
         }
 
         d3.select("#score-type").on("change", function () {
             const selectedScore = this.value;
-            setupSliders(selectedScore);
+            setupInputs(selectedScore);
             applyFilters(selectedScore);
         });
 
         d3.select("#reset-btn").on("click", () => {
             const selectedScore = d3.select("#score-type").node().value;
-            setupSliders(selectedScore);
+            setupInputs(selectedScore);
             updateScatter(selectedScore, fullData);
         });
 
