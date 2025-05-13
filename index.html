@@ -447,6 +447,21 @@
 
     const annotations = barChartArea.append('g')
 
+     // ----------- LINECHART/TIMELINE START -----------------------------------------
+
+     const timelinesvg = d3.select("#toptimeline");
+    const timelineWidth = timelinesvg.attr("width");
+    const timelineHeight = timelinesvg.attr("height");
+    const timelineMargin = {top: 10, right: 60, bottom: 130, left: 60};
+
+    const timelineAreaWidth = timelineWidth - timelineMargin.left - timelineMargin.right;
+    const timelineAreaHeight = timelineHeight - timelineMargin.top - timelineMargin.bottom;
+
+    const timelineChartArea = timelinesvg.append("g")
+        .attr("transform", "translate("+(timelineMargin.left)+","+timelineMargin.top+")");
+
+    const timelineAnnotations = timelineChartArea.append('g')
+
     const requestBarChartData = async function () {
 
       majorLayoffs = await d3.csv("datasets/majorLayoffs.csv", d3.autoType)
@@ -571,104 +586,58 @@
           .style("left", `${rect.left + rect.width / 2}px`)
           .style("top", `${rect.top}px`); // 40px above the bar
 
+          requestTimelineData(d["Company"]);
+
       }).on("mouseout", function (event, d) {
         // we cant have mouseovers for 2 things at once. Have the tooltuip appear when entering the rect, stay there until another rect is moused over. 
       })
 
+      // SET UP FOR TIMELINE (CONSTANTS) ------------------------------------------------------------------------------------------------------
 
-    }
+      companyLayoffs = await d3.csv("datasets/all-layoffs.csv", d3.autoType)
+      companyGames = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType)
 
-    requestBarChartData();
+      const parseDate = d3.timeParse("%Y-%m-%d");
+      companyLayoffs.forEach(d => d.date = parseDate(d.date));
 
-     // ----------- LINECHART/TIMELINE START -----------------------------------------
+      company = "null";
+      selectedCompanyLayoffs = companyLayoffs.filter(d => d['Parent'] ? d['Parent'].includes(company) : false)
+      selectedCompanyGames = companyGames.filter(d => d['publisher'].includes(company))
 
-     const timelinesvg = d3.select("#toptimeline");
-    const timelineWidth = timelinesvg.attr("width");
-    const timelineHeight = timelinesvg.attr("height");
-    const timelineMargin = {top: 10, right: 60, bottom: 130, left: 60};
+      // Y axis: Counts
+      companyLayoffExtent = d3.extent([0, d3.max(selectedCompanyLayoffs, d=>d["Headcount"])])
 
-    const timelineAreaWidth = timelineWidth - timelineMargin.left - timelineMargin.right;
-    const timelineAreaHeight = timelineHeight - timelineMargin.top - timelineMargin.bottom;
+      headcountScale = d3.scaleLinear()
+          .range([timelineAreaHeight, 0])
+      
+      timelineAnnotations.append("g")
+          .attr("class", "y-axis-left-TL")
+          .attr("transform",`translate(${-10},${0})`)
 
-    const timelineChartArea = timelinesvg.append("g")
-        .attr("transform", "translate("+(timelineMargin.left)+","+timelineMargin.top+")");
-
-    const timelineAnnotations = timelineChartArea.append('g')
-
-    const requestTimelineData = async function(company) {
+      // X axis: Years
         
-        companyLayoffs = await d3.csv("datasets/all-layoffs.csv", d3.autoType)
-        companyGames = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType)
+      yearExtent = d3.extent(selectedCompanyLayoffs, d => d['Date']);
+      yearScale = d3.scaleLinear()
+          .range([0, timelineAreaWidth]); 
 
-        const parseDate = d3.timeParse("%Y-%m-%d");
-        companyLayoffs.forEach(d => d.date = parseDate(d.date));
-        companyLayoffs = companyLayoffs.filter(d => d['Parent'] === company)
+      timelineAnnotations.append('g')
+          .attr('class', 'x-axis-TL')
+          .attr("transform",`translate(0,${timelineAreaHeight + 1})`)
+      
+      // Draw trend line
 
-        companyGames = companyGames.filter(d => d['publisher'].includes(company))
-        // companyGames.forEach(d => d['releaseDate'] = parseDate(d['releaseDate']));
-
-
-        // Y axis: Counts
-        companyLayoffExtent = d3.extent([0, d3.max(companyLayoffs, d=>d["Headcount"])])
-
-        const headcountScale = d3.scaleLinear()
-            .domain(companyLayoffExtent)
-            .range([timelineAreaHeight, 0])
-
-        let leftAxis = d3.axisLeft(headcountScale)
-            .tickFormat(d3.format("~f")) // no commas
-
-        let leftGridlines = d3.axisLeft(headcountScale)
-                    .tickSize(-barAreaWidth+10)
-                    .tickFormat("")
-        
-        timelineAnnotations.append("g")
-            .attr("class", "y axis")
-            .attr("transform",`translate(${-10},${0})`)
-            .call(leftAxis)
-
-        // timelineAnnotations.append("g")
-        //  .attr("class", "y gridlines")
-        //  .attr("transform",`translate(${-10},${0})`)
-        //  .call(leftGridlines);
-
-          // X axis: Years
-        
-        const yearExtent = d3.extent(companyLayoffs, d => d['Date']);
-        const yearScale = d3.scaleLinear()
-            .domain(yearExtent)
-            .range([0, timelineAreaWidth]);
-
-        let bottomAxis = d3.axisBottom(yearScale)
-        .tickFormat(d3.timeFormat("%Y"));
-        // .tickFormat(d3.format("~f"));  // exact value without commas         
-
-        timelineAnnotations.append('g')
-            .attr('class', 'x axis')
-            .attr("transform",`translate(0,${timelineAreaHeight + 1})`)
-            .call(bottomAxis)
-        
-        // Draw trend line
-
-        var lineGen = d3.line()
-            .x( d => yearScale(d['Date']) )
-            .y( d => headcountScale(d['Headcount'] ? d['Headcount'] : 0) )
-            // .curve(d3.curveMonotoneX);  
-        
-        timelineChartArea.append("path")
-            .datum(companyLayoffs)
-            .attr("class", "line")
-            .attr("fill", "none")  
-            .attr("stroke", "steelblue")
-            .attr("stroke-width", 2)
-            .attr("d", lineGen);
+      timelineChartArea.append("path")
+          .attr("class", "line-TL")
+          .attr("fill", "none")  
+          .attr("stroke", "steelblue")
+          .attr("stroke-width", 2)
 
         // draw bars
 
         width = 12;
-        companylayoffBars = timelineChartArea.selectAll('rect.layoff').data(companyLayoffs)
+        companylayoffBars = timelineChartArea.selectAll('rect.layoffs').data(selectedCompanyLayoffs)
           .join('rect')
-          .attr('class', 'bar')
+          .attr("class", 'layoffs')
           .attr('fill', 'steelblue')
           .attr('x', d => yearScale(d['Date']) - width/2)
           .attr('y', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
@@ -677,16 +646,17 @@
 
         // add dots to graph to indicate news
 
-        // let newsSources = timelineChartArea.selectAll("circles.news").data(companyLayoffs)
+        // let newsSources = timelineChartArea.selectAll("circles.news").data(selectedCompanyLayoffs)
         //     .join("circle")
         //     .attr("fill", "steelblue")
         //     .attr('cy', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
         //     .attr('cx', d=> yearScale(d['Date']))
-        //     .attr('r', 4)
+        //     .attr('r', width/2)
 
         // add vertical line for unclear layoff numbers
-        let verticalLines = timelineChartArea.selectAll("lines.news").data(companyLayoffs)
+        verticalLines = timelineChartArea.selectAll("line.news").data(selectedCompanyLayoffs)
               .join("line")
+              .attr("class", "news")
               .attr('stroke-width', 2)
               .attr('opacity', 1)
               .attr('stroke', 'orange')
@@ -696,28 +666,176 @@
               .attr('x2', d=> d['Headcount'] ? 0 : yearScale(d['Date']))
               .attr('y2', headcountScale(companyLayoffExtent[1]))
 
+        // Second Y Axis: Games
 
-    
+        metacriticExtent = d3.extent(selectedCompanyGames, d=>d["metascore"])
+
+        metacriticScale = d3.scaleLinear()
+            .range([timelineAreaHeight, 0])
+
+        timelineAnnotations.append("g")
+            .attr("class", "y-axis-right-TL")
+            .attr("transform",`translate(${timelineAreaWidth},${0})`)
+
+        let gameCircles = timelineChartArea.selectAll("circle.gamesTL").data(selectedCompanyGames)
+            .join("circle")
+            .attr("class", "gamesTL")
+            .attr('cy', d => metacriticScale(d["metascore"]))
+            .attr('cx', d=> yearScale(d['releaseDate']))
+            .attr('r', 3)
+            .attr('fill', 'white')
+
+
+        // Hover Controls   
+
+        TLtooltip = d3.select("#gameTooltip");
+
+        gameCircles.on("mouseover", function (event, d) {
+
+            d3.select(this)
+                .attr('r', 5)
+
+            const rect = this.getBoundingClientRect(); // Get screen position of the bar
+
+            TLtooltip
+                .style("visibility", "visible")
+                .style("opacity", 1)
+                .html(`<strong> ${d["title"]} </strong>: ${d['metascore']} `)
+                .style("left", `${rect.right + 10}px`)
+                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
+        
             
+        }).on("mouseout", function(event, d) {
+
+            d3.select(this)
+                .attr('r', 3)
+
+            TLtooltip
+            .style("visibility", "visible")
+            .style("opacity", 0)
+
+        })
+
+
+        companylayoffBars.on("mouseover", function (event, d) {
+
+            d3.select(this)
+                .attr('r', 5)
+
+            const rect = this.getBoundingClientRect(); // Get screen position of the bar
+
+            TLtooltip
+                .style("visibility", "visible")
+                .style("opacity", 1)
+                .html(`<strong> Layoffs </strong>: ${d['Headcount']} `)
+                .style("left", `${rect.right + 10}px`)
+                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
+
+
+        }).on("mouseout", function(event, d) {
+
+            d3.select(this)
+                .attr('r', 4)
+
+            TLtooltip
+            .style("visibility", "visible")
+            .style("opacity", 0)
+
+        })
+
+
+    requestTimelineData = function(company) {
+        
+        selectedCompanyLayoffs = companyLayoffs.filter(d => d['Parent'] ? d['Parent'].includes(company) || company.includes(d['Parent']) : false)
+        selectedCompanyGames = companyGames.filter(d => d['publisher'].includes(company) || company.includes(d['publisher']))
+        // selectedCompanyGames.forEach(d => d['releaseDate'] = parseDate(d['releaseDate']));
+
+        // Y axis: Counts
+        companyLayoffExtent = d3.extent([0, d3.max(selectedCompanyLayoffs, d=>d["Headcount"])])
+        headcountScale.domain(companyLayoffExtent)
+        
+        TLleftAxis = d3.axisLeft(headcountScale)
+            .tickFormat(d3.format("~f")) // no commas
+        
+        d3.select(".y-axis-left-TL")
+          .transition()
+          .duration(300)
+          .call(TLleftAxis);
+              
+        yearExtent = d3.extent(selectedCompanyLayoffs, d => d['Date']);
+        yearScale.domain(yearExtent)
+
+        TLbottomAxis = d3.axisBottom(yearScale)
+        .tickFormat(d3.timeFormat("%Y"));
+        // .tickFormat(d3.format("~f"));  // exact value without commas   
+        
+        d3.select(".x-axis-TL")
+          .transition()
+          .duration(300)
+          .call(TLbottomAxis);
+        
+        // Draw trend line
+
+        var lineGen = d3.line()
+            .x( d => yearScale(d['Date']) )
+            .y( d => headcountScale(d['Headcount'] ? d['Headcount'] : 0) )
+            // .curve(d3.curveMonotoneX);  
+        
+        d3.select(".line-TL")
+            .datum(selectedCompanyLayoffs)
+            .attr("d", lineGen);
+
+        // draw bars
+
+        width = 12;
+        companylayoffBars= timelineChartArea.selectAll('rect.layoffs').data(selectedCompanyLayoffs)
+          .join('rect')
+          .attr("class", 'layoffs')
+          .attr('fill', 'steelblue')
+          .attr('x', d => yearScale(d['Date']) - width/2)
+          .attr('y', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
+          .attr('height', d => headcountScale(companyLayoffExtent[0]) - headcountScale(d['Headcount'] ? d['Headcount'] : 0))
+          .attr('width', width)
+
+        // add dots to graph to indicate news
+
+        // let newsSources = timelineChartArea.selectAll("circles.news").data(selectedCompanyLayoffs)
+        //     .join("circle")
+        //     .attr("fill", "steelblue")
+        //     .attr('cy', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
+        //     .attr('cx', d=> yearScale(d['Date']))
+        //     .attr('r', width/2)
+
+        // add vertical line for unclear layoff numbers
+        verticalLines = timelineChartArea.selectAll("line.news").data(selectedCompanyLayoffs)
+              .join("line")
+              .attr("class", "news")
+              .attr('stroke-width', 2)
+              .attr('opacity', 1)
+              .attr('stroke', 'orange')
+              .style("stroke-dasharray", ("3, 3"))  // <== This line here!!
+              .attr('x1', d=>  d['Headcount'] ? 0 : yearScale(d['Date'])) // if no headcount, place a line at the corresponding date
+              .attr('y1', headcountScale(0))
+              .attr('x2', d=> d['Headcount'] ? 0 : yearScale(d['Date']))
+              .attr('y2', headcountScale(companyLayoffExtent[1]))
 
         // Second Y Axis: Games
 
-        metacriticExtent = d3.extent(companyGames, d=>d["metascore"])
-
-        const metacriticScale = d3.scaleLinear()
-            .domain(metacriticExtent)
-            .range([timelineAreaHeight, 0])
-
+        metacriticExtent = d3.extent(selectedCompanyGames, d=>d["metascore"])
+        metacriticScale.domain(metacriticExtent)
+      
         let rightAxis = d3.axisRight(metacriticScale)
             .tickFormat(d3.format("~f")) // no commas
 
-        timelineAnnotations.append("g")
-            .attr("class", "y axis")
-            .attr("transform",`translate(${timelineAreaWidth},${0})`)
-            .call(rightAxis)
+        d3.select(".y-axis-right-TL")
+          .transition()
+          .duration(300)
+          .call(rightAxis);
 
-        let gameCircles = timelineChartArea.selectAll("circles.games").data(companyGames)
+        let gameCircles = timelineChartArea.selectAll("circle.gamesTL")
+            .data(selectedCompanyGames)
             .join("circle")
+            .attr("class", "gamesTL")
             .attr('cy', d => metacriticScale(d["metascore"]))
             .attr('cx', d=> yearScale(d['releaseDate']))
             .attr('r', 3)
@@ -780,14 +898,15 @@
             .style("opacity", 0)
 
         })
-
-
-        
-
         
     }
 
-    requestTimelineData("Electronic Arts");
+
+    // requestTimelineData("Electronic Arts");
+  }
+
+    requestBarChartData();
+    
 
 
 
