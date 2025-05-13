@@ -95,6 +95,7 @@
 
         const requestscatterData = async function () {
             const TopMetacritic = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType);
+            const vg = await d3.csv("datasets/vgchartz-2024.csv", d3.autoType);
 
             TopMetacritic.forEach(d => {
                 d.releaseYear = new Date(d.releaseDate).getFullYear();
