@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <div class="leaderboard">
+            <h2>Top 10 Games by Metacritic Score</h2>
+            <div id="games"></div>
+        </div>
+        <div class="leaderboard">
+            <h2>Top 10 Companies by Sales</h2>
+            <div id="companies"></div>
+        </div>
+    </div>
+
+    <script>
+        const leaderboards = async () => {
+            const gamesData = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType);
+            const companiesData = await d3.csv("datasets/vgchartz-2024.csv", d3.autoType);
+    
+            const topGames = gamesData
+                .sort((a, b) => b.metascore - a.metascore)
+                .slice(0, 10);
+    
+            const games = d3.select("#games");
+            games.selectAll("div").data(topGames).join("div")
+                .text(d => `${d.title}: ${d.metascore}`);
+    
+            const compList = [];
+    
+            companiesData.forEach(d => {
+                if (d.publisher) {
+                    if (!compList[d.publisher]) {
+                        compList[d.publisher] = 0;
+                        
+                    }
+                    compList[d.publisher] += d.total_sales;
+                }
+            });
+    
+            const companySales = Object.entries(compList)
+                .map(([company, sales]) => ({ company, sales }))
+                .sort((a, b) => b.sales - a.sales)
+                .slice(0, 10);
+    
+            const comp = d3.select("#companies");
+            comp.selectAll("div").data(companySales).join("div")
+                .text(d => `${d.company}: ${d.sales.toFixed(2)} Million Sales`);
+        };
+    
+        leaderboards();
+    </script>
+</body>
+
+</html>
