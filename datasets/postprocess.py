@@ -14,6 +14,9 @@ def passes_filter(row, company):
     if (company not in row['developer'] and company not in row['publisher']):
         return False
     
+    if (row['metascore']==''):
+         return False
+    
     date = row['releaseDate']
     if (date):
         year = date[0:4]
@@ -48,7 +51,7 @@ with open('metacritic.csv','r',encoding='utf-8') as f1:
         for game in games:
             for company in companies:
                 if (passes_filter(game, company)):
-                    game['metacritic'] = float(game['metacritic'])
+                    game['metascore'] = float(game['metascore'])
                     # e.g. splitting up qSpecies
                     data.append(game)
 
