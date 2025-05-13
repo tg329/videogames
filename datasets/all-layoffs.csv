@@ -1,463 +1,494 @@
-Studio,Date,Headcount,Parent,Type,Studio Location,Parent Location,Source,
-Machine Zone,2025-04-16,97,App Lovin,Mobile,California,United States,Machine Zone CEO out as AppLovin lays off 97 staff | PocketGamer.biz,"AppLovin cuts another 97 jobs, including CEO of subsidiary studio Machine Zone | GamesIndustry.biz"
-Eidos Montreal,2025-03-31,75,Embracer Group,Console,,,,
-"Cyan, Inc.",2025-03-28,12,,Indie,,,,
-PLAION,2025-03-27,40,Embracer Group,Publisher,Munich,,,
-Crystal Dynamics,2025-03-26,17,Embracer Group,Console,,,,
-Elodie Games,2025-03-19,35,,Indie,,,,
-Studio Fizbin,2025-03-18,25,Thunderful Group,Console,,,,
-Farm51,2025-03-14,15,,Indie,,,,
-Mountaintop Studios,2025-03-14,80,,Online,,,,
-Box Dragon,2025-03-13,5,,Indie,,,,
-FreeRange Games,2025-03-13,,,Indie,,,,
-PlayStation Malaysia,2025-03-05,20,Sony,Console,,,,
-PlayStation VASG,2025-03-04,,Sony,Console,,,,
-Azra Games Austin,2025-02-26,40,Azra,Mobile,,,,
-SpaceApe Games,2025-02-25,30,SuperCell,Mobile,,,,
-WB San Diego,2025-02-25,51,Warner Brothers,Online,,,,
-Player First Games,2025-02-25,70,Warner Brothers,Console,,,,
-Monolith Productions,2025-02-25,170,Warner Brothers,Console,,,,
-Skeleton Key Games,2025-02-24,,Hasbro,Console,,,,
-Striking Distance Studios,2025-02-20,30,Krafton,Console,,,,
-Bossa Games,2025-02-20,,,Indie,,,,
-Liquid Sword,2025-02-17,46,,Indie,,,,
-Netease,2025-02-17,10,Netease,Console,,,,
-Sanzaru Games,2025-02-12,,Meta,,,,,
-Crytek,2025-02-12,60,,Console,,,,
-Unity Technologies,2025-02-11,,Unity,Tech,,,,
-10:10 Games,2025-02-07,18,,Indie,,,,
-HiRez Studios,2025-02-06,69,,Online,,,,
-Iron Galaxy,2025-02-05,66,,Console,,,,
-probablyMonsters,2025-02-04,,,Console,,,,
-Sumo Group,2025-02-04,,Tencent,Console,,,,
-Midnight Society,2025-01-30,55,,Online,,,,
-Bioware Games,2025-01-30,,Electronic Arts,Console,,,,
-Fast Travel Games,2025-01-28,30,,AR/VR,,,,
-Phoenix Labs,2025-01-27,50,Forte,Online,,,,
-MoonActive,2025-01-27,20,,Mobile,,,https://app2top.ru/news/v-kompanii-moon-active-proshli-massovy-e-sokrashheniya-v-pervuyu-ochered-oni-kosnulis-litovskogo-podrazdeleniya-kotoroe-ran-she-by-lo-studiej-melsoft-227071.html,
-Ubisoft Leamington,2025-01-27,185,Ubisoft,Console,,,https://www.eurogamer.net/ubisoft-announces-studio-closure-as-it-lays-off-185-staff,
-Machine Zone,2025-01-21,89,App Lovin,Mobile,California,United States,https://www.bizjournals.com/sanjose/news/2025/01/16/applovin-layoff-2025-ceo-mz-games.html,
-Reflector Entertainment,2025-01-21,,Bandai Namco,Console,Quebec,Japan,https://www.gamedeveloper.com/business/reflector-confirms-more-layoffs-after-unknown-9-falls-short-of-expectations,
-Unchained Entertainment,2025-01-17,24,,Indie,,,Camelot Unchained studio Unchained Entertainment reportedly laid off 40% of its devs | Massively Overpowered,
-Wargaming USA,2025-01-15,,Wargaming,Console,Chicago,,World of Tanks Developer Wargaming Hit With Layoffs,
-Counterplay Games,2025-01-13,,,Indie,California,United States,Report: Godfall dev Counterplay Games has quietly closed down,
-Highwire Games,2025-01-10,21,,Console,,,(21) Post | LinkedIn,
-Toadman Interactive,2025-01-09,69,Enad Global 7,Console,Sweden,Sweden,https://www.enadglobal7.com/press-releases/enad-global-7-initiates-a-wind-down-of-the-operations-in-toadman/,
-Pirahna Games,2025-01-09,38,Enad Global 7,Console,British Columbia,Sweden,https://www.enadglobal7.com/press-releases/eg7-undertakes-business-optimization-at-one-of-its-studios/,
-Freejam,2025-01-09,,,Indie,,,https://www.gamedeveloper.com/business/robocraft-2-developer-freejam-shuts-down,
-Splash Damage,2025-01-08,,Tencent,Console,United Kingdom,China,https://www.gamesindustry.biz/splash-damage-jobs-at-risk-following-transformers-reactivate-cancellation,
-Jar of Sparks,2025-01-06,35,Netease,Console,,,https://www.linkedin.com/posts/jar-of-sparks_earlier-today-we-notified-our-team-that-activity-7282184211237613572-Rzqx?utm_source=share&utm_medium=member_desktop,
-Netmarble F&C,2025-01-02,20,Netmarble,Mobile,South Korea,South Korea,https://www.yna.co.kr/view/AKR20250102076600017?section=industry/game,
-Deck Nine Games,2024-12-06,,,Indie,Colorado,United States,,
-Sweet Bandits,2024-12-04,10,,Indie,Qeuebec,Canada,,
-IllFonic,2024-12-04,,,Indie,Colorado,United States,,
-Ubisoft Sydney,2024-12-04,134,Ubisoft,Console,Australia,France,,
-Ubisoft Osaka,2024-12-03,,Ubisoft,Console,Japan,France,,
-Ubisoft San Francisco,2024-12-03,175,Ubisoft,Console,California,France,,
-Torn Banner Studios,2024-12-03,,,Indie,Ottawa,Canada,,
-Worlds Untold,2024-11-26,35,Netease,Console,British Columbia,China,,
-Humanoid Origin,2024-11-25,70,,Console,Alberta,Canada,,
-KING Art Games,2024-11-25,10,,Indie,Germany,Germany,,
-Zapper Games,2024-11-19,18,Embracer Group,Console,North Carolina,Sweden,,
-Reflector Entertainment,2024-11-18,45,Bandai Namco,Console,Quebec,Japan,,
-NCSoft,2024-11-15,500,NCSoft,Online,South Korea,South Korea,,
-Thunderful Games,2024-11-14,100,Thunderful Group,Console,Sweden,Sweden,,
-Lilith Games,2024-11-13,40,,Mobile,China,China,,
-Heart Machine,2024-11-09,8,,Indie,California,United States,,
-Skydance Interactive,2024-11-01,12,Paramount Global,AR/VR,California,United States,,
-probablyMonsters,2024-10-30,50,,Console,Washington,United States,,
-Fingersoft,2024-10-30,14,,Mobile,Finland,Finland,,
-Firewalk Studios,2024-10-29,174,Sony,Console,Washington,Japan,,
-Neon Koi,2024-10-29,45,Sony,Mobile,England,Japan,,
-Machine Zone,2024-10-24,,App Lovin,Mobile,California,United States,,
-Inflexion Games,2024-10-22,50,Tencent,Console,Alberta,China,,
-Netflix Studio Blue,2024-10-22,35,Netflix,Online,California,United States,,
-Surgent Studios,2024-10-18,,,Indie,England,United Kingdom,,
-DON'T NOD,2024-10-16,69,,Console,France,France,,
-Riot Games,2024-10-15,32,Tencent,Online,California,China,,
-NaturalMotion,2024-10-10,,Take-Two Interactive,Mobile,England,United States,,
-Cryptic Studios,2024-10-09,,Embracer Group,Online,California,Sweden,,
-Tequila Works,2024-10-08,,Tencent,Console,Spain,China,,
-Antstream Arcade,2024-10-04,,,Online,England,United Kingdom,,
-Studio Black Flag,2024-10-02,5,,Indie,France,France,,
-XR Games,2024-10-01,72,,AR/VR,England,United Kingdom,,
-HiRez Studios,2024-10-01,70,Hirez Ventures,Online,Georgia,United States,,
-Sharkmob London,2024-10-01,,Tencent,Console,England,China,,
-Nexon America,2024-09-30,,Nexon,Publisher,California,South Korea,,
-Merge Games,2024-09-26,,Maximum Entertainment,Publisher,England,Sweden,,
-Mountaintop Studios,2024-09-23,13,,Online,Washington,United States,,
-Airship Syndicate,2024-09-18,16,,Indie,Texas,United States,,
-SkyBox Labs,2024-09-18,25,Netease,Online,British Columbia,China,,
-Midwinter Entertainment,2024-09-17,35,Behaviour Interactive,Console,Washington,Canada,,
-Evening Star,2024-09-13,6,,Indie,,United States,,
-Microsoft Game Studios Gaming,2024-09-12,650,Microsoft Game Studios,Publisher,Washington,United States,,
-Neon Machine,2024-09-12,35,,Indie,Washington,United States,,
-Midnight Society,2024-09-11,,,Online,California,United States,,
-Lost Boys Interactive,2024-09-06,139,Embracer Group,Console,Wisconsin,Sweden,,
-Tilting Point,2024-09-02,90,,Mobile,New York,United States,,
-Ballistic Moon Ltd.,2024-08-30,,,Console,England,United Kingdom,,
-Ouka Studios,2024-08-28,,Netease,Console,Japan,China,,
-Toadman Interactive,2024-08-28,,Enad Global 7,Console,Norway,Sweden,,
-Toadman Interactive,2024-08-28,100,Enad Global 7,Console,Sweden,Sweden,,
-Visual Concepts,2024-08-23,22,Take-Two Interactive,Console,California,United States,,
-CodeName Entertainment,2024-08-16,6,,Indie,British Columbia,Canada,,
-Ubisoft San Francisco,2024-08-15,45,Ubisoft,Console,California,France,,
-Machine Zone,2024-08-15,,App Lovin,Mobile,California,United States,,
-Archiact,2024-08-12,12,,AR/VR,British Columbia,Canada,,
-Com2Us,2024-08-09,100,Com2Us,Mobile,South Korea,South Korea,,
-Ready at Dawn,2024-08-08,,Meta,AR/VR,California,United States,,
-Jam City,2024-08-02,85,Netmarble,Mobile,California,South Korea,,
-probablyMonsters,2024-08-01,,,Console,Washington,United States,,
-Bungie,2024-07-31,220,Sony,Console,Washington,Japan,,
-Lively Studio,2024-07-29,,Keywords Studios,Mobile,United Kingdom,Ireland,,
-Humble Games,2024-07-23,36,Ziff Davis,Publisher,California,United States,,
-NetherRealm Studios,2024-07-17,50,Warner Brothers,Console,Illinois,United States,,
-Rumble Games,2024-07-12,35,Forte,Mobile,California,United States,,
-Splash Damage,2024-07-11,,Splash Damage Group Limited,Console,England,United Kingdom,,
-Wicked Games AG.,2024-07-03,15,,Indie,Switzerland,Switzerland,,
-Surgent Studios,2024-07-02,12,,Indie,England,United Kingdom,,
-Ubisoft Toronto,2024-06-27,33,Ubisoft,Console,Ottawa,France,,
-GameLoft Toronto,2024-06-26,49,Viacom,Mobile,Ottawa,France,,
-Paradox Tectonic,2024-06-18,18,Paradox Interactive,Console,California,Sweden,,
-Techland,2024-06-18,,Tencent,Console,Poland,China,,
-Pieces Interactive AB,2024-06-17,40,Embracer Group,Console,Sweden,Sweden,,
-Striking Distance Studios,2024-06-14,10,Krafton,Console,California,South Korea,,
-Galvanic Games Inc.,2024-06-14,,,Indie,Washington,United States,,
-VRChat,2024-06-12,50,,AR/VR,California,United States,,
-Archiact,2024-06-12,,,AR/VR,British Columbia,Canada,,
-Sumo Group,2024-06-11,150,Tencent,Console,United Kingdom,China,,
-Timbre Games,2024-06-11,100,Tencent,Console,British Columbia,China,,
-GameLoft Kharkiv,2024-06-05,41,Vivendi,Mobile,Ukraine,France,,
-Behaviour Interactive,2024-06-04,95,,Console,Quebec,Canada,,
-Avalanche Studios,2024-06-03,,Avalanche Studios Group,Console,Quebec,Sweden,,
-Avalanche Studios,2024-06-03,50,Avalanche Studios Group,Console,New York,Sweden,,
-Fall Damage,2024-05-23,50,Fragbite,Online,Sweden,Sweden,,
-Hatchery Games,2024-05-23,13,,Indie,Quebec,Canada,,
-Singularity 6,2024-05-16,36,,Online,California,United States,,
-GameLoft Cluj,2024-05-16,136,Vivendi,Mobile,Romania,France,,
-Phoenix Labs,2024-05-16,162,Forte,Console,British Columbia,United States,,
-Studio Wildcard,2024-05-15,6,SDE Inc.,Console,Washington,United States,,
-Mighty Kingdom,2024-05-13,25,,Mobile,Australia,Australia,,
-CI Games,2024-05-10,30,,Indie,Poland,Poland,,
-Dawon Interactive,2024-05-08,,Prytania Media,Indie,India,United States,,
-Lightforge Games,2024-05-08,35,,Online,California,United States,,
-Bethesda Softworks,2024-05-07,,Microsoft Game Studios,Publisher,Maryland,United States,,
-Tango GameWorks,2024-05-07,150,Microsoft Game Studios,Console,Japan,United States,,
-Alpha Dog Games,2024-05-07,25,Microsoft Game Studios,Mobile,Nova Scotia,United States,,
-Arkane Austin,2024-05-07,60,Microsoft Game Studios,Console,Texas,United States,,
-Paladin Studios,2024-05-02,45,,Indie,Netherlands,Netherlands,,
-Playtika Belarus,2024-04-30,150,PlayTika,,Belarus,Israel,,
-Keoken Interactive,2024-04-30,13,,Indie,Netherlands,Netherlands,,
-NCSoft,2024-04-26,,NCSoft,Publisher,South Korea,South Korea,,
-Bethesda France,2024-04-23,15,Microsoft Game Studios,Publisher,France,United States,,
-Flaming Fowl Studios,2024-04-23,20,,Indie,England,United Kingdom,,
-ModernWolf,2024-04-18,6,,Publisher,,,,
-Take-Two Interactive,2024-04-17,600,Take-Two Interactive,Publisher,,United States,,
-Kwalee,2024-04-16,40,,Mobile,England,United Kingdom,,
-Possibility Space,2024-04-12,50,Prytania Media,Indie,Louisiana,United States,,
-Ubisoft Korea,2024-04-09,,Ubisoft,Publisher,South Korea,France,,
-Singularity 6,2024-04-04,49,,Online,California,California,,
-Relic Entertainment,2024-04-04,40,,Indie,British Columbia,Canada,,
-MI-CLOS Studio,2024-04-03,20,,Indie,France,France,,
-Whitethorn Games,2024-04-03,5,,Publisher,Pennsylvania,United States,,
-Spearhead Games,2024-04-03,31,,Indie,Quebec,Canada,,
-Ubisoft,2024-04-02,45,Ubisoft,Publisher,,France,,
-Bold Spirit Game Studio,2024-04-01,30,,Indie,Quebec,Canada,,
-Sega HARDLight,2024-03-28,,SEGA,Mobile,England,Japan,,
-Creative Assembly,2024-03-28,240,SEGA,Console,England,Japan,,
-Certain Affinity,2024-03-28,25,,Indie,Texas,Texas,,
-Gearbox Publishing,2024-03-28,,Take-Two Interactive,Publisher,Texas,United States,,
-Smilegate Barcelona,2024-03-27,45,Smilegate,Console,Spain,South Korea,,
-Tarsier Studios,2024-03-22,,Embracer Group,Console,Sweden,Sweden,,
-Velan Studios,2024-03-17,46,,Indie,New York,United States,,
-Happy Volcano,2024-03-17,8,,Indie,Belgium,Belgium,,
-Something Wicked Games,2024-03-15,40,,Indie,Maryland,United States,,
-Sega of America,2024-03-08,61,SEGA,Publisher,California,United States,,
-Deviation Games,2024-03-08,50,,Console,California,United States,,
-ZA/UM,2024-03-06,24,,Indie,,United Kingdom,,
-Babaroga Games,2024-03-01,4,,Indie,Illinois,United States,,
-Radical Forge,2024-03-01,6,,Indie,England,United Kingdom,,
-FrogSong Studios,2024-03-01,25,,Indie,Sweden,Sweden,,
-505 Games,2024-02-29,,Digital Bros,Publisher,Italy,Italy,,
-Keoken Interactive,2024-02-29,4,,Indie,Netherlands,Netherlands,,
-Wildlife Studios,2024-02-28,130,,Mobile,,Brazil,,
-Electronic Arts,2024-02-28,670,Electronic Arts,Publisher,,United States,,
-Deck Nine Games,2024-02-27,25,,Console,Colorado,United States,,
-PlayStation London,2024-02-27,,,Console,England,Japan,,
-PlayStation Studios,2024-02-27,900,Sony,Console,,Japan,,
-Die Gut Fabrik,2024-02-26,10,,Indie,Denmark,Denmark,,
-SuperMassive Games,2024-02-26,90,,Console,England,United Kingdom,,
-CodeMasters,2024-02-23,,Electronic Arts,Mobile,England,United States,,
-GameLoft Lviv,2024-02-21,38,Viacom,Mobile,Ukraine,France,,
-Disruptive Games,2024-02-21,,,Console,California,United States,,
-Build a Rocket Boy,2024-02-19,,,Console,,United Kingdom,,
-Noggin,2024-02-16,,Paramount Global,Online,,United States,,
-Scopely,2024-02-14,15,Savvy Games Group,Mobile,California,Saudi Arabia,,
-Daybreak Games,2024-02-12,15,Enad Global 7,Online,California,Sweden,,
-Genvid Technologies,2024-02-12,,,Online,,United States,,
-Threshold Games,2024-02-09,11,,Indie,,United States,,
-GameScience,2024-02-07,10,Prytania Media,Indie,,United States,,
-Hidden Path Entertainment,2024-02-07,44,,Indie,Washington,United States,,
-91Act,2024-02-07,15,,Indie,,China,,
-Cloud Imperium Games,2024-02-06,,,Indie,,United States,,
-Visual Concepts,2024-02-06,,Take-Two Interactive,Console,Texas,United States,,
-Crop Circle Games,2024-02-05,,Prytania Media,Indie,,United States,,
-Chimera Entertainment,2024-02-01,20,Remote Control Productions,Mobile,,,,
-Threaks,2024-02-01,25,,Indie,Germany,Germany,,
-Artificer,2024-01-31,,Devolver Digital,Console,,,,
-Airship Syndicate,2024-01-31,12,,Indie,Texas,United States,,
-Rovio Montreal,2024-01-31,12,SEGA,Mobile,,Japan,,
-Starword Industries,2024-01-30,15,,Console,Poland,Poland,,
-Nimble Giant,2024-01-30,,Embracer Group,Console,,Sweden,,
-Eidos Montreal,2024-01-29,97,Embracer Group,Console,Quebec,Sweden,,
-Black Forest Games,2024-01-25,40,Embracer Group,Console,,Sweden,,
-Activision Blizzard,2024-01-25,1900,Microsoft Game Studios,Console,,United States,,
-Plarium,2024-01-24,45,Aristocrat Games,Mobile,,,,
-People Can Fly Studios,2024-01-24,30,,Console,,,,
-Warducks,2024-01-23,10,,Mobile,Ireland,Ireland,,
-Little Red Dog Games,2024-01-22,30,,Console,,,,
-Riot Games,2024-01-22,530,Tencent,Online,California,China,,
-Chief Rebel,2024-01-19,,,Indie,,,,
-Metaverse World,2024-01-19,70,Netmarble,Online,South Korea,South Korea,,
-Ntreev Soft,2024-01-18,70,NCSoft,Online,South Korea,South Korea,,
-31st Union,2024-01-18,,Take-Two Interactive,Console,,United States,,
-CI Games,2024-01-18,30,,Console,,,,
-Behaviour Interactive,2024-01-18,45,,Console,Quebec,Canada,,
-Wimo Games,2024-01-17,20,,Online,Texas,United States,,
-Netspeak Games,2024-01-17,25,,Indie,,,,
-Thunderful Group,2024-01-17,75,Thunderful Group,Publisher,,Sweden,,
-Pixelberry,2024-01-17,,Nexon,Mobile,California,South Korea,,
-Prahna Bytes,2024-01-16,,Embracer Group,Console,Sweden,Sweden,,
-PTW,2024-01-16,45,,Publisher,,,,
-Nesting Games,2024-01-12,68,Digital Bros,Console,Quebec,Italy,,
-Lost Boys Interactive,2024-01-12,125,Embracer Group,Console,Wisconsin,Sweden,,
-Playtika,2024-01-11,350,PlayTika,Mobile,Israel,Israel,,
-Twitch,2024-01-10,500,Amazon,Online,California,United States,,
-Unity Technologies,2024-01-08,1800,Unity,Tech,California,United States,,
-Sliptegate Iron Works,2024-01-03,,Embracer Group,Console,Sweden,Sweden,,
-Archiact,2024-01-02,20,,AR/VR,British Columbia,Canada,,
-Lion Games,2023-12-26,60,,Mobile,South Korea,South Korea,,
-Versus Evil,2023-12-22,13,TinyBuild,Publisher,Maryland,United States,,
-First Contact Entertainment,2023-12-21,40,,AR/VR,California,United States,,
-Wonderstorm Inc.,2023-12-18,,,Console,California,United States,,
-3D Realms / Slipgate Ironworks,2023-12-14,,Embracer Group,Console,Denmark,Sweden,,
-Triple Topping Games,2023-12-08,10,,Indie,Denmark,Denmark,,
-Funselektor Labs,2023-12-06,3,,Indie,Australia,Australia,,
-League of Geeks,2023-12-06,29,,Indie,Australia,Australia,,
-Rovio Montreal,2023-12-05,16,SEGA,Console,Quebec,Japan,,
-HakJak Studios,2023-12-05,16,TinyBuild,Mobile,Idaho,United States,,
-New World Intertactive,2023-12-04,,Embracer Group,Console,Colorado,Sweden,,
-CodeMasters,2023-12-04,,Electronic Arts,Console,England,United States,,
-Age of Learning Inc.,2023-12-04,,ABC Mouse,Online,California,United States,,
-IGUO Mobile Entertainment,2023-12-01,8,Embracer Group,Mobile,British Columbia,Sweden,,
-Bossa Studios,2023-11-30,19,,Indie,England,United Kingdom,,
-Phoenix Labs,2023-11-30,35,,Online,British Columbia,Canada,,
-Fishlabs,2023-11-28,50,Embracer Group,Console,Germany,Sweden,,
-Weta Digital,2023-11-28,265,Unity,Tech,New Zealand,United States,,
-Zhoaoxi Guangnian (Nuverse),2023-11-27,1000,ByteDance,Online,China,China,,
-NanoReality Games Ltd.,2023-11-24,,,Mobile,Cyprus,Cyprus,,
-Wildlife Studios,2023-11-22,300,,Mobile,Brazil,Brazil,,
-Papukaya,2023-11-20,5,,Mobile,Finland,Finland,,
-Dark Slope,2023-11-17,7,,AR/VR,Ontario,Canada,,
-Two Desperados,2023-11-16,20,,Indie,Serbia,Serbia,,
-Embracer Placeholder,2023-11-16,473,Embracer Group,Publisher,Sweden,Sweden,,
-Blackbird Interactive,2023-11-15,30,,Indie,British Columbia,Canada,,
-Digital Bros Group,2023-11-14,130,,Publisher,Italy,Italy,,
-Kongregate,2023-11-14,20,Modern Times Group,Online,California,Sweden,,
-Humble Games,2023-11-14,,Humble Bundle,Publisher,,United States,,
-Amazon Games,2023-11-13,180,Amazon,Publisher,,United States,,
-Digital Extremes,2023-11-09,30,Leyou,Online,Ottawa,China,,
-Free Radical Design,2023-11-08,80,Embracer Group,Console,England,Sweden,,
-Ubisoft Montreal,2023-11-07,135,Ubisoft,Console,Montreal,France,,
-Cryptic Studios,2023-11-02,,Embracer Group,Online,California,Sweden,,
-Chimera Entertainment,2023-11-02,15,Remote Control Productions,Mobile,Germany,Germany,,
-DR Studios,2023-10-31,,505 Games,Console,England,United States,,
-Bungie,2023-10-30,100,Sony Entertainment,Console,Washington State,Japan,,
-MotorSport Games,2023-10-29,38,MotorSport Network,Console,Florida,United States,,
-LuoBu,2023-10-23,15,Roblox,Online,China,United States,,
-LevelEx,2023-10-23,14,BrainLab,Mobile,Illinois,United States,,
-Media Molecule,2023-10-18,20,Sony Entertainment,Console,England,Japan,,
-PlayStation VASG,2023-10-18,,Sony Entertainment,Console,California,Japan,,
-Six  to Start,2023-10-18,12,OliveX,Mobile,England,Hong Kong,,
-Frontier Developments,2023-10-17,,,Console,England,United Kingdom,,
-Zen Studios,2023-10-13,32,Embracer Group,Console,Hungary,Sweden,,
-ForeVR Games,2023-10-12,5,,AR/VR,California,United States,,
-Drifter Entertainment,2023-10-06,15,,Indie,Washington State,United States,,
-Rogue Games Inc,2023-10-05,10,,Publisher,California,United States,,
-Calypte,2023-10-05,15,Virtuos,Publisher,California,China,,
-Hyper Hippos Entertainment,2023-10-04,30,,Mobile,British Columbia,Canada,,
-Twitch,2023-10-03,35,Amazon,Online,California,United States,,
-Dang!,2023-10-02,5,,Indie,New York,United States,,
-Team17,2023-10-02,,Team17,Publisher,England,England,,
-Fishlabs,2023-09-30,8,Embracer Group,Console,Germany,Sweden,,
-Ubisoft Redstorm,2023-09-28,6,Ubisoft,Publisher,North Carolina,France,,
-Epic Games,2023-09-28,830,Epic,Tech,North Carolina,United States,,
-Other Ocean Interactive,2023-09-27,,Other Ocean Group Inc,Indie,California,United States,,
-Maze Theory,2023-09-27,12,Emergent Entertainment,AR/VR,England,United Kingdom,,
-Noggin,2023-09-27,30,Paramount Global,Online,,United States,,
-Blizzard Entertainment,2023-09-25,10,Activision Blizzard King,Console,California,United States,,
-Naughty Dog,2023-09-22,,Sony Entertainment,,California,Japan,,
-Crystal Dynamics,2023-09-20,10,Embracer Group,Console,California,Sweden,,
-probablyMonsters,2023-09-15,55,,Indie,Washington State,United States,,
-BeamDog,2023-09-15,23,Embracer Group,Console,Washington State,Sweden,,
-DoubleDown Interactive,2023-09-15,25,DoubleU Games Co Ltd.,Mobile,Washington State,United States,,
-Ascendant Studios,2023-09-14,50,,Console,California,United States,,
-Ubisoft London,2023-09-14,54,Ubisoft,Mobile,England,France,,
-Visual Concepts,2023-09-12,,Take-Two Interactive,Console,Texas,United States,,
-Telltale Games,2023-09-08,,,Indie,California,United States,,
-Demiurge Studios,2023-09-08,5,,Indie,Massachusetts,United States,,
-Volition,2023-08-31,240,Embracer Group,Console,Illinois,Sweden,,
-Rainbow Studios,2023-08-31,15,Embracer Group,Console,Arizona,Sweden,,
-Keywords Edmonton,2023-08-31,13,Keywords Studios,Publisher,Alberta,United Kingdom,,
-Romino Games,2023-08-30,25,,Indie,Netherlands,Netherlands,,
-Gearbox Publishing,2023-08-30,,Embracer Group,Publisher,Texas,Sweden,,
-Mimimi,2023-08-29,30,,Indie,Germany,Germany,,
-Blackbird Interactive,2023-08-29,90,,Indie,British Columbia,Canada,,
-EastSide Games,2023-08-29,28,,Mobile,British Columbia,Canada,,
-Bioware Games,2023-08-23,50,Electronic Arts,Console,Alberta,United States,,
-Vela Games,2023-08-21,45,,Online,Ireland,United Kingdom,,
-Imagendary Studios,2023-08-11,55,FunPlus,Console,California,China,,
-Campfire Cabal,2023-08-08,18,Embracer Group,Console,Sweden,Sweden,,
-Action Squad Studios,2023-08-05,14,,Indie,Finland,Finland,,
-Popcore,2023-07-31,,Take-Two Interactive,Mobile,Germany,United States,,
-Striking Distance Studios,2023-07-31,32,Krafton,Console,California,South Korea,,
-CD Projekt Red,2023-07-26,100,CD Projekt,Console,Poland,Poland,,
-Double Stallion Games,2023-07-20,10,,Indie,Quebec,Canada,,
-Activision Blizzard,2023-07-19,50,Activision Blizzard King,Publisher,California,United States,,
-Product Madness,2023-07-11,25,Aristocrat Games,Online,Nevada,United States,,
-Adglobe Montreal,2023-07-06,29,Skeleton Crew,AR/VR,Quebec,Japan,,
-TavroxGames,2023-07-01,4,,Indie,France,France,,
-A Thinking Ape,2023-07-01,5,Embracer Group,Mobile,British Columbia,Sweden,,
-Harebrained Schemes,2023-07-01,40,Paradox Interactive,Indie,Washington State,Sweden,,
-Puny Human,2023-06-30,14,,Indie,North Carolina,United States,,
-LifeForce Games,2023-06-30,13,,Indie,,,,
-Daedalic Entertainment,2023-06-30,25,Nacon,Console,Germany,France,,
-JumpStart Games,2023-06-30,60,NetDragon Websoft,Online,California,China,,
-Ludia,2023-06-29,45,Jam City,Mobile,Quebec,United States,,
-Niantic,2023-06-29,230,Niantic,AR/VR,California,United States,,
-Elodie Games,2023-06-28,,,Online,California,United States,,
-HiRez Ventures,2023-06-27,50,,Online,Georgia,United States,,
-Wildseed Games,2023-06-23,15,,Online,California,United States,,
-Scavenger Studios,2023-06-21,20,,Indie,Quebec,Canada,,
-Bilibili Guangzhou Xinyuan,2023-06-16,220,Bilibili,Online,China,China,,
-ProbablyMonsters,2023-06-15,35,,Online,Washington State,United States,,
-Wildlife Studios,2023-06-15,143,Wildlife Studios,Mobile,Brazil,Brazil,,
-Kiloo Games,2023-06-14,55,,Mobile,Denmark,Denmark,,
-Hellbent Games,2023-06-12,40,,Indie,British Columbia,Canada,,
-The Game Band,2023-06-03,,,Console,California,United States,,
-Firemonkeys,2023-06-01,45,Electronic Arts,Mobile,Australia,United States,,
-BonusXP,2023-06-01,48,Netflix,Console,Texas,United States,,
-Vanpool,2023-05-31,,,Console,Japan,Japan,,
-Firaxis Games,2023-05-30,30,Take-Two Interactive,Console,Massachusetts,United States,,
-PlayStation San Diego,2023-05-26,,Sony Entertainment,Console,California,Japan,,
-Antimatter Games,2023-05-25,53,Enad Global 7,Console,England,Sweden,,
-Kabam,2023-05-24,,Netmarble,Mobile,British Columbia,South Korea,,
-Plucky Bytes,2023-05-23,,Embracer Group,Console,Sweden,Sweden,,
-Relic Games,2023-05-23,121,SEGA,Console,British Columbia,Japan,,
-Resolution Games,2023-05-22,70,,AR/VR,Sweden,Sweden,,
-Deck Nine Games,2023-05-19,30,,Console,Colorado,United States,,
-Brace Yourself Games,2023-05-18,21,,Console,British Columbia,Canada,,
-Deviation Games,2023-05-12,90,,Console,Los Angeles,United States,,
-The Molasses Flood,2023-05-11,29,CD Projekt,Console,Massachusetts,Poland,,
-Ubisoft,2023-05-10,60,Ubisoft,Publisher,,France,,
-Final Strike Games,2023-05-09,30,,Console,California,United States,,
-Unity Technologies,2023-05-02,600,Unity,Online,California,United States,,
-PixelOpus,2023-05-01,20,Sony Entertainment,Console,California,Japan,,
-We're Five Games,2023-05-01,14,TinyBuild,Console,Minneapolis,United States,,
-PlayStudios,2023-05-01,100,PlayStudios,Mobile,Nevada,United States,,
-Phoenix Labs,2023-04-25,30,Garena,Online,British Columbia,Singapore,,
-Ten Square Games,2023-04-21,105,,Mobile,Wroclaw,Poland,,
-Downpour Interactive,2023-04-20,,Meta,AR/VR,Washington State,United States,,
-Ready at Dawn,2023-04-20,30,Meta,AR/VR,California,United States,,
-CyberConnect2 Montreal,2023-04-17,55,CyberConnect2,Console,Quebec,Japan,,
-Innogames,2023-04-14,75,,Mobile,Germany,Germany,,
-Bungie,2023-04-14,,Sony Entertainment,Console,Washington State,Japan,,
-Counterplay Games,2023-04-04,,,Indie,California,United States,,
-Paradox Games,2023-04-04,36,Paradox Interactive,Indie,Sweden,Sweden,,
-Amazon Game Studios,2023-04-04,100,Amazon,Publisher,California,United States,,
-Electronic Arts,2023-03-30,775,,Publisher,,United States,,
-LINE games,2023-03-30,30,Naver,Online,South Korea,South Korea,,
-Twitch,2023-03-20,400,Amazon,Online,California,United States,,
-Team17,2023-03-17,,Team17,Publisher,England,United Kingdom,,
-Private Division,2023-03-07,,Take-Two Interactive,Publisher,California,United States,,
-GameLoft Budapest,2023-03-01,100,GameLoft,Mobile,Hungary,France,,
-EA Baton Rouge,2023-02-28,200,Electronic Arts,Publisher,Lousiana,United States,,
-PUBG Santa Monica,2023-02-24,5,Krafton,Online,California,South Korea,,
-Survios,2023-02-13,35,,AR/VR,California,United States,,
-Big Run Studios,2023-02-02,25,,Mobile,California,United States,,
-Nexon Games West,2023-02-02,80,Nexon,Online,California,South Korea,,
-Hyper Hippos Entertainment,2023-02-01,10,,Mobile,British Columbia,Canada,,
-Mutant Arm Studios,2023-02-01,31,,Indie,Oregon,United States,,
-EA Industrial Toys,2023-01-31,150,Electronic Arts,Mobile,California,United States,,
-Respawn Entertainment,2023-01-31,,Electronic Arts,Mobile,California,United States,,
-Wicked Realm Games,2023-01-30,60,Tilting Point,Mobile,Massachusetts,United States,,
-Hidden Leaf Games,2023-01-25,30,,Indie,California,United States,,
-Roblox,2023-01-20,30,,Tech,California,United States,,
-HiRez Games,2023-01-19,,,Online,Georgia,United States,,
-343 Studios,2023-01-19,95,Microsoft Game Studios,Console,Washington State,United States,,
-The Coalition,2023-01-19,,Microsoft Game Studios,Console,British Columbia,United States,,
-Bethesda Games,2023-01-19,,Microsoft Game Studios,Console,,United States,,
-Riot Games,2023-01-19,46,Tencent,Online,California,China,,
-Unity Technologies,2023-01-17,300,Unity,Tech,California,United States,,
-Wizards of the Coast,2023-01-03,15,Hasbro,Console,,United States,,
-PlayTika,2022-12-22,600,PlayTika,Mobile,,Israel,,
-Gamigo,2022-12-21,50,Media and Games Invest,Online,Washington State,Sweden,,
-Age of Learning Inc.,2022-12-08,128,ABC Mouse,Online,California,United States,,
-Spokko Studio,2022-12-06,,CD Projekt,Mobile,Poland,Poland,,
-Wildlife Studios,2022-11-29,300,Wildlife Studios,Mobile,Brazil,Brazil,,
-Lilith Games,2022-11-19,,,Publisher,China,China,,
-Amazon Luna,2022-11-17,,Amazon,Tech,Washington State,United States,,
-Tencent IEG,2022-11-15,,Tencent,Online,China,China,,
-Kabam,2022-11-10,35,,Mobile,Canada,Canada,,
-Onoma,2022-11-02,200,Embracer Group,Mobile,Quebec,Sweden,,
-WIIMO Games,2022-11-02,,,Mobile,Texas,United States,,
-Xbox,2022-10-18,1000,Microsoft Game Studios,Publisher,Washington State,United States,,
-Playdots,2022-10-14,65,Take-Two Interactive,Mobile,New York,United States,,
-Mighty Kingdom,2022-09-28,,,Indie,Australia,Australia,,
-Booyah!,2022-09-22,35,Sea Ltd.,Online,California,Singapore,,
-Garena,2022-09-09,700,Sea Ltd.,Online,Singapore,Singapore,,
-Wushuan Studio,2022-09-06,,ByteDance,Online,China,China,,
-Lockwood Publishing,2022-09-02,34,,Publisher,England,United Kingdom,,
-Mino Games,2022-08-26,,,Mobile,Quebec,Canada,,
-Ludia,2022-08-04,200,Jam City,Mobile,Quebec,United States,,
-Uken Games,2022-08-01,,,Mobile,British Columbia,Canada,,
-37 Mobile Games,2022-07-29,130,Sanqi Interactive Entertainment,Mobile,China,China,,
-NetEase Spark Studio,2022-07-14,,NetEase,Publisher,China,China,,
-LineKong Interactive,2022-07-01,50,,Online,China,China,,
-Unity Technologies,2022-06-30,150,Unity,Tech,California,United States,,
-Niantic,2022-06-30,90,Niantic,Mobile,California,United States,,
-IGG,2022-06-30,598,IGG,Mobile,China,Singapore,,
-Archosaur Games,2022-06-30,304,Zulong Entertainment,Mobile,China,China,,
-101 Studio,2022-06-28,150,ByteDance,Mobile,China,China,,
-Intellivision,2022-06-28,,,Tech,California,United States,,
-Adjust,2022-06-27,,App Lovin,Mobile,California,United States,,
-Friday's Games,2022-06-21,50,,Mobile,Russia,Russia,,
-Plarium Krasnador,2022-06-15,500,Plarium,Mobile,Russia,Israel,,
-Game Insight,2022-06-15,600,Game Insight,Mobile,Russia,Lithuania,,
-101XP,2022-06-02,,,Mobile,Russia,Russia,,
-PlayTika,2022-06-01,250,PlayTika,Mobile,"England, Quebec",Israel,,
-Penguin Esports,2022-06-01,,Tencent,Online,China,China,,
-Hangar 13,2022-05-26,87,Take-Two Interactive,Console,California,United States,,
-Tencent IEG,2022-05-25,50,Tencent,Publisher,China,China,,
-MPL,2022-05-22,100,,Mobile,India,India,,
-Electronic Arts,2022-05-18,200,Electronic Arts,Publisher,California,United States,,
-Wargaming Minskj,2022-04-04,,Wargaming,Publisher,Belarus,Russia,,
-PlayStation,2022-04-01,93,Sony Entertainment,Publisher,California,Japan,,
-Gamigo,2022-03-28,,Media and Games Invest,Publisher,Washington State,Sweden,,
-Playgendary Minsk,2022-02-01,200,Playgendary,Mobile,Belarus,Cyprus,,
-Perfect World Games,2022-01-27,1000,Perfect World Co. Ltd.,Publisher,China,China,,
-Heartbeat Network,2022-01-15,600,,Publisher,China,China,,
-Baidu MEG,2021-12-22,,Baidu,Online,,,https://www.superpixel.com/article/19696/baidu-rumored-have-its-entire-game-division-sacked-despite-having-just-announced-series-games-development-this-august,
-Might and Delight,2021-12-21,25,,Indie,,,https://www.mmorpg.com/news/might-and-delight-down-to-10-developers-after-layoffs-book-of-travels-development-to-continue-slowly-2000123927,
-Lockwood Publishing,2021-12-09,20,,Publisher,,,https://www.gamedeveloper.com/business/avakin-life-developer-lockwood-publishing-accused-of-unlawful-layoffs,
-Tanwan Games,2021-11-28,,,Online,,,https://finance.sina.com.cn/tech/2021-11-25/doc-ikyamrmy5058272.shtml,
-Nintendo,2021-11-01,,,Publisher,,,https://www.pocketgamer.biz/news/77453/nintendo-closing-offices-in-california-and-toronto/,
-Ohayoo,2021-10-20,100,ByteDance,Online,,,https://www.scmp.com/tech/big-tech/article/3153335/bytedance-gaming-studio-lays-dozens-employees-amid-beijings-gaming,
-Cryptic Studios,2021-07-01,45,Perfect World Co. Ltd.,Online,,,https://mmos.com/news/magic-legends-shutting-down-in-october-cryptic-employees-laid-off-following-announcement,
-Bandai Namco,2021-04-20,90,,Publisher,,,https://www.gamespot.com/articles/bandai-namco-is-closing-its-santa-clara-office-and-moving-to-southern-california/1100-6490410/,
-Activision Blizzard,2021-03-15,50,Activision Blizzard King,Publisher,,,https://www.shacknews.com/article/123309/activision-blizzard-hits-esports-division-with-over-50-layoffs,
-Hardsuit Labs,2021-03-01,,,Console,,,https://www.ign.com/articles/hardsuit-labs-undergoes-layoffs-after-vampire-the-masquerade-bloodlines-2-delay,
-22 Cans,2021-02-16,,,Indie,,,https://www.gamesindustry.biz/peter-molyneuxs-studio-22cans-suffers-layoffs,
-Stadia Games,2021-02-01,150,Google,Online,,United States,https://www.businessinsider.com/google-gaming-layoffs-blindsided-staff-2021-2,
-Big Huge Games,2021-01-15,32,Nexon,Mobile,,,https://technical.ly/startups/big-huge-games-layoffs/,
-DoubleDown Interactive,2021-01-08,55,,Mobile,,,https://www.geekwire.com/2021/doubledown-interactive-lays-off-55-employees-seattle-office-following-delayed-ipo/,
+Studio,Date,Headcount,Parent,Type,Source
+Gasket Games,2023-09-31,6,,Indie,LinkedIn
+Digic Pictures,2023-09-31,35,Embracer Group,Console,https://forbes.hu/uzlet/digic-studio-leepites-magyar-cgi-embracer-csoport/
+Thought Pennies,2023-09-31,,,Online,https://www.gamedeveloper.com/business/rpg-studio-thought-pennies-appears-to-lay-off-employees
+Mainframe Industries,2025-05-06,17,,Online,LinkedIn
+Electronic Arts,2025-04-29,300,Electronic Arts,Publisher,https://www.gamesindustry.biz/ea-cuts-another-200-jobs-in-service-of-driving-future-growth-bringing-total-job-losses-to-around-300
+Respawn Entertainment,2025-04-29,100,Electronic Arts,Console,https://www.gamesindustry.biz/respawn-cancels-two-early-stage-projects-and-cuts-apex-legends-star-wars-jedi-teams-resulting-in-100-layoffs
+Reality Labs,2025-04-25,100,Meta,AR/VR,https://www.gamedeveloper.com/business/report-meta-has-laid-off-over-100-reality-labs-employees
+Might Yell,2025-04-25,,,AR/VR,https://www.gamesindustry.biz/toronto-based-developer-mighty-yell-lays-off-employees
+Nerial Ltd.,2025-04-22,7,Devolver Digital,Mobile,https://www.gamesindustry.biz/devolver-digital-cuts-40-of-staff-at-subsidiary-studio-nerial
+Makea Games,2025-04-16,20,,Online,https://www.gamesindustry.biz/makea-games-shuts-down
+Brass Lion Entertainment,2025-04-07,13,,Indie,LinkedIn
+PlaySide,2025-04-01,,,Indie,LinkedIn
+Eidos Montreal,2025-03-31,75,Embracer Group,Console,LinkedIn
+"Cyan, Inc.",2025-03-28,12,,Indie,Twitter
+PLAION,2025-03-27,40,Embracer Group,Publisher,https://www.gameswirtschaft.de/wirtschaft/plaion-stellenabbau-embracer-v2-270325/
+Crystal Dynamics,2025-03-26,17,Embracer Group,Console,LinkedIn
+Niantic Games,2025-03-25,68,Scopely,Mobile,https://www.gamedeveloper.com/business/niantic-is-laying-off-68-employees-after-selling-its-game-business-for-3-5-billion
+MachineZone,2025-03-21,97,AppLovin,Mobile,https://www.pocketgamer.biz/applovin-lays-off-97-staff/
+Elodie Games,2025-03-19,35,,Indie,Steam
+Studio Fizbin,2025-03-18,25,Thunderful,Console,LinkedIn
+Farm51,2025-03-14,15,,Indie,https://www.thefarm51.com/aktualnosc/zmiany-w-koncepcji-rozwoju-gry-chernobylite-2/
+Mountaintop Studios,2025-03-14,80,,Online,https://playspectre.com/news/letter-to-spectre-fans
+Box Dragon,2025-03-13,5,,Indie,LinkedIn
+FreeRange Games,2025-03-13,,,Indie,LinkedIn
+PlayStation Malaysia,2025-03-05,20,Sony,Console,https://nmiagaming.com/playstation-studios-malaysia-layoffs-underway/
+PlayStation VASG,2025-03-04,,Sony,Console,
+Azra Games Austin,2025-02-26,40,Azra,Mobile,Direct
+SpaceApe Games,2025-02-25,30,SuperCell,Mobile,https://mobilegamer.biz/rip-space-ape-70-join-supercell-london-30-laid-off-remaining-titles-to-spin-out/
+WB San Diego,2025-02-25,51,Warner Brothers,Online,https://www.bloomberg.com/news/articles/2025-02-25/warner-bros-shuts-three-video-game-studios-in-restructuring
+Player First Games,2025-02-25,70,Warner Brothers,Console,https://www.bloomberg.com/news/articles/2025-02-25/warner-bros-shuts-three-video-game-studios-in-restructuring
+Monolith Productions,2025-02-25,131,Warner Brothers,Console,https://www.bloomberg.com/news/articles/2025-02-25/warner-bros-shuts-three-video-game-studios-in-restructuring
+Skeleton Key,2025-02-24,,Hasbro,Console,
+Striking Distance Studios,2025-02-20,30,Krafton,Console,Direct
+Bossa Games,2025-02-20,,,Indie,LinkedIn
+Night School,2025-02-19,,Netflix,Online,https://www.gamesindustry.biz/netflix-owned-night-school-studio-cuts-undisclosed-number-of-staff
+Liquid Sword,2025-02-17,46,,Indie,"Direct, https://www.gamesindustry.biz/liquid-sword-makes-deeply-regrettable-job-cuts-for-the-studios-long-term-sustainability"
+Netease,2025-02-17,10,Netease,Console,https://www.gamesindustry.biz/marvel-rivals-us-support-studio-hit-with-layoffs
+Bend Studio,2025-02-14,25,Sony,Console,Direct
+Sanzaru Games,2025-02-12,,Meta,AR/VR,
+Crytek,2025-02-12,60,,Console,LinkedIn
+Unity,2025-02-11,,Unity Technologies,Tech,https://www.gamesindustry.biz/unity-cuts-jobs-once-again-as-it-makes-important-organisational-changes
+10:10 Games,2025-02-07,18,,Indie,Direct
+HiRez Studios,2025-02-06,69,,Online,"Direct, https://www.wsbtv.com/news/local/fulton-county/alpharetta-video-game-studio-makers-smite-lays-off-dozens-staff/WZ5AKZDBCBHTZE4DHCCAK6OMZM/"
+Iron Galaxy,2025-02-05,66,,Console,LinkedIn
+probablyMonsters,2025-02-04,,,Console,https://www.gamedeveloper.com/business/report-probablymonsters-conducting-more-layoffs-after-pledging-to-build-stable-home-for-developers-
+Sumo Digital Ltd.,2025-02-04,,Tencent,Console,https://www.eurogamer.net/layoffs-look-likely-at-sumo-digital-as-company-ditches-plans-to-work-on-its-own-ip
+Midnight Society,2025-01-30,55,,Console,Twitter
+Bioware Games,2025-01-30,,Electronic Arts,Console,https://blog.bioware.com/2025/01/29/bioware-studio-update/
+Fast Travel Games,2025-01-28,30,,AR/VR,https://www.gamedeveloper.com/business/vr-dev-fast-travel-games-cuts-30-employees-saying-vr-faces-a-more-uncertain-year-
+Phoenix Labs,2025-01-27,50,Forte,Online,LinkedIn
+MoonActive,2025-01-27,20,,Mobile,https://app2top.ru/news/v-kompanii-moon-active-proshli-massovy-e-sokrashheniya-v-pervuyu-ochered-oni-kosnulis-litovskogo-podrazdeleniya-kotoroe-ran-she-by-lo-studiej-melsoft-227071.html
+Ubisoft Dusseldorf,2025-01-27,85,Ubisoft,Console,https://www.gameswirtschaft.de/wirtschaft/ubisoft-duesseldorf-stellenabbau-270125/
+"Ubisoft Reflections, Stocklholm",2025-01-27,50,Ubisoft,Console,https://www.eurogamer.net/ubisoft-announces-studio-closure-as-it-lays-off-185-staff
+Ubisoft Leamington,2025-01-27,50,Ubisoft,Console,https://www.eurogamer.net/ubisoft-announces-studio-closure-as-it-lays-off-185-staff
+MachineZone,2025-01-21,89,AppLovin,Mobile,https://www.bizjournals.com/sanjose/news/2025/01/16/applovin-layoff-2025-ceo-mz-games.html
+Reflector Entertainment,2025-01-21,,Bandai Namco,Console,https://www.gamedeveloper.com/business/reflector-confirms-more-layoffs-after-unknown-9-falls-short-of-expectations
+Unchained Entertainment,2025-01-17,25,,Indie,
+Phantom Coast,2025-01-15,10,,Indie,LinkedIn
+Wargaming USA,2025-01-15,,Wargaming.Net,Online,Direct
+Highwire Games,2025-01-10,,,Console,Direct
+Toadman Interactive,2025-01-09,69,Enad Global7,Console,https://www.enadglobal7.com/press-releases/enad-global-7-initiates-a-wind-down-of-the-operations-in-toadman/
+Pirahna Games,2025-01-09,38,Enad Global7,Console,https://www.enadglobal7.com/press-releases/eg7-undertakes-business-optimization-at-one-of-its-studios/
+Counterplay Games,2025-01-09,,,Indie,
+Freejam,2025-01-09,,,Indie,https://www.gamedeveloper.com/business/robocraft-2-developer-freejam-shuts-down
+Splash Damage,2025-01-08,150,Tencent,Console,"https://www.gamesindustry.biz/splash-damage-jobs-at-risk-following-transformers-reactivate-cancellation, Direct"
+Jar of Sparks,2025-01-06,35,Netease,Console,LinkedIn
+Netmarble F&C,2025-01-02,20,Netmarble,Mobile,https://www.yna.co.kr/view/AKR20250102076600017section=industry/game
+Hothead Games,2024-12-20,,,Indie,https://www.gamedeveloper.com/production/hothead-games-has-shut-down-after-almost-20-years
+Warner Brothers Montreal,2024-12-12,99,Warner Brothers,Console,https://www.gamesindustry.biz/99-jobs-cut-at-warner-bros-montreal
+People Can Fly,2024-12-10,120,,Console,Twitter
+Deck Nine Games,2024-12-06,,,Indie,Twitter
+Sweet Bandits,2024-12-04,10,,Indie,https://www.gamedeveloper.com/business/deceive-inc-developer-sweet-bandits-shuts-down-after-reaching-breaking-point-
+IllFonic,2024-12-04,,,Indie,Twitter
+Ubisoft Sydney,2024-12-04,134,Ubisoft,Console,https://www.gamefile.news/p/wolfenstein-youngblood-revisit-machine-games-indiana-jones-great-circle
+Ubisoft San Francisco / Osaka,2024-12-03,152,Ubisoft,Console,https://insider-gaming.com/ubisoft-xdefiant-shutting-down-in-june/
+Torn Banner Studios,2024-12-03,55,,Indie,LinkedIn
+Worlds Untold,2024-11-26,35,Netease,Console,LinkedIn
+Humanoid Origin,2024-11-25,70,,Console,LinkedIn
+KING Art Games,2024-11-25,10,,Indie,Direct
+Zapper Games,2024-11-19,18,Embracer,Console,Direct
+Heart Machine,2024-11-19,8,,Indie,Direct
+Reflector Entertainment,2024-11-18,45,Bandai Namco,Console,https://reflectorentertainment.com/en/news/message-to-the-reflector-community
+Alpha Channel,2024-11-18,14,,Indie,Direct
+NCSoft,2024-11-15,500,,Online,https://www.yna.co.kr/view/AKR20241111042000017section=industry/game
+Thunderful Games,2024-11-14,100,,Console,https://www.gamesindustry.biz/thunderful-announces-second-restructuring-program-resulting-in-more-layoffs
+Lilith Games,2024-11-13,40,,Mobile,http://www.gamelook.com.cn/2024/11/558105
+Skydance Interactive,2024-11-01,12,Paramount Global,AR/VR,LinkedIn
+GOG,2024-10-30,20,CD Projekt,Publisher,https://cdaction.pl/publicystyka/wielkie-zwolnienia-w-gog-u-pracownicy-naswietlaja-wewnetrzne-problemy-firmy-tylko-u-nas
+ProbablyMonsters,2024-10-30,50,,Console,https://www.gamesindustry.biz/probablymonsters-lays-off-about-50-people-as-battle-barge-project-cancelled
+Fingersoft,2024-10-30,14,,Mobile,https://www.pocketgamer.biz/fingersoft-lays-off-14-staff-after-substantial-decline-in-ad-revenue/
+Firewalk Studios,2024-10-29,174,Sony,Console,https://www.geekwire.com/2024/sony-shutting-down-seattle-area-game-developer-firewalk-studios/
+Neon Koi,2024-10-29,45,Sony,Mobile,https://mobilegamer.biz/playstation-is-closing-mobile-studio-neon-koi/
+MachineZone,2024-10-24,,AppLovin,Mobile,https://app2top.com/news/applovin-and-machine-zone-implement-layoffs-amid-declining-revenues-272980.html
+Inflexion Games,2024-10-22,50,Tencent,Console,https://www.gamesindustry.biz/inflexion-games-uk-division-is-reportedly-closing-down
+Netflix Studio Blue,2024-10-22,35,Netflix,Online,https://www.gamesindustry.biz/netflix-shuts-down-california-game-studio
+Surgent Studios,2024-10-18,,,Indie,https://www.gamesindustry.biz/takes-of-kenzera-zau-dev-surgent-studios-puts-entire-games-team-on-hiatus-due-to-lack-of-funding
+DON'T NOD,2024-10-16,69,,Console,https://www.gamesindustry.biz/dont-nod-admits-challenging-times-as-reorganisation-project-puts-up-to-69-jobs-at-risk
+Riot Games,2024-10-15,32,Tencent,Online,https://www.gamedeveloper.com/business/riot-games-lays-off-staff-to-solve-challenges-and-build-for-the-future-
+NaturalMotion,2024-10-10,,Take-Two Interactive,Mobile,https://www.gamesindustry.biz/naturalmotion-facing-potential-layoffs-in-us-and-uk
+Cryptic Studios,2024-10-09,,Embracer,Online,https://www.gamesindustry.biz/cryptic-studios-makes-further-layoffs-in-fresh-round-of-cuts
+TequilaWorks,2024-10-08,,Tencent,Console,https://www.gamesindustry.biz/tequilla-works-lays-off-small-number-of-staff-cancels-unannounced-game
+Antstream Arcade,2024-10-04,,,Online,https://www.gamedeveloper.com/business/antstream-arcade-conducts-small-layoffs-in-strategic-shift-in-focus-
+Studio Black Flag,2024-10-02,5,,Indie,https://www.gamedeveloper.com/business/orphan-age-dev-studio-black-flag-closes-down-after-publisher-split
+XR Games,2024-10-01,72,,AR/VR,https://www.uploadvr.com/xr-games-face-72-layoffs-with-large-scale-restructuring/
+HiRez Studios,2024-10-01,70,,Online,"Direct, https://www.gamedeveloper.com/business/hi-rez-studios-lays-off-staff-to-ensure-smite-2-s-long-term-success"
+Sharkmob London,2024-10-01,,Tencent,Console,https://www.gamesindustry.biz/sharkmob-london-faces-layoffs-after-game-cancelled
+Nexon America,2024-09-30,,Nexon,Publisher,https://www.gamedeveloper.com/business/nexon-america-is-making-layoffs-to-pursue-exciting-ip-growth-strategy
+Merge Games,2024-09-26,,Maximum Entertainment,Publisher,https://www.gamesindustry.biz/merge-games-closing-down-after-15-years
+Mountaintop Studios,2024-09-23,13,,Online,https://www.gamesindustry.biz/mountaintop-studios-makes-difficult-decision-to-lay-off-13
+Airship Syndicate,2024-09-18,16,,Indie,LinkedIn
+SkyBox Labs,2024-09-18,25,Netease,Indie,LinkedIn
+Midwinter Entertainment,2024-09-17,35,Behaviour Interactive,Console,LinkedIn
+Evening Star,2024-09-13,6,,Indie,LinkedIn
+Microsoft Gaming,2024-09-12,650,Microsoft,Publisher,https://www.theverge.com/2024/9/12/24242695/microsoft-xbox-layoffs-650-employees
+Neon Machine,2024-09-12,35,,Indie,Direct
+Midnight Society,2024-09-11,,,Indie,https://www.gamesindustry.biz/midnight-society-affected-by-layoffs
+Lost Boys Interactive,2024-09-06,139,Embracer Group,Console,LinkedIn
+Tilting Point,2024-09-02,90,,Mobile,https://mobilegamer.biz/tilting-point-to-layoff-up-to-20-of-staff/
+Ballistic Moon Ltd.,2024-08-30,,,Console,
+Ouka Studios,2024-08-28,,Netease,Console,https://www.bloomberg.com/news/articles/2024-08-30/tencent-netease-rethink-japan-approach-as-game-strategy-stalls
+Toadman Interactive,2024-08-28,100,Enad Global7,Indie,LinkedIn
+Visual Concepts South,2024-08-23,22,Take-Two Interactive,Console,"Direct, https://www.gamedeveloper.com/business/visual-concepts-lays-off-south-studio-behind-lego-2k-drive"
+CodeName Entertainment,2024-08-16,6,,Indie,https://codenameentertainment.com/page=blog&post_id=1709#blog
+Ubisoft San Francisco / NC,2024-08-15,45,Ubisoft,Console,https://www.gamedeveloper.com/business/ubisoft-cuts-45-jobs-across-cary-and-san-francisco-teams
+Machine Zone,2024-08-15,,AppLovin,Mobile,Direct
+Archiact,2024-08-12,35,,AR/VR,LinkedIn
+Com2uS,2024-08-09,100,Com2uS,Mobile,https://www.yna.co.kr/view/AKR20240809031552527section=industry/game
+Ready At Dawn,2024-08-08,,Meta,AR/VR,https://www.gamesindustry.biz/meta-reportedly-shutters-ready-at-dawn
+Jam City,2024-08-02,85,Netmarble,Mobile,https://www.gamedeveloper.com/business/jam-city-lays-off-nearly-85-employees-as-industry-fails-to-hit-upward-trend-
+ProbablyMonsters,2024-08-01,,,Console,LinkedIn
+Bungie,2024-07-31,220,Sony,Console,https://www.bungie.net/7/en/News/article/newpath
+Lively Studio,2024-07-29,,Keywords Studio,Mobile,"Direct, https://www.gamesindustry.biz/electric-squares-lively-studio-faces-small-number-of-layoffs"
+Humble Games,2024-07-23,36,Ziff Davis,Publisher,LinkedIn
+NetherRealm Studios,2024-07-17,50,Warner Brothers,Console,Direct
+Rumble Games,2024-07-12,35,Forte,Mobile,LinkedIn
+Splash Damage,2024-07-11,,Splash Damage Group Limited,Console,https://www.gamedeveloper.com/business/splash-damage-confirms-small-number-of-employees-could-be-laid-off
+Wicked Games AG.,2024-07-03,15,,Indie,Direct
+Surgent Studios,2024-07-02,12,,Indie,https://www.gamesindustry.biz/surgent-studios-cuts-jobs-months-after-launch-of-debut-title-tales-of-kenzera-zau
+Ubisoft Toronto,2024-06-27,33,Ubisoft,Console,https://www.pcgamer.com/gaming-industry/less-than-a-month-after-joining-work-on-the-sands-of-time-remake-ubisoft-toronto-lays-off-33-employees-to-ensure-it-can-deliver-on-its-ambitious-roadmap/
+GameLoft Toronto,2024-06-26,49,Viacom,Mobile,https://www.gamesindustry.biz/report-of-mass-layoffs-at-gameloft-toronto
+Paradox Tectonic,2024-06-18,24,Paradox Interactive,Console,https://www.paradoxinteractive.com/media/press-releases/press-release/paradox-interactive-to-close-down-paradox-tectonic
+Techland,2024-06-18,,Tencent,Console,https://www.gry-online.pl/newsroom/tworcy-dying-light-2-takze-oszczedzaja-techland-przeprowadzil-zwo/z429979#google_vignette
+Pieces Interactive AB,2024-06-17,40,Embracer Group,Console,https://www.gamesindustry.biz/report-embracer-shutters-alone-in-the-dark-dev-pieces-interactive
+Striking Distance Studios,2024-06-14,,Krafton,Console,
+Galvanic Games Inc.,2024-06-14,,,Indie,LinkedIn
+VRChat,2024-06-12,50,,AR/VR,https://www.roadtovr.com/vrchat-lays-off-30-of-company/
+Archiact,2024-06-12,,,AR/VR,LinkedIn
+Sumo Group,2024-06-11,150,Tencent,Console,https://www.gamesindustry.biz/sumo-group-to-reduce-staff-by-up-to-15
+Timbre Games,2024-06-11,100,Tencent,Console,https://www.gamesindustry.biz/sumo-group-to-reduce-staff-by-up-to-15
+GameLoft Kharkiv,2024-06-05,41,Vivendi,Mobile,https://gamedev.dou.ua/news/layoffs-in-gameloft-kharkiv/
+Behaviour Interactive,2024-06-04,95,,Console,https://www.gamesindustry.biz/behaviour-to-lay-off-up-to-95-employees
+Avalanche Studios (New York / Montreal),2024-06-03,50,Avalanche Studios Group,Console,https://avalanchestudios.com/stories/statement-nymr
+Fall Damage,2024-05-23,50,Fragbite,Online,https://www.gamesindustry.biz/fragbite-declares-bankruptcy-for-developer-fall-damage-studio-seven-months-after-acquisition
+Hatchery Games,2024-05-23,13,,Indie,https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/emploi-solidarite-sociale/publications-adm/documents-administratifs/avis_licenciements_collectifs/LI_MENS_2024-03_Internet.pdf
+Singularity 6,2024-05-16,36,,Online,Direct
+Phoenix Labs,2024-05-16,162,,Console,"LinkedIn , https://www.sfgate.com/tech/article/video-game-layoffs-phoenix-labs-19484488.php"
+GameLoft Cluj,2024-05-16,136,Vivendi,Mobile,https://www.zf.ro/business-hi-tech/dezvoltatorul-jocuri-gameloft-inchide-studioul-cluj-ajuns-136-22378341
+Studio Wildcard,2024-05-15,6,SDE Inc.,Console,https://www.gamedeveloper.com/business/studio-wildcard-says-layoff-of-6-developers-will-not-impact-development-schedule-
+Mighty Kingdom,2024-05-13,25,,Mobile,https://press-start.com.au/news/2024/05/13/south-australias-mighty-kingdom-is-laying-off-28-of-its-staff/
+CI Games,2024-05-10,30,,Indie,https://www.gamesindustry.biz/around-30-people-laid-off-in-ci-games-final-round-of-job-cuts
+Dawon Interactive,2024-05-08,,Prytania Interactive,Indie,LinkedIn
+Lightforge Games,2024-05-08,35,,Online,LinkedIn
+Bethesda Softworks,2024-05-07,,Microsoft,Publishing,https://www.gamesindustry.biz/xbox-reportedly-shutting-down-four-bethesda-studios
+Tango GameWorks,2024-05-07,150,Microsoft,Console,https://www.gamesindustry.biz/xbox-reportedly-shutting-down-four-bethesda-studios
+Alpha Dog Games,2024-05-07,25,Microsoft,Mobile,https://www.gamesindustry.biz/xbox-reportedly-shutting-down-four-bethesda-studios
+Arkane Austin,2024-05-07,60,Microsoft,Console,https://www.gamesindustry.biz/xbox-reportedly-shutting-down-four-bethesda-studios
+Paladin Studios,2024-05-02,45,,Indie,https://www.gamesindustry.biz/paladin-studios-shuts-down-after-nearly-19-years
+Playtika Belarus,2024-04-30,150,PlayTika,Mobile,https://app2top.ru/news/playtika-likvidiruet-yuridicheskoe-litso-v-belarusi-218875.html
+Keoken Interactive,2024-04-30,13,,Indie,https://www.gamesindustry.biz/keoken-interactive-lays-off-team-after-failing-to-find-funding-at-gdc
+A Thinking Ape,2024-04-29,25,Embracer Group,Mobile,https://www.pocketgamer.biz/news/83897/a-thinking-ape-lays-off-staff-across-game-design-software-engineering-art-teams-and-more/
+NCSoft,2024-04-26,,NCSoft,Publisher,https://mdtoday.co.kr/news/view/1065546903977283
+Bethesda France,2024-04-23,15,Microsoft,Publisher,https://app2top.ru/news/bethesda-zakry-la-podrazdelenie-vo-frantsii-217339.html
+Flaming Fowl Studios,2024-04-23,20,,Indie,https://www.gamesindustry.biz/gloomhaven-studio-flaming-fowl-lays-off-over-20-staff
+ModernWolf,2024-04-18,6,,Publisher,https://www.gamedeveloper.com/business/modern-wolf-lays-off-6-staff-in-studio-restructuring
+Take-Two Interactive,2024-04-17,600,Take-Two Interactive,Publisher,https://variety.com/2024/gaming/news/grand-theft-auto-take-two-interactive-layoffs-canceled-games-1235973835/
+Kwalee,2024-04-16,40,,Mobile,https://mobilegamer.biz/layoffs-at-kwalee-as-it-restructures-around-new-growth-opportunities/
+Traega Entertainment,2024-04-15,19,,Indie,
+Possibility Space,2024-04-12,70,Prytania Media,Indie,https://www.gamesindustry.biz/possibility-space-shuts-down
+Ubisoft Korea,2024-04-09,,Ubisoft,Publisher,https://www.mk.co.kr/en/it/10986173
+Singularity 6,2024-04-04,49,,Online,Direct
+Relic Entertainment,2024-04-04,40,,Indie,LinkedIn
+MI-CLOS Studio,2024-04-03,20,,Indie,LinkedIn
+Whitethorn Games,2024-04-03,5,,Publisher,Direct
+Spearhead Games,2024-04-03,31,,Indie,https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/emploi-solidarite-sociale/publications-adm/documents-administratifs/avis_licenciements_collectifs/LI_MENS_2024-02_Internet.pdf
+Ubisoft,2024-04-02,45,Ubisoft,Publisher,https://www.gamesindustry.biz/ubisoft-hit-with-another-wave-of-layoffs
+Bold Spirit Game Studio,2024-04-01,30,,Indie,LinkedIn
+Creative Assembly /Sega HARDLight,2024-03-28,240,Sega,Console,https://www.gamesindustry.biz/sega-sells-relic-and-will-cut-240-jobs-across-uk-studios
+Certain Affinity,2024-03-28,25,,Console,LinkedIn
+Gearbox,2024-03-28,,Take-Two Interactive,Console,https://www.gamedeveloper.com/business/gearbox-is-laying-off-staff-following-embracer-breakup
+Smilegate Barcelona,2024-03-27,45,Smilegate,Console,https://www.gamesindustry.biz/report-smilegate-barcelona-has-closed
+Tarsier Studios,2024-03-22,,Embracer Group,Console,
+Velan Studios,2024-03-17,46,,Indie,Twitter
+Happy Volcano,2024-03-17,8,,Indie,Direct
+Something Wicked Games,2024-03-15,40,,Indie,LinkedIn
+Sega of America,2024-03-08,61,Sega,Publisher,https://www.gamesindustry.biz/sega-of-america-to-lay-off-61-employees
+Deviation Games,2024-03-08,50,,Console,LinkedIn
+ZA/UM,2024-03-06,24,,Indie,Direct
+Eggnut Games,2024-03-06,15,,Indie,https://www.gamesindustry.biz/eggnut-ceases-operations
+Torus Games,2024-03-01,8,,Indie,Twitter
+Babaroga Games,2024-03-01,4,,Indie,Direct
+Radical Forge,2024-03-01,6,,Indie,https://www.gamesindustry.biz/radical-forge-lays-off-handful-of-staff
+FrogSong Studios,2024-03-01,25,,Indie,LinkedIn
+505 Games,2024-02-29,,Digital Bros. Group,Publisher,https://www.eurogamer.net/ghostrunner-2-publisher-505-closes-offices-in-germany-spain-and-france
+Keoken Interactive,2024-02-29,4,,Indie,https://www.psu.com/news/deliver-us-mars-studio-keoken-interactive-confirms-layoffs/
+Wildlife Studios,2024-02-28,130,,Mobile,https://startups.com.br/demissoes/wildlife-studios-corta-mais-21-do-quadro-em-3a-leva-de-demissoes/
+Electronic Arts,2024-02-28,670,Electronic Arts,Publisher,https://www.gamesindustry.biz/ea-cutting-5-of-workforce
+Deck Nine Games,2024-02-27,25,,Indie,Twitter
+PlayStation Studios,2024-02-27,900,Sony,Console,https://www.theverge.com/2024/2/27/24084494/sony-playstation-layoffs-2024
+Die Gut Fabrik,2024-02-26,10,,Indie,LinkedIn
+SuperMassive Games,2024-02-26,90,,Console,https://www.bloomberg.com/news/articles/2024-02-26/british-game-maker-supermassive-set-to-lay-off-90-workers
+"Electornic Arts (CodeMasters, Glu Mobile)",2024-02-23,,Electronic Arts,Mobile,https://www.gamesindustry.biz/ea-cutting-small-number-of-staff-as-it-sunsets-two-mobile-games
+GameLoft Lviv,2024-02-21,38,Vivendi,Mobile,https://www.gamesindustry.biz/gameloft-sees-staff-redundancies-in-lviv-and-toronto-offices
+Disruptive Games,2024-02-21,,,Console,LinkedIn
+Build a Rocket Boy,2024-02-19,,,Console,https://www.gamesindustry.biz/build-a-rocket-boy-reportedly-facing-layoffs
+Noggin,2024-02-16,,Paramount Global,Online,https://kidscreen.com/2024/02/15/paramount-has-laid-off-the-entire-noggin-team/
+Scopely,2024-02-14,15,Savvy Games Group,Mobile,https://www.gamesindustry.biz/scopely-layoffs-hit-kingdom-maker-team
+Daybreak Games,2024-02-12,15,Enad Global 7,Online,https://www.gamesindustry.biz/daybreak-confirms-less-than-15-layoffs
+Genvid Technologies,2024-02-12,,,Online,LinkedIn
+Curve Games,2024-02-09,5,,Catalis Group,Direct
+Threshold Games,2024-02-09,11,,Indie,LinkedIn
+GameScience,2024-02-07,10,Prytania Media,Indie,LinkedIn
+Hidden Path Entertainment,2024-02-07,44,,Indie,LinkedIn
+91Act,2024-02-07,15,,Indie,http://www.gamelook.com.cn/2024/02/538064
+Cloud Imperium Games,2024-02-06,,,Indie,LinkedIn
+Visual Concepts Austin,2024-02-06,,Take-Two Interactive,Console,
+Crop Circle Games,2024-02-05,,Prytania Media,Indie,LinkedIn
+Chimera Entertainment,2024-02-01,20,Remote Control Productions,Mobile,
+Threaks,2024-02-01,25,,Indie,LinkedIn
+Artificer,2024-01-31,,Devolver Digital,Console,LinkedIn
+Airship Syndicate,2024-01-31,12,,Indie,LinkedIn
+Rovio Montreal (Studio 6),2024-01-31,12,Sega,Mobile,https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/emploi-solidarite-sociale/publications-adm/documents-administratifs/avis_licenciements_collectifs/LI_MENS_Internet_2023-12.pdf
+Starward Industries,2024-01-30,15,,Console,"https://www.stockwatch.pl/czat-inwestorow-gieldowych/andrzej-szafraniec-oraz-maciej-dobrowolski-czlonkowie-zarzadu-starward-industries-start-29-stycznia-o-1100,687"
+Nimble Giant,2024-01-30,,Embracer Group,Console,LinkedIn
+Eidos Montreal,2024-01-29,97,Embracer Group,Console,https://www.videogameschronicle.com/news/new-deus-ex-game-reportedly-cancelled-amid-layoffs-at-eidos-montreal/
+Reikon Games,2024-01-25,80,,Indie,https://www.ign.com/articles/ruiner-developer-reikon-games-reportedly-lays-off-80-of-the-company
+Activision Blizzard,2024-01-25,1900,Microsoft,,https://www.theverge.com/2024/1/25/24049050/microsoft-activision-blizzard-layoffs
+Black Forest Games,2024-01-25,40,Embracer Group,Console,https://comicbook.com/gaming/news/teenage-muntant-ninja-turtles-tmnt-the-last-ronin-game-developer-layoffs/
+Plarium,2024-01-24,45,Aristrocrat,Mobile,https://en.globes.co.il/en/article-video-gaming-co-plarium-lays-off-45-1001467413
+People Can Fly Studios,2024-01-24,30,,Console,https://www.gamesindustry.biz/people-can-fly-reduces-its-workforce
+WarDucks,2024-01-23,10,,Mobile,https://www.businesspost.ie/article/irish-gaming-developer-warducks-goes-out-of-business/utm_campaign=article&utm_source=linkedin&utm_medium=web
+Big Fish Games,2024-01-23,,Aristocrat Technologies,Mobile,
+Riot Games,2024-01-22,530,Tencent,Online,https://www.riotgames.com/en/news/2024-rioter-update
+Little Red Dog Games,2024-01-22,26,,Indie,
+Chief Rebel,2024-01-19,,,Indie,LinkedIn
+Metaverse World,2024-01-19,70,Netmarble,Online,https://www.yna.co.kr/view/AKR20240119080700017section=industry/game
+Ntreev Soft,2024-01-18,70,NCSoft,Online,https://koreajoongangdaily.joins.com/news/2024-01-18/business/industry/Game-publishers-cancel-titles-cut-employees-as-economy-struggles/1961701
+31st Union,2024-01-18,,Take-Two Interactive,Console,
+CI Games,2024-01-18,30,,Console,https://www.gamesindustry.biz/ci-games-lays-off-10-of-staff
+Behaviour Interactive,2024-01-18,45,,Console,https://www.gamesindustry.biz/report-behaviour-interactive-lays-off-45-employees
+Wimo Games,2024-01-17,20,,Online,LinkedIn
+Netspeak Games,2024-01-17,25,,Indie,https://www.gamedeveloper.com/business/sunshine-days-developer-netspeak-games-is-making-layoffs
+Thunderful Group,2024-01-17,75,Thunderful Group,Publisher,https://www.gamesindustry.biz/thunderful-announces-restructuring-that-will-cut-20-of-its-workforce
+Pixelberry,2024-01-17,,Nexon,Mobile,https://www.gamedeveloper.com/business/nexon-owned-mobile-studio-pixelberry-is-conducting-layoffs
+Pirahna Bytes,2024-01-16,,Embracer Group,Console,"https://www.gamestar.de/artikel/piranha-bytes-gothic-elex-schliessung,3406996.html"
+PTW,2024-01-16,45,,Publisher,https://www.gamedeveloper.com/business/support-studio-ptw-lays-off-45-staff-across-global-teams
+Fundamentally Games,2024-01-15,5,,Publisher,Direct
+Nesting Games,2024-01-12,68,Digital Bros,Console,"Direct, https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/emploi-solidarite-sociale/publications-adm/documents-administratifs/avis_licenciements_collectifs/LI_licenciement-collectif_2032-11_MESS.pdf"
+Lost Boys Interactive,2024-01-12,125,Embracer Group,Console,LinkedIn
+PlayTika,2024-01-11,350,,Mobile,https://www.calcalistech.com/ctechnews/article/skb6elt006
+Twitch,2024-01-10,500,Amazon,Online,https://www.bloomberg.com/news/articles/2024-01-09/amazon-s-twitch-to-cut-500-employees-about-35-of-staff
+Unity,2024-01-08,1800,Unity,Tech,https://www.reuters.com/technology/unity-software-cutting-25-staff-company-reset-continuation-2024-01-08/
+Slipgate Iron Works,2024-01-03,,Embracer Group,Console,Twitter
+Archiact,2024-01-02,20,,AR/VR,LinkedIn
+Lion Games,2023-12-26,60,,Indie,https://www.yna.co.kr/view/AKR20231228081200017section=industry/game
+Versus Evil,2023-12-22,13,TinyBuild,Publisher,https://www.gamedeveloper.com/business/indie-publisher-versus-evil-has-reportedly-shut-down
+First Contact Entertainment,2023-12-21,40,,AR/VR,https://www.gematsu.com/2023/12/firewall-studio-first-contact-entertainment-to-shut-down
+WonderStorm Inc.,2023-12-18,,,Console,LinkedIn
+Astra Logical,2023-12-14,4,Carina Intiatives,Publisher,Direct
+Slipgate IronWorks,2023-12-14,,Embracer Group,Console,Twitter
+Triple Topping Games,2023-12-08,10,,Indie,https://www.gamesindustry.biz/game-studio-triple-topping-is-now-bankrupt
+Funselektor Labs,2023-12-06,3,,Indie,Direct
+League of Geeks,2023-12-06,29,,Indie,LinkedIn
+HakJak Studios,2023-12-05,16,TinyBuild,Mobile,https://www.gamedeveloper.com/business/tinybuild-is-cutting-jobs-after-an-incredibly-challenging-year-
+Age of Learning,2023-12-05,,ABC Mouse Inc.,Online,
+CodeMasters,2023-12-04,,Electronic Arts,Console,https://www.ign.com/articles/f1-developer-codemasters-suffers-round-of-layoffs
+New World Interactive,2023-12-04,35,Embracer Group,Console,LinkedIn
+Iugo Mobile Entertainment,2023-12-01,10,Embracer Group,Mobile,LinkedIn
+Bossa Studios,2023-11-30,19,,Indie,"Direct, https://www.gamesindustry.biz/bossa-studios-lays-off-one-third-of-its-staff"
+Phoenix Labs,2023-11-30,35,,Online,LinkedIn
+"Unity Software, Weta Digital",2023-11-28,265,Unity,Tech,https://www.reuters.com/technology/unity-software-cut-38-staff-company-reset-2023-11-28/
+Fishlabs,2023-11-28,50,Embracer Group,Console,https://www.gamedeveloper.com/business/embracer-lays-off-50-employees-at-i-chorus-i-developer-fishlabs
+Zhaoxi Guangnian (Nuverse),2023-11-27,1000,ByteDance,Online,https://asia.nikkei.com/Business/China-tech/TikTok-parent-ByteDance-to-cut-1-000-gaming-jobs-in-strategic-shift
+NanoReality Games Ltd.,2023-11-24,,,Mobile,
+Wildlife Studios,2023-11-22,300,,Mobile,"Direct, https://mobilegamer.biz/massive-layoffs-at-wildlife-as-it-drops-all-non-mobile-game-projects/"
+Papukaya,2023-11-20,5,,Mobile,LinkedIn
+Dark Slope,2023-11-17,7,,AR/VR,LinkedIn
+Two Desperados,2023-11-16,20,,Indie,LinkedIn
+BlackBird Interactive,2023-11-15,30,,Indie,Direct
+Digital Bros Group,2023-11-14,70,,Publishing,https://www.gamesindustry.biz/digital-bros-is-posed-to-cut-30-of-its-workforce
+Humble Games,2023-11-14,,Humble Bundle,Publishing,https://videogames.si.com/news/humble-games-layoffs-november-2023
+Kongregate,2023-11-14,,Modern Times Group,Online,LinkedIn
+Amazon Games,2023-11-13,180,Amazon,Publishing,https://www.reuters.com/business/amazon-cuts-jobs-games-unit-part-broader-restructuing-2023-11-13/
+Digital Extremes,2023-11-09,30,Leyou,Online,LinkedIn
+Free Radical Design,2023-11-08,80,Embracer Group,Console,"https://www.gamesindustry.biz/free-radical-design-may-shutdown, Direct"
+Ubisoft Hybride / Montreal,2023-11-07,135,Ubisoft,Console,https://www.gamedeveloper.com/business/ubisoft-montreal-hit-with-layoffs-amidst-larger-company-reductions
+Chimera Entertainment,2023-11-02,15,Remote Control Productions,Mobile,Direct
+Cryptic Studios,2023-11-02,,Embracer Group,Online,LinkedIn
+DR Studios,2023-10-31,,505 Games,Console,Twitter
+"Bungie, Inc",2023-10-30,100,Sony Entertainment,Console,https://www.bloomberg.com/news/articles/2023-10-31/sony-s-bungie-game-unit-cut-jobs-as-destiny-2-popularity-waned
+MotorSport Games,2023-10-29,38,MotorSport Network,Console,https://www.gamedeveloper.com/business/nascar-rivals-developer-motorsport-games-laying-off-40-percent-of-staff
+Media Molecule,2023-10-24,20,Sony Entertainment,Console,https://www.gamedeveloper.com/business/report-dreams-and-littlebigplanet-developer-media-molecule-laying-off-20-employees
+LevelEx,2023-10-23,14,BrainLab,Mobile,LinkedIn
+LuoBu,2023-10-23,15,Roblox,Online,https://www.gamesindustry.biz/roblox-china-affected-by-layoffs
+PlayStation VASG,2023-10-18,,Sony Entertainment,Console,LinkedIn
+Six to Start,2023-10-18,12,OliveX,Mobile,https://www.axios.com/newsletters/axios-gaming-e5f1e839-7439-4a79-bd04-2ce5c6705acb.html
+Frontier Developments,2023-10-17,,,Console,https://www.ign.com/articles/the-video-game-layoffs-continue-this-time-at-f1-manager-developer-frontier
+Zen Studios,2023-10-13,32,Embracer Group,Console,Direct
+ForeVR Games,2023-10-12,5,,AR/VR,LinkedIn
+Drifter Entertainment,2023-10-06,15,,Indie,LinkedIn
+Rogue Games Inc,2023-10-05,10,,Publisher,Direct
+Calypte,2023-10-05,15,Virtuos,Publisher,LinkedIn
+Hyper Hippo Entertainment,2023-10-04,30,,Mobile,"Direct, https://www.pocketgamer.biz/news/82771/adventure-capitalist-dev-hyper-hippo-lays-off-over-a-quarter-of-staff/"
+Twitch,2023-10-03,35,Amazon,Online,"https://venturebeat.com/games/twitch-layoffs-twitchcon-vegas-outsourcing/ , Direct"
+Dang!,2023-10-02,5,,Indie,Twitter
+Team17,2023-10-02,,Team17,Publisher,https://www.eurogamer.net/significant-job-losses-likely-at-worms-publisher-team17-sources
+Singularity 6,2023-10-01,15,,Online,https://www.polygon.com/23964448/video-game-industry-layoffs-crisis-2023
+Fishlabs,2023-09-30,8,Embracer Group,Console,Direct
+Ubisoft NC / Spain,2023-09-28,6,Ubisoft,Publisher,https://www.gamedeveloper.com/business/ubisoft-quietly-laid-off-six-employees-to-focus-on-communications-
+Creative Assembly,2023-09-28,,Sega,Console,Twitter
+Epic Games,2023-09-28,830,,Tech,https://www.epicgames.com/site/en-US/news/layoffs-at-epic
+Maze Theory,2023-09-27,12,Emergent Entertainment,AR/VR,"Direct, LinkedIn"
+Noggin,2023-09-27,30,Paramount Global,Online,Direct
+Other Ocean Interactive,2023-09-27,,Other Ocean Group Inc,Indie,
+Blizzard Entertainment,2023-09-25,10,Activision Blizzard,Console,https://www.gamedeveloper.com/business/blizzard-lays-off-hearthstone-developers-after-restructuring-team
+Roblox,2023-09-21,30,,Online,https://techcrunch.com/2023/09/21/roblox-cuts-30-on-talent-acquisition-team-as-hiring-slows/
+Crystal Dynamics,2023-09-20,10,Embracer Group,Console,LinkedIn
+BeamDog,2023-09-15,23,Embracer Group,Console,LinkedIn
+probablyMonsters,2023-09-15,55,,Indie,"LinkedIn , Direct"
+DoubleDown Interactive,2023-09-15,25,DoubleU Games Co Ltd.,Mobile,LinkedIn
+Ubisoft London,2023-09-14,54,Ubisoft,Mobile,LinkedIn
+Ascendant Studios,2023-09-14,50,,Console,https://twitter.com/BretRobbins/status/1702397324755083719
+Visual Concepts,2023-09-12,,Take-Two Interactive,Console,https://www.gamedeveloper.com/business/-i-lego-2k-drive-i-developer-visual-concepts-hit-with-layoffs
+Demiurge,2023-09-08,5,,Indie,LinkedIn
+Telltale Games,2023-09-08,,,Indie,https://venturebeat.com/games/telltale-games-reportedly-laid-off-several-employees-in-september/
+Keywords Edmonton,2023-08-31,13,Keywords Studio,Publisher,https://www.polygon.com/23903782/dragon-age-dreadwolf-qa-workers-laid-off-keywords-studios
+Rainbow Studios,2023-08-31,15,Embracer Group,Console,https://www.gamedeveloper.com/business/report-embracer-layoffs-impact-staff-at-mx-vs-atv-developer-rainbow-studios
+Volition,2023-08-31,183,Embracer Group,Console,https://www.volitiongames.com/news/farewell/
+Gearbox Publishing,2023-08-30,,Embracer Group,Publisher,https://www.gamedeveloper.com/business/report-embracer-has-made-layoffs-at-gearbox-publishing
+Romino Games,2023-08-30,25,,Indie,https://www.emerce.nl/nieuws/ronimo-games-failliet
+EastSide Games,2023-08-29,28,,Mobile,https://www.pocketgamer.biz/news/82268/east-side-games-announces-round-of-layoffs/
+Blackbird Interactive,2023-08-29,90,,Indie,"Direct, LinkedIn"
+Mimimi,2023-08-29,30,,Indie,https://www.mimimi.games/our-final-game/
+Bioware Games,2023-08-23,50,Electronic Arts,Console,https://blog.bioware.com/2023/08/23/an-update-on-the-state-of-bioware/
+Vela Games,2023-08-21,45,,Online,https://evercoreheroes.com/news/important_update_ech
+Imagendary Studios,2023-08-11,55,FunPlus,Console,LinkedIn
+Campfire Cabal,2023-08-08,18,Embracer Group,Console,https://www.gamesindustry.biz/embracer-shuts-down-campfire-cabal
+Action Squad Studios,2023-08-04,14,,Indie,Direct
+Striking Distance Studios,2023-07-31,32,Krafton,Console,https://www.ign.com/articles/the-callisto-protocol-former-striking-distance-developers-say-key-folks-were-left-out-of-credits
+Popcore,2023-07-31,,Take-Two Interactive,Mobile,https://mobilegamer.biz/layoffs-hit-take-two-zynga-owned-hypercasual-firm-popcore/
+CD Projekt Red,2023-07-26,100,CD Projekt,Console,https://www.cdprojekt.com/en/media/news/cd-projekt-red-organizational-update/
+Double Stallion Games,2023-07-20,10,,Indie,LinkedIn
+Activision Blizzard,2023-07-19,50,Activision Blizzard King,Publisher,https://www.theverge.com/2023/7/19/23799550/activision-blizzard-esports-layoffs-overwatch-league-owl
+Product Madness,2023-07-11,25,Aristocrat Games,Online,
+Adglobe Montreal,2023-07-06,29,Skeleton Crew,AR/VR,LinkedIn
+A Thinking Ape,2023-07-01,5,Embracer Group,Mobile,
+TavroxGames,2023-07-01,4,,Indie,Direct
+Harebrained Schemes,2023-07-01,40,Paradox Interactive,Indie,LinkedIn
+TakeOne Company,2023-06-30,50,,Mobile,https://www.yna.co.kr/view/AKR20231228081200017section=industry/game
+JumpStart Games,2023-06-30,60,NetDragon WebSoft,Online,https://www.jellyneo.net/comments=14351
+Puny Human,2023-06-30,14,,Indie,https://punyhuman.com/closure/
+Daedalic Entertainment,2023-06-30,25,Nacon,Console,https://www.gamesindustry.biz/daedalic-halting-internal-game-dev-laying-off-25-employees
+Ludia,2023-06-29,45,Jam City,Mobile,"LinkedIn , https://www.pocketgamer.biz/news/81855/possible-ludia-layoffs-in-progress-as-former-employees-solicit-new-roles/"
+Niantic,2023-06-29,230,,AR,https://www.gamedeveloper.com/business/niantic-cancels-projects-closes-la-office-to-prioritize-pok-mon-go
+Elodie Games,2023-06-28,15,,Online,LinkedIn
+HiRez Ventures,2023-06-27,30,,Online,https://www.gamedeveloper.com/business/hi-rez-studios-restructure-leads-to-consolidations-and-layoffs
+Wildseed Games,2023-06-23,15,,Online,LinkedIn
+Scavenger Studios,2023-06-21,20,,Indie,https://www.gamesindustry.biz/report-over-half-of-scavengers-studio-laid-off
+Bilibili Guangzhou Xinyuan,2023-06-16,220,Bilibili,Online,https://www.superpixel.com/article/578361/bilibilis-xinyuan-studio-implements-mass-layoffs-discontinues-projects
+Wildlife Studios,2023-06-15,143,,Mobile,https://www.bloomberglinea.com/english/game-over-for-wildlifes-ceo-as-brazilian-unicorn-restructures-cuts-13-of-staff/
+probablyMonsters,2023-06-15,35,,Online,"LinkedIn , Direct"
+Kiloo Games,2023-06-14,55,,Mobile,https://www.gamesindustry.biz/kiloo-games-shutting-down
+Hellbent Games,2023-06-12,40,,Indie,Direct
+The Game Band,2023-06-03,15,,Console,https://thegameband.medium.com/many-teams-one-goodbye-thank-you-for-playing-blaseball-2a5ecec378f7
+Firemonkeys,2023-06-01,45,Electronic Arts,Mobile,https://www.gamedeveloper.com/business/report-ea-cutting-jobs-and-cancelling-games-at-australian-studio-firemonkeys
+BonusXP,2023-06-01,48,Netflix,Console,https://www.gamedeveloper.com/business/-i-stranger-things-3-i-game-developer-bonusxp-to-close-down
+Vanpool,2023-05-31,,,Console,https://www.gamedeveloper.com/business/kirby-support-developer-vanpool-has-shut-down
+Firaxis Games,2023-05-30,30,Take-Two Interactive,Console,https://www.axios.com/2023/05/31/firaxis-layoffs
+PlayStation San Diego,2023-05-26,,Sony,Console,
+Antimatter Games,2023-05-25,53,Enad Global 7,Console,https://www.enadglobal7.com/mfn_news/enad-global-7-initiates-the-process-to-wind-down-antimatter-games-in-the-uk/
+Kabam,2023-05-24,90,Netmarble,Mobile,Twitter
+Plucky Bytes,2023-05-23,,Embracer Group,Console,Twitter
+Relic Games,2023-05-23,121,SEGA,Console,https://www.gamesindustry.biz/sega-announces-121-redundancies-at-relic-entertainment
+Resolution Games,2023-05-22,70,,AR/VR,Direct
+Deck Nine Games,2023-05-19,30,,Console,https://gameworldobserver.com/2023/05/23/deck-nine-games-layoffs-team-leads-life-is-strange
+Brace Yourself Games,2023-05-18,21,,Console,https://www.gamedeveloper.com/business/report-brace-yourself-games-lays-off-half-its-staff
+Whitethorn Games,2023-05-17,8,,Publsiher,Direct
+Deviation Games,2023-05-12,90,,Console,https://www.ign.com/articles/studio-working-on-secret-playstation-game-hit-by-layoffs-as-sony-reevaluates-portfolio
+The Molasses Flood,2023-05-11,29,CD Projekt,Console,https://www.gamesindustry.biz/cd-projekt-lays-off-29-staff-at-the-molasses-flood
+Ubisoft,2023-05-10,60,,Publisher,https://www.eurogamer.net/ubisoft-customer-service-layoffs-see-up-to-60-lose-jobs
+Final Strike Games,2023-05-09,30,,Console,https://www.vgchartz.com/article/457138/rumor-sony-cancels-final-strike-games-unannounced-sci-fi-shooter-studio-lays-off-40-of-staff/
+Unity Technologies,2023-05-02,600,Unity,Online,https://www.wsj.com/articles/unity-conducts-its-third-and-largest-round-of-layoffs-in-a-year-48fdafe1
+PlayStudios,2023-05-01,,,Mobile,
+Crey Games,2023-05-01,60,,Online,
+We're Five Games,2023-05-01,14,tinyBuild,Console,Direct
+PixelOpus,2023-05-01,20,Sony Entertainment,Console,https://www.gamesindustry.biz/sony-shutting-down-pixelopus
+ARRIVANT,2023-04-25,,,Online,LinkedIn
+Phoenix Labs,2023-04-25,30,,Online,https://www.gamesindustry.biz/phoenix-labs-cuts-staff
+Ten Square Games,2023-04-21,105,,Mobile,"https://tensquaregames.com/report/current-report-no-12-2023/ , Direct"
+Ready at Dawn,2023-04-20,30,Meta,VR,Twitter
+Downpour Interactive,2023-04-20,,Meta,VR,https://www.gamedeveloper.com/business/ready-at-dawn-and-downpour-interactive-impacted-by-meta-layoffs
+CyberConnect2 Montreal,2023-04-17,55,CyberConnect2,Console,https://www.gamesindustry.biz/cyberconnect2-to-shutter-montreal-studio
+Innogames,2023-04-14,75,,Mobile,https://www.gamesindustry.biz/innogames-lays-off-75-staff
+Bungie,2023-04-14,,Sony Entertainment,Console,Twitter
+Paradox Games,2023-04-04,36,Paradox Interactive,Indie,https://www.gamedeveloper.com/business/paradox-closing-ume-and-malm-studios-to-veer-away-from-decentralized-development
+Counterplay Games,2023-04-04,,,Indie,
+Amazon Game Studios,2023-04-04,100,Amazon,Publisher,https://www.bloomberg.com/news/articles/2023-04-04/amazon-lays-off-about-100-employees-in-its-gaming-divisions
+LINE games,2023-03-30,30,Naver,Online,https://www.yna.co.kr/view/AKR20230330165100017section=industry/game
+Electronic Arts,2023-03-30,775,,Publisher,https://www.gamesindustry.biz/ea-restructuring-laying-off-6-of-workforce
+Twitch,2023-03-20,400,Amazon,Online,https://techcrunch.com/2023/03/20/twitch-says-it-will-lay-off-400-employees/
+Team17,2023-03-17,,,Publisher,https://www.eurogamer.net/layoffs-reported-at-worms-maker-team17
+Private Division,2023-03-07,,Take-Two Interactive,Publisher,https://www.eurogamer.net/take-two-confirms-layoffs-reported-to-affect-private-division-and-more
+GameLoft Budapest,2023-03-01,100,GameLoft,Mobile,https://www.pocketgamer.biz/news/81028/gameloft-shutters-budapest-studio-amid-shift-away-from-mobile/
+EA Baton Rouge,2023-02-28,200,Electronic Arts,Publisher,https://www.businessreport.com/business/tech-layoffs-hit-baton-rouge-with-electronic-arts-announcement
+PUBG Santa Monica,2023-02-24,5,Krafton,Online,Twitter
+Survios,2023-02-13,35,,VR,LinkedIn
+Big Run Studios,2023-02-02,25,,Mobile,LinkedIn
+Nexon Games West,2023-02-02,80,,Online,https://venturebeat.com/games/ncsoft-west-lays-off-20-of-its-staff-and-ceo-departs/
+Hyper Hippo Entertainment,2023-02-01,10,,Mobile,Direct
+Mutant Arm Studios,2023-02-01,31,,Indie,LinkedIn
+Respawn Entertainment,2023-01-31,,Electronic Arts,Mobile,
+EA Industrial Toys,2023-01-31,150,Electronic Arts,Mobile,https://venturebeat.com/games/ea-cancels-apex-legends-and-battlefield-mobile-games-shutters-industrial-toys-studio/
+Wicked Realm Games,2023-01-30,60,Tilting Point,Mobile,https://www.pocketgamer.biz/news/80753/tilting-point-lays-of-14-of-its-workforce
+Hidden Leaf Games,2023-01-25,30,,Indie,LinkedIn
+HiRez Games,2023-01-19,,,Online,LinkedIn
+Riot Games,2023-01-19,46,Tencent,Online,https://www.gamesindustry.biz/riot-games-lays-off-46-staff-as-part-of-strategic-shifts
+Bethesda Games,2023-01-19,,Microsoft,Console,
+The Coalition,2023-01-19,,Microsoft,Console,
+343 Studios,2023-01-19,95,Microsoft,Console,https://www.gamesindustry.biz/343-layoffs-affected-95-including-top-directors
+Unity Technologies,2023-01-17,300,Unity,Tech,https://www.gamesindustry.biz/unity-lays-off-nearly-300
+Wizards of the Coast,2023-01-03,15,,Console,https://www.bloomberg.com/news/articles/2023-01-03/hasbro-s-wizards-of-the-coast-cancels-video-game-projects
+PlayTika,2022-12-22,600,PlayTika,Mobile,https://techcrunch.com/2022/12/12/playtika-lays-off-610-workers-shuts-down-three-online-gaming-titles-amid-broader-restructure/
+Gamigo,2022-12-21,50,Media and  Games Invest,Online,"https://mmos.com/news/gamigo-layoffs-dec-2022, https://press.mgi.group/media-and-games-invest-se-strong-q4-2022-16-total-and-13-organic-revenue-growth-34-adj-ebitda-margin-net-leverage-reduced-to-29x-one-off-amortization-of-non-core-games-assets-and-eg7-sale"
+Age of Learning Inc,2022-12-08,128,ABC Mouse,Online,https://www.bizjournals.com/losangeles/news/2022/12/08/age-of-learning-plans-layoff.html
+Spokko Studio,2022-12-06,,CD Project,Mobile,https://www.ign.com/articles/the-witcher-monster-slayer-is-shutting-down-in-2023-with-lay-offs-expected
+Wildlife Studios,2022-11-29,300,,Mobile,https://www.pocketgamer.biz/news/80308/wildlife-lays-off-almost-300-staff-in-brazil-and-argentina/
+Lilith Games,2022-11-19,,,Publisher,https://www.superpixel.com/article/298017/lilith-games-lays-off-whole-art-conquest-2-development-team
+Amazon Luna,2022-11-17,,Amazon,Publisher,https://www.tweaktown.com/news/89552/amazon-luna-hit-with-major-layoffs-will-it-follow-stadias-demise/index.html
+Tencent IEG,2022-11-15,,Tencent,Online,https://www.reuters.com/technology/chinas-tencent-starts-new-round-layoffs-sources-2022-11-15/
+Kabam,2022-11-10,35,,Mobile,https://www.pocketgamer.biz/job-news/80149/approximately-7-of-employees-laid-off-from-kabam-after-reviewing-strategic-priorities/
+WIIMO Games,2022-11-02,,,Mobile,Twitter
+Studio Onoma,2022-11-02,200,Embracer Group,Mobile,https://www.pocketgamer.biz/news/79780/mighty-kingdom-announces-cost-reduction-plans-including-staff-layoffs/
+Xbox,2022-10-18,500,Microsoft,Publisher,https://www.gamespot.com/articles/microsoft-has-laid-off-around-1000-of-its-employees/1100-6508365/
+Playdots,2022-10-14,64,Take-Two Interactive,Mobile,https://www.gamesindustry.biz/two-two-shutting-down-playdots
+Mighty Kingdom,2022-09-28,,,Indie,https://www.pocketgamer.biz/news/79780/mighty-kingdom-announces-cost-reduction-plans-including-staff-layoffs/
+Booyah!,2022-09-22,35,Sea Ltd.,Online,https://www.reuters.com/markets/asia/singapores-sea-cuts-some-garena-unit-jobs-shuts-projects-sources-say-2022-09-01/
+Garena,2022-09-09,700,Sea Ltd.,Online,https://www.reuters.com/business/retail-consumer/exclusive-seas-shopee-shuts-operations-argentina-chile-colombia-mexico-sources-2022-09-08/
+Wushuang Studio,2022-09-06,,ByteDance,Mobile,https://www.scmp.com/tech/big-tech/article/3191458/china-gaming-crackdown-bytedance-cuts-hundreds-jobs-its-video-game
+Lockwood Publishing,2022-09-02,34,,Publisher,https://www.gamesindustry.biz/lockwood-publishing-to-fire-15-of-its-workforce
+Mino Games,2022-08-26,,,Mobile,LinkedIn
+Ludia,2022-08-24,200,Jam City,Mobile,https://venturebeat.com/games/jam-city-lays-off-hundreds-of-staff-as-part-of-restructuring/
+Uken Games,2022-08-01,,,Mobile,
+37 Mobile Games,2022-07-29,130,Sanqi Interactive Entertainment,Mobile,GameLook
+Netease Spark Studio,2022-07-14,,Netease,,https://www.superpixel.com/article/142982/chinas-major-game-development-companies-are-laying-off-employees-shutting-down-projects
+LineKong Interactive,2022-07-01,50,,Online,
+Archosaur Games,2022-06-30,304,Zulong Entertainment,Mobile,"https://webb-site.com/dbpub/docs.aspp=24384240 , https://finance.sina.cn/tech/2023-04-15/detail-imyqmpwr2583838.d.html"
+Unity Technologies,2022-06-30,150,Unity,Tech,https://www.pocketgamer.biz/news/79100/unity-lays-off-4-percent-workforce-resourcing-levels-company-priorities/
+IGG,2022-06-30,598,IGG,Mobiel,"https://finance.sina.cn/tech/2023-04-15/detail-imyqmpwr2583838.d.html , IGG 2022 Financial report"
+Niantic,2022-06-30,90,,Mobile,https://www.pocketgamer.biz/news/79097/niantic-lays-off-8-workforce-it-cancels-four-projects/
+Intellivision,2022-06-28,,,Tech,https://www.gamesindustry.biz/intellivision-turns-to-layoffs-and-licensing-deals-as-it-struggles-to-fund-troubled-amico
+101 Studio,2022-06-28,150,ByteDance,Mobile,https://www.bloomberg.com/news/articles/2022-06-17/bytedance-disbands-shanghai-games-studio-in-expansion-setback
+Adjust,2022-06-27,,App Lovin,Mobile,https://www.adexchanger.com/mobile/adjust-and-applovin-lay-off-12-of-their-workforce-amid-economic-downturn/
+Friday's Games,2022-06-21,50,,Mobile,https://www.facebook.com/natalya.popova.16/posts/5603629389649427
+Game Insight,2022-06-15,600,,Mobile,https://app2top.ru/industry/game-insight-ushla-na-samolikvidatsiyu-raboty-lishilis-do-600-spetsialistov-199488.html
+Plarium Krasnador,2022-06-15,500,Plarium,Mobile,https://gameworldobserver.com/2022/06/21/up-to-2500-russian-devs-lost-jobs-over-last-month-following-mass-layoffs-at-top-game-studios
+101XP,2022-06-02,,,Online,https://app2top.ru/news/neofitsial-no-v-101xp-prohodyat-masshtabny-e-sokrashheniya-199179.html
+PlayTika,2022-06-01,250,PlayTika,Mobile,https://www.pocketgamer.biz/news/78912/playtika-lay-off-250-employees-closes-three-development-studios/
+Penguin Esports,2022-06-01,,Tencent,Online,https://techcrunch.com/2022/04/07/tencent-to-shut-down-its-game-streaming-service/
+Hangar 13,2022-05-26,87,Take-Two Interactive,Console,https://www.gamesindustry.biz/mafia-3-developer-hangar-13-suffers-another-round-of-layoffs
+Tencent IEG,2022-05-25,50,Tencent,Publisher,"http://www.gamelook.com.cn/2022/06/487107, https://asia.nikkei.com/Spotlight/Caixin/Tencent-fires-gaming-and-fintech-staff-in-wake-of-miserable-Q1"
+MPL,2022-05-22,100,,Mobile,https://inc42.com/buzz/gaming-unicorn-mpl-lay-off-100-employees-shutdown-indonesia-business/
+Electronic Arts,2022-05-18,200,Electronic Arts,Publisher,https://kotaku.com/ea-layoffs-fifa-22-ea-sports-fc-microtransactions-profi-1848945221
+Wargaming Minsk,2022-04-04,,Wargaming,Publisher,https://www.gamesindustry.biz/wargaming-to-leave-russia-and-belarus
+PlayStation,2022-04-01,93,Sony,Publisher,https://www.videogameschronicle.com/news/playstation-has-laid-off-over-90-north-american-workers/
+Gamingo,2022-03-28,,Media and Games Invest,Publisher,https://massivelyop.com/2022/03/28/gamigo-has-suffered-yet-another-round-of-layoffs-including-some-rift-and-trove-staff/
+Funomena,2022-03-22,50,,Indie,https://www.fanbyte.com/legacy/the-hopeful-beginning-and-abrupt-shuttering-of-funomena
+Playgendary Minsk,2022-02-01,200,Playgendary,Mobile,https://devby.io/news/playgendary-uvolnenie
+Perfect  World Games,2022-01-27,1000,Perfect World Co. Ltd.,Publisher,https://pandaily.com/game-giant-perfect-world-to-lay-off-up-to-1000-employees/
+Heartbeat Network,2022-01-15,600,,Publisher,https://finance.sina.cn/tech/2023-04-15/detail-imyqmpwr2583838.d.html
+Baidu MEG,2021-12-22,,Baidu,Online,https://www.superpixel.com/article/19696/baidu-rumored-have-its-entire-game-division-sacked-despite-having-just-announced-series-games-development-this-august
+Might and Delight,2021-12-21,25,,Indie,https://www.mmorpg.com/news/might-and-delight-down-to-10-developers-after-layoffs-book-of-travels-development-to-continue-slowly-2000123927
+Lockwood Publishing,2021-12-09,20,,Publisher,https://www.gamedeveloper.com/business/avakin-life-developer-lockwood-publishing-accused-of-unlawful-layoffs
+Tanwan Games,2021-11-28,,,Online,https://finance.sina.com.cn/tech/2021-11-25/doc-ikyamrmy5058272.shtml
+Nintendo,2021-11-01,,,Publisher,https://www.pocketgamer.biz/news/77453/nintendo-closing-offices-in-california-and-toronto/
+Ohayoo,2021-10-20,100,ByteDance,Online,https://www.scmp.com/tech/big-tech/article/3153335/bytedance-gaming-studio-lays-dozens-employees-amid-beijings-gaming
+Cryptic Studios,2021-07-01,45,Perfect World Co. Ltd.,Online,https://mmos.com/news/magic-legends-shutting-down-in-october-cryptic-employees-laid-off-following-announcement
+Bandai Namco,2021-04-20,90,,Publisher,https://www.gamespot.com/articles/bandai-namco-is-closing-its-santa-clara-office-and-moving-to-southern-california/1100-6490410/
+Activision Blizzard,2021-03-15,50,Activision Blizzard King,Publisher,https://www.shacknews.com/article/123309/activision-blizzard-hits-esports-division-with-over-50-layoffs
+Hardsuit Labs,2021-03-01,,,Console,https://www.ign.com/articles/hardsuit-labs-undergoes-layoffs-after-vampire-the-masquerade-bloodlines-2-delay
+22 Cans,2021-02-16,,,Indie,https://www.gamesindustry.biz/peter-molyneuxs-studio-22cans-suffers-layoffs
+Stadia Games,2021-02-01,150,Google,Online,https://www.businessinsider.com/google-gaming-layoffs-blindsided-staff-2021-2
+Big Huge Games,2021-01-15,32,Nexon,Mobile,https://technical.ly/startups/big-huge-games-layoffs/
+DoubleDown Interactive,2021-01-08,55,,Mobile,https://www.geekwire.com/2021/doubledown-interactive-lays-off-55-employees-seattle-office-following-delayed-ipo/
+Rovio Montreal,2023-12-05,16,Sega,Console,https://www.pocketgamer.biz/news/83001/rovio-close-studio-lumi-in-montreal-with-the-loss-of-16-jobs/
