@@ -214,6 +214,13 @@
       z-index: 9999;
     }
 
+
+    .bar-display {
+      display: flex;
+      flex-direction: column;  
+      align-items: center;
+    }
+
     #game-description {
       height: 88px;
       font-size: 12px;
@@ -323,14 +330,26 @@
 
   <div class="page" id="page2">
 
-    <div class="bar-display">
-      <h2 class="bar-title">Major Game Company Layoffs</h2>
-      <svg id="barchart" height="700" width="800"> </svg>
-      <div id="tooltip" class="tooltip">
+    <!-- <div class="page2-display"> -->
+      <div class="bar-display">
+        <h2 class="bar-title">Major Game Company Layoffs</h2>
+        <h3 class="bar-title">Here are the top ten companies with the most significant layoffs.
+          <br> click on a company to view their layoff time line.
+          <br> Numbers are an estimate. Exact numbers are not always reported
+        </h2>
+        <svg id="barchart" height="400" width="1200"> </svg>
+        <div id="tooltip" class="tooltip">
+        </div>
+        <div id="gameTooltip" class="tooltipgame"></div>
+        <svg id="toptimeline" height="300" width="700"> </svg>
       </div>
-      <div id="gameTooltip" class="tooltipgame"></div>
-      <svg id="toptimeline" height="300" width="700"> </svg>
-    </div>
+      <!-- <svg id="Alltimeline" height="300" width="700"> </svg> -->
+
+    <!-- </div> -->
+    
+
+
+
 
   </div>
 
@@ -667,7 +686,7 @@
     const timelinesvg = d3.select("#toptimeline");
     const timelineWidth = timelinesvg.attr("width");
     const timelineHeight = timelinesvg.attr("height");
-    const timelineMargin = { top: 10, right: 60, bottom: 130, left: 60 };
+    const timelineMargin = {top: 50, right: 60, bottom: 50, left: 60};
 
     const timelineAreaWidth = timelineWidth - timelineMargin.left - timelineMargin.right;
     const timelineAreaHeight = timelineHeight - timelineMargin.top - timelineMargin.bottom;
@@ -709,28 +728,28 @@
         .domain(layoffExtent)
         .range([barAreaHeight, 0])
 
-      // draw larger force simulation (for companies)
+            // draw larger force simulation (for companies)
+            
+             const simulation = d3.forceSimulation(majorLayoffs)
+                .force("repulse", d3.forceManyBody().strength(-10))
+                .force("center", d3.forceCenter(barWidth / 2, barHeight / 2))
+                .force("collision", d3.forceCollide().radius(d=>radiusScale(d['Number of Layoffs']) + 3))
+                .force("x", d3.forceX((d, i) => i * 50))
+                .force("y", d3.forceY(barHeight/2))
+                // .on("tick", render)
+                .stop();
 
-      const simulation = d3.forceSimulation(majorLayoffs)
-        .force("repulse", d3.forceManyBody().strength(-10))
-        .force("center", d3.forceCenter(barWidth / 2, barHeight / 2))
-        .force("collision", d3.forceCollide().radius(d => radiusScale(d['Number of Layoffs']) + 3))
-        .force("x", d3.forceX(barWidth / 2))
-        .force("y", d3.forceY(barHeight / 2))
-        // .on("tick", render)
-        .stop();
-
-      // render large company circles. 
-      function render() {
-        let nodes = barChartArea.selectAll("circle.node")
-          .data(majorLayoffs)
-          .join(
-            enter => enter.append("circle")
-              .attr("class", "node")
-              .attr("r", d => radiusScale(d['Number of Layoffs']))
-              .attr("fill", "steelblue")
-              .attr('stroke', 'black')
-              .attr('stroke-width', 1)
+            // render large company circles. 
+            function render() {
+            let nodes = barChartArea.selectAll("circle.node")
+                .data(majorLayoffs)
+                .join(
+                    enter => enter.append("circle")
+                        .attr("class", "node")
+                        .attr("r", d=>radiusScale(d['Number of Layoffs']))
+                        .attr("fill", "#4b7159")
+                        .attr('stroke', 'black')
+                        .attr('stroke-width', 1)
 
           )
           .attr("cx", d => d.x)
@@ -743,16 +762,16 @@
       simulation.tick(200);
       render();
 
-      nodes = d3.selectAll('circle.node')
-        .on('click', function (event, d) {
-          zoomOnItem(d)
-        })
-        .on("mouseover", function (event, d) {
-          d3.select(this)
-            .transition()
-            .duration(100)
-            .attr("r", d => radiusScale(d['Number of Layoffs']) * 1.005)
-
+            nodes= d3.selectAll('circle.node')
+                .on('click', function(event, d) {
+                  zoomOnItem(d)
+                })
+                .on("mouseover", function (event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(100)
+                            .attr("r",d=>radiusScale(d['Number of Layoffs']) * 1.05)
+                            
 
         }).on("mouseout", function (event, d) {
           d3.select(this)
@@ -764,15 +783,15 @@
 
 
 
-      // create little circles that will appear on zoom in --------------------------------
-      let smallNodes = barChartArea.selectAll(`circle.small-nodes`)
-        .data(circlePositions)
-        .join(
-          enter => enter.append("circle")
-            .attr("class", `small-nodes`)
-            .attr("r", 1.5)
-            .attr("fill", "blue")
-            .attr("visibility", "hidden")
+            // create little circles that will appear on zoom in --------------------------------
+            let smallNodes = barChartArea.selectAll(`circle.small-nodes`)
+                .data(circlePositions)
+                .join(
+                    enter => enter.append("circle")
+                        .attr("class", `small-nodes`)
+                        .attr("r", 1.5)
+                        .attr("fill", "rgb(0, 68, 27)")
+                        .attr("visibility", "hidden")
 
         )
         .attr("cx", d => d.x)
@@ -832,36 +851,36 @@
 
       // add zoom to graph -----------------------------------------------------------------------------------------
 
-      var zoom = d3.zoom()
-        .scaleExtent([1, 20])
-        .translateExtent([[-50, -50], [barWidth + 50, barHeight + 50]])  // to lock to edges
-        .on("zoom", mapZoomed);
+            var zoom = d3.zoom()
+                    .scaleExtent([1,20])
+                    .translateExtent([[-50,-50],[barWidth+50,barHeight+50]])  // to lock to edges
+                    .on("zoom", mapZoomed);
+  
+              barChartArea.call(zoom);
 
-      barChartArea.call(zoom);
+            function mapZoomed({transform}) {       
+                  barChartArea.attr("transform", transform.toString() );
 
-      function mapZoomed({ transform }) {
-        barChartArea.attr("transform", transform.toString());
-
-        d3.selectAll("circle.small-nodes")
-          .transition(200)
-          .attr("opacity", (transform.k > 3) ? 1 : 0)
-          .attr("visibility", (transform.k > 2) ? "visible" : "hidden")
-      }
+                  d3.selectAll("circle.small-nodes")
+                      .transition(200)
+                      .attr("opacity", (transform.k > 2) ? 1 : 0)
+                      .attr("visibility", (transform.k > 1.5) ? "visible" : "hidden")
+            }
 
       function zoomOnItem(d) {
         console.log(d)
         // simulation.stop();
         requestTimelineData(d["Company"]);
 
-        let x = d.x; // center x of state/county
-        let y = d.y; // center y of state/county
-        let radius = radiusScale(d['Number of Layoffs'])
-
-        let scale = Math.max(1, Math.min(10, 0.9 / Math.max(radius / barWidth,
-          radius / barHeight)));
-
-        let translate = [barWidth / 2 - x * scale, barHeight / 2 - y * scale];
-
+                let x = d.x; // center x of state/county
+                let y = d.y; // center y of state/county
+                let radius = radiusScale(d['Number of Layoffs'])
+    
+                let scale = Math.max(1, Math.min(10, 0.3 / Math.min( radius / barWidth, 
+                                                                    radius / barHeight )));
+        
+                let translate = [barWidth / 2 - x * scale, barHeight / 2 - y * scale];
+        
 
         let newTransform = d3.zoomIdentity
           .translate(translate[0], translate[1])
@@ -902,6 +921,9 @@
         .attr("class", "y-axis-left-TL")
         .attr("transform", `translate(${-10},${0})`)
 
+
+
+
       // X axis: Year
       yearScale = d3.scaleLinear()
         .range([0, timelineAreaWidth]);
@@ -913,18 +935,18 @@
       // Draw trend line
 
       timelineChartArea.append("path")
-        .attr("class", "line-TL")
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 2)
+          .attr("class", "line-TL")
+          .attr("fill", "none")  
+          .attr("stroke", "#4b7159")
+          .attr("stroke-width", 2)
 
       // draw bars
 
-      width = 12;
-      companylayoffBars = timelineChartArea.selectAll('rect.layoffs').data(companyLayoffs)
-        .join('rect')
-        .attr("class", 'layoffs')
-        .attr('fill', 'steelblue')
+        width = 12;
+        companylayoffBars = timelineChartArea.selectAll('rect.layoffs').data(companyLayoffs)
+          .join('rect')
+          .attr("class", 'layoffs')
+          .attr('fill', "#4b7159")
 
       // add vertical line for unclear layoff numbers
       verticalLines = timelineChartArea.selectAll("line.news").data(companyLayoffs)
@@ -957,9 +979,10 @@
       TLtooltip = d3.select("#gameTooltip");
 
 
-      requestTimelineData = function (company) {
+    requestTimelineData = function(company) {
 
-        selectedCompanyLayoffs = companyLayoffs.filter(d => (d['Studio'] ? company.includes(d['Studio']) || d['Studio'].includes(company) : false) || (d["Parent"] ? d['Parent'].includes(company) || company.includes(d['Parent']) : false))
+        
+        selectedCompanyLayoffs = companyLayoffs.filter(d => (d['Studio'] ? company.includes(d['Studio']) || d['Studio'].includes(company) : false )|| (d["Parent"] ? d['Parent'].includes(company) || company.includes(d['Parent']) : false))
         selectedCompanyGames = companyGames.filter(d => d['publisher'].includes(company) || company.includes(d['publisher']))
 
         // Y axis: Counts
@@ -1002,11 +1025,11 @@
         companylayoffBars = timelineChartArea.selectAll('rect.layoffs').data(selectedCompanyLayoffs)
           .join('rect')
           .attr("class", 'layoffs')
-          .attr('fill', 'steelblue')
-          .attr('x', d => yearScale(d['Date']) - width / 2)
+          .attr('x', d => yearScale(d['Date']) - width/2)
           .attr('y', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
           .attr('height', d => headcountScale(companyLayoffExtent[0]) - headcountScale(d['Headcount'] ? d['Headcount'] : 0))
           .attr('width', width)
+          .attr('fill', "#4b7159")
 
         // add dots to graph to indicate news
         // add vertical line for unclear layoff numbers
@@ -1024,7 +1047,10 @@
 
         // Second Y Axis: Games
 
-        metacriticExtent = d3.extent(selectedCompanyGames, d => d["metascore"])
+        // metacriticExtent = d3.extent(selectedCompanyGames, d=>d["metascore"])
+        metacriticMin = d3.min(selectedCompanyGames, d=>d['metascore']) - 5;
+        console.log(metacriticMin)
+        metacriticExtent = [metacriticMin, 100]
         metacriticScale.domain(metacriticExtent)
 
         let rightAxis = d3.axisRight(metacriticScale)
@@ -1045,9 +1071,75 @@
           .attr('fill', 'white')
 
 
+        // axes lables
+
+              timelineAnnotations.append('text')
+          .attr('class', 'y-label-left')
+          .attr('text-anchor', 'middle')
+          .attr('transform', 'rotate(-90)')
+          .attr('x', -timelineAreaHeight / 2)
+          .attr('dy', -50)
+          .text('# of Layoffs')
+          .style('fill', "rgb(255, 108, 108)")
+
+      timelineAnnotations.append('text')
+          .attr('class', 'y-label-right')
+          .attr('text-anchor', 'middle')
+          .attr('transform', 'rotate(90)')
+          .attr('x', timelineAreaHeight / 2)
+          .attr('y', -timelineAreaWidth)
+          .attr('dy', -40)
+          .text('Metacritic Score')
+          .style('fill', "rgb(255, 108, 108)")
+          
         // Hover Controls   
 
         const tooltip = d3.select("#gameTooltip");
+
+
+        function linkToSource(d){
+          // open page to source of layoff information if it exists. 
+          link = d["Source"]
+          if (link.includes("https://")){
+            window.open(link, '_blank').focus();
+            // console.log(hyperlink)
+          }
+        }
+
+        verticalLines.on("mouseover", function (event, d) {
+          console.log(d)
+
+            d3.select(this)
+                .attr('stroke-width', 3)
+
+            const rect = this.getBoundingClientRect(); // Get screen position of the bar
+
+            tooltip
+                .style("visibility", "visible")
+                .style("opacity", 1)
+                .html(`<strong> Layoffs </strong>: Exact Number Unknown `)
+                .style("left", `${rect.right + 10}px`)
+                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
+
+              if (d["Source"].includes("https://")){
+                 tooltip.html(`<strong> Layoffs: </strong>: Exact Number Unknown' 
+                              <br> Click to visit news link`)
+              }
+        
+            
+        }).on("mouseout", function(event, d) {
+
+            d3.select(this)
+                .attr('stroke-width', 2)
+
+            tooltip
+            .style("visibility", "visible")
+            .style("opacity", 0)
+
+        }).on("click", function (event, d){
+          linkToSource(d)
+
+        })
 
         gameCircles.on("mouseover", function (event, d) {
 
@@ -1059,15 +1151,16 @@
 
           const rect = this.getBoundingClientRect(); // Get screen position of the bar
 
-          tooltip
-            .style("visibility", "visible")
-            .style("opacity", 1)
-            .html(`<strong> ${d["title"]} </strong>: ${d['metascore']} `)
-            .style("left", `${rect.right + 10}px`)
-            .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
+            tooltip
+                .style("visibility", "visible")
+                .style("opacity", 1)
+                .html(`<strong> ${d["title"]} </strong>: ${d['metascore']} `)
+                .style("left", `${rect.right + 10}px`)
+                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
 
-
-        }).on("mouseout", function (event, d) {
+              
+            
+        }).on("mouseout", function(event, d) {
 
           d3.select(this)
             .attr('r', 3)
@@ -1095,6 +1188,15 @@
             .style("left", `${rect.right + 10}px`)
             .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
 
+              if (d["Source"].includes("https://")){
+                 tooltip.html(`<strong> Layoffs </strong>: ${d['Headcount']} 
+                              <br> Click to visit news link`)
+              }
+        
+
+            //   console.log(d['Source'])
+            // document.getElementById("myFrame").src = d['Source']
+
 
         }).on("mouseout", function (event, d) {
 
@@ -1104,6 +1206,9 @@
           tooltip
             .style("visibility", "visible")
             .style("opacity", 0)
+
+        }).on("click", function (event, d){
+          linkToSource(d)
 
         })
 
