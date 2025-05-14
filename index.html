@@ -268,7 +268,7 @@
 
     <div class="bar-display">
       <h2 class="bar-title">Major Game Company Layoffs</h2>
-      <svg id="barchart" height="400" width="700"> </svg>
+      <svg id="barchart" height="600" width="800"> </svg>
       <div id="tooltip" class="tooltip">
       </div>
       <div id="gameTooltip" class="tooltipgame"></div>
@@ -449,7 +449,7 @@
 
      // ----------- LINECHART/TIMELINE START -----------------------------------------
 
-     const timelinesvg = d3.select("#toptimeline");
+    const timelinesvg = d3.select("#toptimeline");
     const timelineWidth = timelinesvg.attr("width");
     const timelineHeight = timelinesvg.attr("height");
     const timelineMargin = {top: 10, right: 60, bottom: 130, left: 60};
@@ -464,10 +464,11 @@
 
     const requestBarChartData = async function () {
 
-      majorLayoffs = await d3.csv("datasets/majorLayoffs.csv", d3.autoType)
+      majorLayoffs = await d3.csv("datasets/majorLayoffs.csv")
       companies = []
       majorLayoffs.forEach(d => {
         companies.push(d.Company);
+        d['Number of Layoffs'] = Number(d["Number of Layoffs"])
       });
 
       // Y axis: Counts
@@ -594,19 +595,30 @@
 
       // SET UP FOR TIMELINE (CONSTANTS) ------------------------------------------------------------------------------------------------------
 
-      companyLayoffs = await d3.csv("datasets/all-layoffs.csv", d3.autoType)
-      companyGames = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType)
+      companyLayoffs = await d3.csv("datasets/all-layoffs.csv")
+      companyGames = await d3.csv("datasets/metacriticFILTERED.csv")
 
       const parseDate = d3.timeParse("%Y-%m-%d");
-      companyLayoffs.forEach(d => d.date = parseDate(d.date));
+      companyLayoffs.forEach(d => {
+        
+        d['Headcount'] = Number(d["Headcount"])
+        d['Date'] = parseDate(d['Date'])
 
-      company = "null";
-      selectedCompanyLayoffs = companyLayoffs.filter(d => d['Parent'] ? d['Parent'].includes(company) : false)
-      selectedCompanyGames = companyGames.filter(d => d['publisher'].includes(company))
+      });
+
+      companyGames.forEach(d => {
+        
+        d['metascore'] = Number(d["metascore"])
+        d['releaseDate'] = parseDate(d['releaseDate'])
+
+      });
+
+      majorLayoffs.forEach(d => d["Start Date"] = parseDate(d["Start Date"]));
+      majorLayoffs.forEach(d => d["End Date"] = parseDate(d["End Date"]));
+
+      companyLayoffs = d3.sort(companyLayoffs, d => d['Date'])
 
       // Y axis: Counts
-      companyLayoffExtent = d3.extent([0, d3.max(selectedCompanyLayoffs, d=>d["Headcount"])])
-
       headcountScale = d3.scaleLinear()
           .range([timelineAreaHeight, 0])
       
@@ -614,9 +626,7 @@
           .attr("class", "y-axis-left-TL")
           .attr("transform",`translate(${-10},${0})`)
 
-      // X axis: Years
-        
-      yearExtent = d3.extent(selectedCompanyLayoffs, d => d['Date']);
+      // X axis: Year
       yearScale = d3.scaleLinear()
           .range([0, timelineAreaWidth]); 
 
@@ -635,40 +645,23 @@
         // draw bars
 
         width = 12;
-        companylayoffBars = timelineChartArea.selectAll('rect.layoffs').data(selectedCompanyLayoffs)
+        companylayoffBars = timelineChartArea.selectAll('rect.layoffs').data(companyLayoffs)
           .join('rect')
           .attr("class", 'layoffs')
           .attr('fill', 'steelblue')
-          .attr('x', d => yearScale(d['Date']) - width/2)
-          .attr('y', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
-          .attr('height', d => headcountScale(companyLayoffExtent[0]) - headcountScale(d['Headcount'] ? d['Headcount'] : 0))
-          .attr('width', width)
-
-        // add dots to graph to indicate news
-
-        // let newsSources = timelineChartArea.selectAll("circles.news").data(selectedCompanyLayoffs)
-        //     .join("circle")
-        //     .attr("fill", "steelblue")
-        //     .attr('cy', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
-        //     .attr('cx', d=> yearScale(d['Date']))
-        //     .attr('r', width/2)
 
         // add vertical line for unclear layoff numbers
-        verticalLines = timelineChartArea.selectAll("line.news").data(selectedCompanyLayoffs)
+        verticalLines = timelineChartArea.selectAll("line.news").data(companyLayoffs)
               .join("line")
               .attr("class", "news")
               .attr('stroke-width', 2)
               .attr('opacity', 1)
               .attr('stroke', 'orange')
               .style("stroke-dasharray", ("3, 3"))  // <== This line here!!
-              .attr('x1', d=>  d['Headcount'] ? 0 : yearScale(d['Date'])) // if no headcount, place a line at the corresponding date
-              .attr('y1', headcountScale(0))
-              .attr('x2', d=> d['Headcount'] ? 0 : yearScale(d['Date']))
-              .attr('y2', headcountScale(companyLayoffExtent[1]))
 
         // Second Y Axis: Games
 
-        metacriticExtent = d3.extent(selectedCompanyGames, d=>d["metascore"])
+        metacriticExtent = d3.extent(companyGames, d=>d["metascore"])
 
         metacriticScale = d3.scaleLinear()
             .range([timelineAreaHeight, 0])
@@ -677,78 +670,21 @@
             .attr("class", "y-axis-right-TL")
             .attr("transform",`translate(${timelineAreaWidth},${0})`)
 
-        let gameCircles = timelineChartArea.selectAll("circle.gamesTL").data(selectedCompanyGames)
+        let gameCircles = timelineChartArea.selectAll("circle.gamesTL").data(companyGames)
             .join("circle")
             .attr("class", "gamesTL")
-            .attr('cy', d => metacriticScale(d["metascore"]))
-            .attr('cx', d=> yearScale(d['releaseDate']))
             .attr('r', 3)
             .attr('fill', 'white')
-
-
+            
         // Hover Controls   
 
         TLtooltip = d3.select("#gameTooltip");
 
-        gameCircles.on("mouseover", function (event, d) {
-
-            d3.select(this)
-                .attr('r', 5)
-
-            const rect = this.getBoundingClientRect(); // Get screen position of the bar
-
-            TLtooltip
-                .style("visibility", "visible")
-                .style("opacity", 1)
-                .html(`<strong> ${d["title"]} </strong>: ${d['metascore']} `)
-                .style("left", `${rect.right + 10}px`)
-                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
-        
-            
-        }).on("mouseout", function(event, d) {
-
-            d3.select(this)
-                .attr('r', 3)
-
-            TLtooltip
-            .style("visibility", "visible")
-            .style("opacity", 0)
-
-        })
-
-
-        companylayoffBars.on("mouseover", function (event, d) {
-
-            d3.select(this)
-                .attr('r', 5)
-
-            const rect = this.getBoundingClientRect(); // Get screen position of the bar
-
-            TLtooltip
-                .style("visibility", "visible")
-                .style("opacity", 1)
-                .html(`<strong> Layoffs </strong>: ${d['Headcount']} `)
-                .style("left", `${rect.right + 10}px`)
-                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
-
-
-        }).on("mouseout", function(event, d) {
-
-            d3.select(this)
-                .attr('r', 4)
-
-            TLtooltip
-            .style("visibility", "visible")
-            .style("opacity", 0)
-
-        })
-
 
     requestTimelineData = function(company) {
         
-        selectedCompanyLayoffs = companyLayoffs.filter(d => d['Parent'] ? d['Parent'].includes(company) || company.includes(d['Parent']) : false)
+        selectedCompanyLayoffs = companyLayoffs.filter(d => (d['Studio'] ? company.includes(d['Studio']) || d['Studio'].includes(company) : false )|| (d["Parent"] ? d['Parent'].includes(company) || company.includes(d['Parent']) : false))
         selectedCompanyGames = companyGames.filter(d => d['publisher'].includes(company) || company.includes(d['publisher']))
-        // selectedCompanyGames.forEach(d => d['releaseDate'] = parseDate(d['releaseDate']));
 
         // Y axis: Counts
         companyLayoffExtent = d3.extent([0, d3.max(selectedCompanyLayoffs, d=>d["Headcount"])])
@@ -761,13 +697,12 @@
           .transition()
           .duration(300)
           .call(TLleftAxis);
-              
-        yearExtent = d3.extent(selectedCompanyLayoffs, d => d['Date']);
+        
+        companyDataPoint = majorLayoffs.filter(d => d['Company'] == company)[0]
+        yearExtent = [companyDataPoint["Start Date"], companyDataPoint["End Date"]]
         yearScale.domain(yearExtent)
-
         TLbottomAxis = d3.axisBottom(yearScale)
         .tickFormat(d3.timeFormat("%Y"));
-        // .tickFormat(d3.format("~f"));  // exact value without commas   
         
         d3.select(".x-axis-TL")
           .transition()
@@ -798,14 +733,6 @@
           .attr('width', width)
 
         // add dots to graph to indicate news
-
-        // let newsSources = timelineChartArea.selectAll("circles.news").data(selectedCompanyLayoffs)
-        //     .join("circle")
-        //     .attr("fill", "steelblue")
-        //     .attr('cy', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
-        //     .attr('cx', d=> yearScale(d['Date']))
-        //     .attr('r', width/2)
-
         // add vertical line for unclear layoff numbers
         verticalLines = timelineChartArea.selectAll("line.news").data(selectedCompanyLayoffs)
               .join("line")
@@ -848,6 +775,9 @@
 
         gameCircles.on("mouseover", function (event, d) {
 
+
+          console.log(d)
+
             d3.select(this)
                 .attr('r', 5)
 
@@ -878,6 +808,8 @@
             d3.select(this)
                 .attr('r', 5)
 
+            console.log(d)
+
             const rect = this.getBoundingClientRect(); // Get screen position of the bar
 
             tooltip
@@ -901,8 +833,6 @@
         
     }
 
-
-    // requestTimelineData("Electronic Arts");
   }
 
     requestBarChartData();

@@ -34,6 +34,7 @@ def passes_filter(row, company):
 data = []
 header = []
 companies = []
+embracerGroup = []
 
 with open('majorlayoffs.csv','r') as f2:
     layoffs = csv.DictReader(f2)
@@ -41,6 +42,13 @@ with open('majorlayoffs.csv','r') as f2:
         company = row['Company']
         companies.append(company)
 
+with open('all-layoffs.csv','r') as f3:
+    layoffs = csv.DictReader(f3)
+    for row in layoffs:
+        if ('Embracer' in row['Parent']):
+            embracerGroup.append(row['Studio'])
+            companies.append(row['Studio'])
+        
 
 with open('metacritic.csv','r',encoding='utf-8') as f1:
     
@@ -52,6 +60,9 @@ with open('metacritic.csv','r',encoding='utf-8') as f1:
             for company in companies:
                 if (passes_filter(game, company)):
                     game['metascore'] = float(game['metascore'])
+
+                    if (company in embracerGroup):
+                        game['publisher'] =  game['publisher'] + ",Embracer Group"
                     # e.g. splitting up qSpecies
                     data.append(game)
 
