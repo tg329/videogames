@@ -528,7 +528,7 @@
                     enter => enter.append("circle")
                         .attr("class", "node")
                         .attr("r", d=>radiusScale(d['Number of Layoffs']))
-                        .attr("fill", "steelblue")
+                        .attr("fill", "#4b7159")
                         .attr('stroke', 'black')
                         .attr('stroke-width', 1)
 
@@ -571,7 +571,7 @@
                     enter => enter.append("circle")
                         .attr("class", `small-nodes`)
                         .attr("r", 1.5)
-                        .attr("fill", "blue")
+                        .attr("fill", "rgb(0, 68, 27)")
                         .attr("visibility", "hidden")
 
                 )
@@ -715,7 +715,7 @@
       timelineChartArea.append("path")
           .attr("class", "line-TL")
           .attr("fill", "none")  
-          .attr("stroke", "steelblue")
+          .attr("stroke", "#4b7159")
           .attr("stroke-width", 2)
 
         // draw bars
@@ -724,7 +724,7 @@
         companylayoffBars = timelineChartArea.selectAll('rect.layoffs').data(companyLayoffs)
           .join('rect')
           .attr("class", 'layoffs')
-          .attr('fill', 'steelblue')
+          .attr('fill', "#4b7159")
 
         // add vertical line for unclear layoff numbers
         verticalLines = timelineChartArea.selectAll("line.news").data(companyLayoffs)
@@ -802,7 +802,6 @@
         companylayoffBars= timelineChartArea.selectAll('rect.layoffs').data(selectedCompanyLayoffs)
           .join('rect')
           .attr("class", 'layoffs')
-          .attr('fill', 'steelblue')
           .attr('x', d => yearScale(d['Date']) - width/2)
           .attr('y', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
           .attr('height', d => headcountScale(companyLayoffExtent[0]) - headcountScale(d['Headcount'] ? d['Headcount'] : 0))
