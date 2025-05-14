@@ -1,0 +1,344 @@
+<html>
+    <head>
+        <title>Final Project </title>
+
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+
+        <style>
+
+        .gridlines .domain {
+            display: none;
+            }
+            
+        .gridlines line {
+            stroke: #9a9a9a;
+        }
+
+        .tooltip {
+            pointer-events: none;
+            visibility: hidden;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            transform: translate(-50%, -130%);  /* this is the only way i can translate the text for some reason */
+            /* lazy way to make sure tooltip is always on top */
+            z-index: 9999;
+        }
+
+        .tooltipgame {
+            pointer-events: none;
+            visibility: hidden;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            /* lazy way to make sure tooltip is always on top */
+            z-index: 9999;
+        }
+     
+        </style>
+    </head>
+
+    <body>
+        <h1>Major Layoffs</h1>
+
+        <svg id="barchart" height="700" width="800" style="background: rgb(235, 235, 235);"> </svg>
+        <div id="tooltip" class="tooltip"></div>
+        <div id="gameTooltip" class="tooltipgame"></div>
+        <script>
+            //  BARCHART ------------------------------------------------------------------------------------------------------------------------------
+            const barsvg = d3.select("#barchart");
+            const barWidth = barsvg.attr("width");
+            const barHeight = barsvg.attr("height");
+            const barMargin = {top: 1, right: 1, bottom: 10, left: 1};
+
+            const barAreaWidth = barWidth - barMargin.left - barMargin.right;
+            const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
+
+            const barChartArea = barsvg.append("g")
+                .attr("transform", "translate("+(barMargin.left)+","+barMargin.top+")");
+
+            const annotations = barChartArea.append('g')
+
+            const requestBarChartData = async function() {
+
+                majorLayoffs = await d3.csv("datasets/majorLayoffs.csv", d3.autoType)
+
+                // majorLayoffs = d3.sort(majorLayoffs, (d) => d["Number of Layoffs"])
+
+                companies = []
+
+                majorLayoffs.forEach(d => {
+                    companies.push(d.Company);
+                });
+
+                const companyScale = d3.scaleBand()
+                    .domain(companies)
+                    .range([0, barAreaWidth])
+                    .padding(0.05)
+
+                layoffMax = d3.max(majorLayoffs, d=>d["Number of Layoffs"])
+                layoffExtent = d3.extent([0, layoffMax])
+
+                const radiusScale = d3.scaleSqrt()
+                .domain(layoffExtent)
+                .range([5, 150]);
+
+                const countScale = d3.scaleLinear()
+                    .domain(layoffExtent)
+                    .range([barAreaHeight, 0])
+
+            // draw larger force simulation (for companies)
+            
+            const simulation = d3.forceSimulation(majorLayoffs)
+                .force("repulse", d3.forceManyBody().strength(-10))
+                .force("center", d3.forceCenter(barWidth / 2, barHeight / 2))
+                .force("collision", d3.forceCollide().radius(d=>radiusScale(d['Number of Layoffs']) + 3))
+                .force("x", d3.forceX(barWidth / 2))
+                .force("y", d3.forceY(barHeight / 2))
+                .on("tick", render)
+
+            // render large company circles. 
+            function render() {
+            let nodes = barChartArea.selectAll("circle.node")
+                .data(majorLayoffs)
+                .join(
+                    enter => enter.append("circle")
+                        .attr("class", "node")
+                        .attr("r", d=>radiusScale(d['Number of Layoffs']))
+                        .attr("fill", "steelblue")
+                        .attr('stroke', 'black')
+                        .attr('stroke-width', 1)
+
+                )
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y);
+
+            majorLayoffs.forEach((d, i) => d.rank = i + 1);
+                let rank = barChartArea.selectAll(".rank")
+                    .data(majorLayoffs)
+                    .join("text")
+                    .attr("class", "rank")
+                    .text(d => d.rank)
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y - 15)
+                    .style("font-size", "12px")
+                    .style("text-anchor", "middle");
+
+                let label = barChartArea.selectAll(".label")
+                    .data(majorLayoffs)
+                    .join("text")
+                    .attr("class", "label")
+                    .text(d => `${d.ship}`)
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y)
+                    .style("font-size", "10px")
+                    .style("text-anchor", "middle");
+
+                let label2 = barChartArea.selectAll(".label2")
+                    .data(majorLayoffs)
+                    .join("text")
+                    .attr("class", "label2")
+                    .text(d => `(${d.totalWorks} works)`)
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y + 15)
+                    .style("font-size", "8px")
+                    .style("text-anchor", "middle");
+
+            }
+
+            render();
+            simulation.tick(100)
+
+                
+            nodes= d3.selectAll('circle.node');
+            nodes.on("mouseover", function (event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(100)
+                            .attr("r",d=>radiusScale(d['Number of Layoffs']) * 1.05)
+                            
+
+                    }).on("mouseout", function(event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(1000)
+                            .attr("r",d=>radiusScale(d['Number of Layoffs']))
+                            
+                    }).on('click', clicked)
+
+
+
+            // create little circles that will appear on zoom in --------------------------------
+            let smallSimulation;
+            function createSmallCircles(company){
+                 // calculate circle radius
+                radius = 0.8;
+
+                diameter = radius * 2
+                perRow = 100;
+
+
+                selectedBar = majorLayoffs.filter(d => d['Company'] === company)[0]
+                numCircles = selectedBar['Number of Layoffs']
+                console.log(selectedBar)
+                let nodesData = Array.from({ length: numCircles }, () => ({}));
+
+                smallSimulation = d3.forceSimulation(nodesData)
+                    .force("repulse", d3.forceManyBody().strength(-0.2))
+                    .force("center", d3.forceCenter(selectedBar.x, selectedBar.y))
+                    // .force("collision", d3.forceCollide().radius(radius))
+                    .force("x", d3.forceX(selectedBar.x))
+                    .force("y", d3.forceY(selectedBar.y))
+                    .on("tick", smallRender);
+                    // .stop();
+
+                function smallRender() {
+                    let nodes = barChartArea.selectAll("circle.small-nodes")
+                        .data(nodesData)
+                        .join(
+                            enter => enter.append("circle")
+                                .attr("class", "small-nodes")
+                                .attr("r", radius)
+                                .attr("fill", "red")
+
+                        )
+                        .attr("cx", d => d.x)
+                        .attr("cy", d => d.y);
+
+                }
+
+                // smallRender();
+                // for (let i = 0; i < 100; i++) {
+                //     smallSimulation.tick();
+                //     smallRender();
+
+                // }
+                // smallSimulation.stop()
+              
+
+
+                nodes= d3.selectAll('circle.small-nodes');
+                nodes.on("mouseover", function (event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(100)
+                            .attr("r",radius*4)
+                            // simulation.alpha(1).restart();
+
+                    }).on("mouseout", function(event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(1000)
+                            .attr("r",radius)
+                            // simulation.alpha(1).restart();
+                    })
+
+             
+
+
+                    // smallSimulation.alpha(1).restart();
+            }
+           
+
+
+
+
+            // add zoom to graph -----------------------------------------------------------------------------------------
+
+            var zoom = d3.zoom()
+                    .scaleExtent([1,20])
+                    .translateExtent([[-50,-50],[barWidth+50,barHeight+50]])  // to lock to edges
+                    .on("zoom", mapZoomed);
+  
+            barChartArea.call(zoom);
+
+            function mapZoomed({transform}) {       
+                barChartArea.attr("transform", transform.toString() );
+
+                console.log(transform.k)
+
+                // d3.selectAll("circle.small-nodes").remove();
+                //     .transition(100)
+                //     .attr("visibility", (transform.k > 3) ? "visible" : "hidden")
+
+                // if (transform.k > 3){
+                //     smallSimulation.alpha(1).restart();
+                // } else {
+                //     d3.selectAll("circle.small-nodes").remove();
+                // }
+                if (transform.k < 5){
+                    d3.selectAll("circle.small-nodes").remove();
+                }
+                
+                    //             // Expose county layer when sufficiently zoomed
+                    // viewport.select(".county-outline")
+                    //           .attr("visibility", (transform.k > 3) ? "visible" : "hidden");
+                    // viewport.selectAll(".county")
+                    //           .attr("visibility", (transform.k > 3) ? "visible" : "hidden");
+                    // // We can't animate the Visibility attribute -- also probably not a good thing to anim
+            }
+
+                    
+            // BONUS: Click on a state/county to zoom in on it!
+  
+            // Opacity=0 means items are still technically onscreen. If we just use opacity then the counties
+            //  prevent the states from getting click events, leading to very confusing interactions.
+            // This is why "visibility" is used in the code above
+        
+            function clicked(event, d) {
+                console.log(d)
+                simulation.stop();
+
+
+                let x = d.x; // center x of state/county
+                let y = d.y; // center y of state/county
+                let radius = radiusScale(d['Number of Layoffs'])
+        
+                // We want to make sure scale is within 1-10 when we click, so things don't zoom too far or too little
+                // To compute zoom, we want to make sure the bounding box "just" fits onscreen.
+                // dx / mapWidth gets us the portion of the screen the shape takes up without any zoom at all
+                //  the lower dx/mapWidth is, the more we need to zoom because the shape is smaller
+                // We find the max of dx/mapWidth, dy/mapHeight because we don't want to zoom farther (smaller values need more zoom)
+                // We do 1 or 0.9 divided by dx/mapWidth because we need larger numbers to zoom in. 0.9 allows us to pad things a bit
+                let scale = Math.max(1, Math.min(10, 0.9 / Math.max( radius / barWidth, 
+                                                                    radius / barHeight )));
+        
+                // Think of the translate like a delta describing how much we need to move the map to move a point to a desired position
+                // Simplistically, it works like (desired position) - (current position) = (translation)
+                // In this case mapWidth/2, the center of the screen is the desired place for our viewport
+                // x*scale is the position we want to move to the center (scale is there because we need to move more when zoomed in)
+                let translate = [barWidth / 2 - x * scale, barHeight / 2 - y * scale];
+        
+                // It's hard to programmatically adjust a zoom. The best way is to take the Identity (zoom transform where nothing is changed)
+                //  and then modify it using a .translate and .scale
+                let newTransform = d3.zoomIdentity
+                                    .translate(translate[0],translate[1])
+                                    .scale(scale);
+                // We can apply a new transform to the screen by using .call(zoom.tranform, newTransform)
+                // This is kinda the same thing as running zoom.transform(newTransform), but the chaining with .call allows us to add an animation
+                barChartArea.transition().duration(1000).call(zoom.transform, newTransform);
+
+                // create small circles representing individual employees. 
+                createSmallCircles(d.Company)
+        
+            }
+
+
+            
+
+      
+  
+
+                
+        }
+
+        requestBarChartData();
+
+        
+
+
+
+
+            
+        
+        </script>
+    </body>
+</html>

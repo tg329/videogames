@@ -1,0 +1,167 @@
+<html>
+    <head>
+        <title>Final Project </title>
+
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+
+        <style>
+
+        .gridlines .domain {
+            display: none;
+            }
+            
+        .gridlines line {
+            stroke: #9a9a9a;
+        }
+
+        .tooltip {
+            pointer-events: none;
+            visibility: hidden;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            transform: translate(-50%, -130%);  /* this is the only way i can translate the text for some reason */
+            /* lazy way to make sure tooltip is always on top */
+            z-index: 9999;
+        }
+
+        .tooltipgame {
+            pointer-events: none;
+            visibility: hidden;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            /* lazy way to make sure tooltip is always on top */
+            z-index: 9999;
+        }
+     
+        </style>
+    </head>
+
+    <body>
+        <h1>Major Layoffs</h1>
+
+        <svg id="barchart" height="700" width="700" style="background: rgb(235, 235, 235);"> </svg>
+        <div id="tooltip" class="tooltip"></div>
+        <div id="gameTooltip" class="tooltipgame"></div>
+        <script>
+            //  BARCHART ------------------------------------------------------------------------------------------------------------------------------
+            const barsvg = d3.select("#barchart");
+            const barWidth = barsvg.attr("width");
+            const barHeight = barsvg.attr("height");
+            const barMargin = {top: 1, right: 1, bottom: 10, left: 1};
+
+            const barAreaWidth = barWidth - barMargin.left - barMargin.right;
+            const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
+
+    
+
+            const barChartArea = barsvg.append("g")
+                .attr("transform", "translate("+(barMargin.left)+","+barMargin.top+")");
+
+            const annotations = barChartArea.append('g')
+
+            const requestBarChartData = async function() {
+
+                majorLayoffs = await d3.csv("datasets/majorLayoffs.csv", d3.autoType)
+
+                // majorLayoffs = d3.sort(majorLayoffs, (d) => d["Number of Layoffs"])
+
+                companies = []
+
+                majorLayoffs.forEach(d => {
+                    companies.push(d.Company);
+                });
+
+                const companyScale = d3.scaleBand()
+                    .domain(companies)
+                    .range([0, barAreaWidth])
+                    .padding(0.05)
+
+                layoffMax = d3.max(majorLayoffs, d=>d["Number of Layoffs"])
+                layoffExtent = d3.extent([0, layoffMax])
+
+                const countScale = d3.scaleLinear()
+                    .domain(layoffExtent)
+                    .range([barAreaHeight, 0])
+
+
+                // calculate circle radius
+                company = "Embracer Group"
+                radius = 2;
+
+                diameter = radius * 2
+                perRow = 100;
+
+
+                selectedBar = majorLayoffs.filter(d => d['Company'] === company)[0]
+                numCircles = selectedBar['Number of Layoffs']
+                let nodesData = Array.from({ length: numCircles }, () => ({}));
+
+            const simulation = d3.forceSimulation(nodesData)
+                .force("repulse", d3.forceManyBody().strength(-.5))
+                .force("center", d3.forceCenter(barWidth / 2, barHeight / 2))
+                .force("collision", d3.forceCollide().radius(radius+.01))
+                .force("x", d3.forceX(barWidth / 2))
+                .force("y", d3.forceY(barHeight / 2))
+                .on("tick", render);
+
+            function render() {
+            let nodes = barChartArea.selectAll("circle.node")
+                .data(nodesData)
+                .join(
+                    enter => enter.append("circle")
+                        .attr("class", "node")
+                        .attr("r", radius)
+                        .attr("fill", "steelblue")
+
+                )
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y);
+
+            }
+
+
+                render();
+
+
+
+                simulation.alpha(1).restart();
+
+                
+            nodes= d3.selectAll('circle.node');
+            nodes.on("mouseover", function (event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(100)
+                            .attr("r",radius*4)
+                            simulation.alpha(1).restart();
+
+                    }).on("mouseout", function(event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(1000)
+                            .attr("r",radius)
+                            simulation.alpha(1).restart();
+                    })
+
+              
+
+                // companies.forEach(d => {
+                //     drawCircles(d, radius)
+                // });
+
+
+                
+        }
+
+        requestBarChartData();
+
+        
+
+
+
+
+            
+        
+        </script>
+    </body>
+</html>
