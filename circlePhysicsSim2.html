@@ -60,6 +60,7 @@
             const requestBarChartData = async function() {
 
                 majorLayoffs = await d3.csv("datasets/majorLayoffs.csv", d3.autoType)
+                circlePositions = await d3.csv("datasets/physics-positions.csv", d3.autoType)
 
                 // majorLayoffs = d3.sort(majorLayoffs, (d) => d["Number of Layoffs"])
 
@@ -67,6 +68,8 @@
 
                 majorLayoffs.forEach(d => {
                     companies.push(d.Company);
+                    d.x = 0;
+                    d.y = 0;
                 });
 
                 const companyScale = d3.scaleBand()
@@ -93,7 +96,8 @@
                 .force("collision", d3.forceCollide().radius(d=>radiusScale(d['Number of Layoffs']) + 3))
                 .force("x", d3.forceX(barWidth / 2))
                 .force("y", d3.forceY(barHeight / 2))
-                .on("tick", render)
+                // .on("tick", render)
+                .stop();
 
             // render large company circles. 
             function render() {
@@ -144,25 +148,27 @@
 
             }
 
+            // for (i = 0; i < 200; i++){
+            //         simulation.tick();
+            // }
+            simulation.tick(200);
             render();
-            simulation.tick(100)
 
-                
             nodes= d3.selectAll('circle.node');
-            nodes.on("mouseover", function (event, d) {
-                        d3.select(this)
-                            .transition()
-                            .duration(100)
-                            .attr("r",d=>radiusScale(d['Number of Layoffs']) * 1.05)
+            // nodes.on("mouseover", function (event, d) {
+            //             d3.select(this)
+            //                 .transition()
+            //                 .duration(100)
+            //                 .attr("r",d=>radiusScale(d['Number of Layoffs']) * 1.05)
                             
 
-                    }).on("mouseout", function(event, d) {
-                        d3.select(this)
-                            .transition()
-                            .duration(1000)
-                            .attr("r",d=>radiusScale(d['Number of Layoffs']))
+            //         }).on("mouseout", function(event, d) {
+            //             d3.select(this)
+            //                 .transition()
+            //                 .duration(1000)
+            //                 .attr("r",d=>radiusScale(d['Number of Layoffs']))
                             
-                    }).on('click', clicked)
+            //         }).on('click', clicked)
 
 
 
@@ -170,32 +176,32 @@
             let smallSimulation;
             function createSmallCircles(company){
                  // calculate circle radius
-                radius = 0.8;
-
-                diameter = radius * 2
-                perRow = 100;
-
-
+                radius = 1.5;
                 selectedBar = majorLayoffs.filter(d => d['Company'] === company)[0]
                 numCircles = selectedBar['Number of Layoffs']
-                console.log(selectedBar)
-                let nodesData = Array.from({ length: numCircles }, () => ({}));
+
+                let nodesData = Array.from({ length: numCircles }, () => ({
+                    x: selectedBar.x ,
+                    y: selectedBar.y
+                }));
 
                 smallSimulation = d3.forceSimulation(nodesData)
-                    .force("repulse", d3.forceManyBody().strength(-0.2))
+                    .force("repulse", d3.forceManyBody().strength(-0.3))
                     .force("center", d3.forceCenter(selectedBar.x, selectedBar.y))
-                    // .force("collision", d3.forceCollide().radius(radius))
                     .force("x", d3.forceX(selectedBar.x))
                     .force("y", d3.forceY(selectedBar.y))
-                    .on("tick", smallRender);
-                    // .stop();
+                    .stop();
+
+                for (i = 0; i < 100; i++){
+                    smallSimulation.tick();
+                }
 
                 function smallRender() {
-                    let nodes = barChartArea.selectAll("circle.small-nodes")
+                    let nodes = barChartArea.selectAll(`circle.small-nodes-${company}`)
                         .data(nodesData)
                         .join(
                             enter => enter.append("circle")
-                                .attr("class", "small-nodes")
+                                .attr("class", `small-nodes-${company}`)
                                 .attr("r", radius)
                                 .attr("fill", "red")
 
@@ -205,17 +211,9 @@
 
                 }
 
-                // smallRender();
-                // for (let i = 0; i < 100; i++) {
-                //     smallSimulation.tick();
-                //     smallRender();
+                smallRender();
 
-                // }
-                // smallSimulation.stop()
-              
-
-
-                nodes= d3.selectAll('circle.small-nodes');
+                nodes= d3.selectAll(`circle.small-nodes-${company}`);
                 nodes.on("mouseover", function (event, d) {
                         d3.select(this)
                             .transition()
@@ -231,11 +229,86 @@
                             // simulation.alpha(1).restart();
                     })
 
-             
+                
+                
+
+                smallSimulation.stop();
+
+                // save positions to csv
+                console.log(`Saving positions for ${company}`);
+    
+                // Create CSV content
+                const headers = ["id", "company", "x", "y"];
+                let csvContent = headers.join(",") + "\n";
+
+                nodesData.forEach((node, index) => {
+                const row = [
+                    index,               // id
+                    company,             // company
+                    node.x.toFixed(3),   // x (rounded to 3 decimal places)
+                    node.y.toFixed(3)    // y (rounded to 3 decimal places)
+                ];
+                csvContent += row.join(",") + "\n";
+                });
+
+                // // Create a Blob with the CSV data
+                // const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                
+                // // Create download link and trigger download
+                // const link = document.createElement('a');
+                // const url = URL.createObjectURL(blob);
+                // link.setAttribute('href', url);
+                // link.setAttribute('download', `${company.replace(/\s+/g, '_')}_positions.csv`);
+                // link.style.visibility = 'hidden';
+                // document.body.appendChild(link);
+                // link.click();
+                // document.body.removeChild(link);
+                
+                // // Store in localStorage that we have generated this file
+                // // This will help us track which companies have saved positions
+                // const savedCompanies = JSON.parse(localStorage.getItem('savedPositionCompanies') || '[]');
+                // if (!savedCompanies.includes(company)) {
+                //     savedCompanies.push(company);
+                //     localStorage.setItem('savedPositionCompanies', JSON.stringify(savedCompanies));
+                // }
+    
 
 
-                    // smallSimulation.alpha(1).restart();
             }
+
+            // companies.forEach(d => {
+            //     createSmallCircles(d)
+            // });
+
+            let smallNodes = barChartArea.selectAll(`circle.small-nodes`)
+                .data(circlePositions)
+                .join(
+                    enter => enter.append("circle")
+                        .attr("class", `small-nodes`)
+                        .attr("r", 1.5)
+                        .attr("fill", "red")
+
+                )
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .on("mouseover", function (event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(100)
+                            .attr("r",1.5*4)
+                            // simulation.alpha(1).restart();
+
+                    }).on("mouseout", function(event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(1000)
+                            .attr("r",1.5)
+                            // simulation.alpha(1).restart();
+                    })
+
+
+          
+
            
 
 
@@ -265,7 +338,8 @@
                 //     d3.selectAll("circle.small-nodes").remove();
                 // }
                 if (transform.k < 5){
-                    d3.selectAll("circle.small-nodes").remove();
+                    // d3.selectAll("circle.small-nodes").remove();
+                    // smallSimulation.stop();
                 }
                 
                     //             // Expose county layer when sufficiently zoomed
@@ -317,7 +391,7 @@
                 barChartArea.transition().duration(1000).call(zoom.transform, newTransform);
 
                 // create small circles representing individual employees. 
-                createSmallCircles(d.Company)
+                // createSmallCircles(d.Company)
         
             }
 
