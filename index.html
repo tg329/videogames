@@ -214,10 +214,11 @@
     }
 
 
-    /* .bar-display {
+    .bar-display {
       display: flex;
       flex-direction: column;  
-    } */
+      align-items: center;
+    }
 
 
 
@@ -275,7 +276,7 @@
     <!-- <div class="page2-display"> -->
       <div class="bar-display">
         <h2 class="bar-title">Major Game Company Layoffs</h2>
-        <svg id="barchart" height="700" width="800"> </svg>
+        <svg id="barchart" height="400" width="1200"> </svg>
         <div id="tooltip" class="tooltip">
         </div>
         <div id="gameTooltip" class="tooltipgame"></div>
@@ -466,7 +467,7 @@
     const timelinesvg = d3.select("#toptimeline");
     const timelineWidth = timelinesvg.attr("width");
     const timelineHeight = timelinesvg.attr("height");
-    const timelineMargin = {top: 10, right: 60, bottom: 130, left: 60};
+    const timelineMargin = {top: 50, right: 60, bottom: 50, left: 60};
 
     const timelineAreaWidth = timelineWidth - timelineMargin.left - timelineMargin.right;
     const timelineAreaHeight = timelineHeight - timelineMargin.top - timelineMargin.bottom;
@@ -510,12 +511,12 @@
 
             // draw larger force simulation (for companies)
             
-            const simulation = d3.forceSimulation(majorLayoffs)
+             const simulation = d3.forceSimulation(majorLayoffs)
                 .force("repulse", d3.forceManyBody().strength(-10))
                 .force("center", d3.forceCenter(barWidth / 2, barHeight / 2))
                 .force("collision", d3.forceCollide().radius(d=>radiusScale(d['Number of Layoffs']) + 3))
-                .force("x", d3.forceX(barWidth / 2))
-                .force("y", d3.forceY(barHeight / 2))
+                .force("x", d3.forceX((d, i) => i * 50))
+                .force("y", d3.forceY(barHeight/2))
                 // .on("tick", render)
                 .stop();
 
@@ -550,7 +551,7 @@
                         d3.select(this)
                             .transition()
                             .duration(100)
-                            .attr("r",d=>radiusScale(d['Number of Layoffs']) * 1.005)
+                            .attr("r",d=>radiusScale(d['Number of Layoffs']) * 1.05)
                             
 
                     }).on("mouseout", function(event, d) {
@@ -636,15 +637,15 @@
                     .translateExtent([[-50,-50],[barWidth+50,barHeight+50]])  // to lock to edges
                     .on("zoom", mapZoomed);
   
-            barChartArea.call(zoom);
+              barChartArea.call(zoom);
 
             function mapZoomed({transform}) {       
-                barChartArea.attr("transform", transform.toString() );
+                  barChartArea.attr("transform", transform.toString() );
 
-                d3.selectAll("circle.small-nodes")
-                    .transition(200)
-                    .attr("opacity", (transform.k > 3) ? 1 : 0)
-                    .attr("visibility", (transform.k > 2) ? "visible" : "hidden")
+                  d3.selectAll("circle.small-nodes")
+                      .transition(200)
+                      .attr("opacity", (transform.k > 2) ? 1 : 0)
+                      .attr("visibility", (transform.k > 1.5) ? "visible" : "hidden")
             }
 
             function zoomOnItem(d){
@@ -656,7 +657,7 @@
                 let y = d.y; // center y of state/county
                 let radius = radiusScale(d['Number of Layoffs'])
     
-                let scale = Math.max(1, Math.min(10, 0.9 / Math.max( radius / barWidth, 
+                let scale = Math.max(1, Math.min(10, 0.3 / Math.min( radius / barWidth, 
                                                                     radius / barHeight )));
         
                 let translate = [barWidth / 2 - x * scale, barHeight / 2 - y * scale];

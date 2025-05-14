@@ -39,7 +39,7 @@
     <body>
         <h1>Major Layoffs</h1>
 
-        <svg id="barchart" height="700" width="800" style="background: rgb(235, 235, 235);"> </svg>
+        <svg id="barchart" height="400" width="1200"> </svg>
         <div id="tooltip" class="tooltip"></div>
         <div id="gameTooltip" class="tooltipgame"></div>
         <script>
@@ -94,8 +94,8 @@
                 .force("repulse", d3.forceManyBody().strength(-10))
                 .force("center", d3.forceCenter(barWidth / 2, barHeight / 2))
                 .force("collision", d3.forceCollide().radius(d=>radiusScale(d['Number of Layoffs']) + 3))
-                .force("x", d3.forceX(barWidth / 2))
-                .force("y", d3.forceY(barHeight / 2))
+                .force("x", d3.forceX((d, i) => i * 50))
+                .force("y", d3.forceY(barHeight/2))
                 // .on("tick", render)
                 .stop();
 
@@ -253,61 +253,61 @@
                 csvContent += row.join(",") + "\n";
                 });
 
-                // // Create a Blob with the CSV data
-                // const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                // Create a Blob with the CSV data
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
                 
-                // // Create download link and trigger download
-                // const link = document.createElement('a');
-                // const url = URL.createObjectURL(blob);
-                // link.setAttribute('href', url);
-                // link.setAttribute('download', `${company.replace(/\s+/g, '_')}_positions.csv`);
-                // link.style.visibility = 'hidden';
-                // document.body.appendChild(link);
-                // link.click();
-                // document.body.removeChild(link);
+                // Create download link and trigger download
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `${company.replace(/\s+/g, '_')}_positions.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
                 
-                // // Store in localStorage that we have generated this file
-                // // This will help us track which companies have saved positions
-                // const savedCompanies = JSON.parse(localStorage.getItem('savedPositionCompanies') || '[]');
-                // if (!savedCompanies.includes(company)) {
-                //     savedCompanies.push(company);
-                //     localStorage.setItem('savedPositionCompanies', JSON.stringify(savedCompanies));
-                // }
+                // Store in localStorage that we have generated this file
+                // This will help us track which companies have saved positions
+                const savedCompanies = JSON.parse(localStorage.getItem('savedPositionCompanies') || '[]');
+                if (!savedCompanies.includes(company)) {
+                    savedCompanies.push(company);
+                    localStorage.setItem('savedPositionCompanies', JSON.stringify(savedCompanies));
+                }
     
 
 
             }
 
-            // companies.forEach(d => {
-            //     createSmallCircles(d)
-            // });
+            companies.forEach(d => {
+                createSmallCircles(d)
+            });
 
-            let smallNodes = barChartArea.selectAll(`circle.small-nodes`)
-                .data(circlePositions)
-                .join(
-                    enter => enter.append("circle")
-                        .attr("class", `small-nodes`)
-                        .attr("r", 1.5)
-                        .attr("fill", "red")
-                        .attr("visibility", "hidden")
+            // let smallNodes = barChartArea.selectAll(`circle.small-nodes`)
+            //     .data(circlePositions)
+            //     .join(
+            //         enter => enter.append("circle")
+            //             .attr("class", `small-nodes`)
+            //             .attr("r", 1.5)
+            //             .attr("fill", "red")
+            //             .attr("visibility", "hidden")
 
-                )
-                .attr("cx", d => d.x)
-                .attr("cy", d => d.y)
-                .on("mouseover", function (event, d) {
-                        d3.select(this)
-                            .transition()
-                            .duration(100)
-                            .attr("r",1.5*2)
-                            // simulation.alpha(1).restart();
+            //     )
+            //     .attr("cx", d => d.x)
+            //     .attr("cy", d => d.y)
+            //     .on("mouseover", function (event, d) {
+            //             d3.select(this)
+            //                 .transition()
+            //                 .duration(100)
+            //                 .attr("r",1.5*2)
+            //                 // simulation.alpha(1).restart();
 
-                    }).on("mouseout", function(event, d) {
-                        d3.select(this)
-                            .transition()
-                            .duration(1000)
-                            .attr("r",1.5)
-                            // simulation.alpha(1).restart();
-                    })
+            //         }).on("mouseout", function(event, d) {
+            //             d3.select(this)
+            //                 .transition()
+            //                 .duration(1000)
+            //                 .attr("r",1.5)
+            //                 // simulation.alpha(1).restart();
+            //         })
 
 
           
