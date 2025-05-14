@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Final Project - Simplified Scatterplot</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .axis-label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #controls,
+        #zoom-controls {
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin-left: 10px;
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="controls">
+        <label for="score-type">Y-axis Score Type:</label>
+        <select id="score-type">
+            <option value="userscore">Userscore</option>
+            <option value="metascore">Metascore</option>
+        </select>
+        <button id="reset-btn">Reset View</button>
+    </div>
+
+    <div id="zoom-controls">
+        <h4>Zoom Controls</h4>
+        <div>
+            <label>X-axis (Date):</label><br>
+            <input type="range" id="xMinSlider" min="0" max="100" value="0">
+            <input type="range" id="xMaxSlider" min="0" max="100" value="100">
+        </div>
+        <div>
+            <label>Y-axis (Score):</label><br>
+            <input type="range" id="yMinSlider" min="0" max="100" value="0">
+            <input type="range" id="yMaxSlider" min="0" max="100" value="100">
+        </div>
+        <button id="zoom-btn">Zoom</button>
+    </div>
+
+    <p>This scatterplot shows the relationship between video game release dates and their ratings. Choose between user or critic scores using the dropdown above.</p>
+
+    <svg id="scatterplot" height="500" width="800"></svg>
+
+    <div id="game-details" style="margin-top: 20px; font-size: 16px;">
+        <h3>Game Details</h3>
+        <div id="details-content">
+            <p><strong>Title:</strong> <span id="detail-title">Click a point to view details.</span></p>
+            <p><strong>Release Date:</strong> <span id="detail-release-date"></span></p>
+            <p><strong>Rating:</strong> <span id="detail-rating"></span></p>
+            <p><strong>Genres:</strong> <span id="detail-genres"></span></p>
+            <p><strong>Description:</strong> <span id="detail-description"></span></p>
+            <p><strong>Platforms:</strong> <span id="detail-platforms"></span></p>
+            <p><strong>Metascore:</strong> <span id="detail-metascore"></span> (<span id="detail-metascore-sentiment"></span> from <span id="detail-metascore-count"></span> reviews)</p>
+            <p><strong>User Score:</strong> <span id="detail-userscore"></span> (<span id="detail-userscore-sentiment"></span> from <span id="detail-userscore-count"></span> reviews)</p>
+            <p><strong>Developer:</strong> <span id="detail-developer"></span></p>
+            <p><strong>Publisher:</strong> <span id="detail-publisher"></span></p>
+        </div>
+    </div>
+
+    <script>
+        const scattersvg = d3.select("#scatterplot");
+        const scatterWidth = +scattersvg.attr("width");
+        const scatterHeight = +scattersvg.attr("height");
+        const scatterMargin = { top: 20, right: 20, bottom: 50, left: 100 };
+        const scatterAreaWidth = scatterWidth - scatterMargin.left - scatterMargin.right;
+        const scatterAreaHeight = scatterHeight - scatterMargin.top - scatterMargin.bottom;
+
+        const scatterChartArea = scattersvg.append("g")
+            .attr("transform", `translate(${scatterMargin.left},${scatterMargin.top})`);
+        const scatterAnnotations = scatterChartArea.append("g");
+        const tooltip = d3.select("body").append("div").attr("class", "tooltip");
+
+        let fullData = [];
+        let xScale, yScale;
+
+        function updateScatter(scoreType, data = fullData) {
+            scatterAnnotations.selectAll(".y.axis").remove();
+            scatterAnnotations.selectAll(".x.axis").remove();
+            scatterChartArea.selectAll("circle").remove();
+
+            const yExtent = d3.extent(data, d => d[scoreType]);
+            yScale = d3.scaleLinear().domain(yExtent).nice().range([scatterAreaHeight, 0]);
+
+            xScale = d3.scaleTime()
+                .domain(d3.extent(data, d => d.date))
+                .range([0, scatterAreaWidth]);
+
+            const timeSpan = xScale.domain()[1] - xScale.domain()[0];
+            const yAxis = d3.axisLeft(yScale);
+            const xAxis = d3.axisBottom(xScale)
+                .ticks(Math.min(Math.max(scatterAreaWidth / 80, 5), 5))
+                .tickFormat(d => timeSpan < 1000 * 60 * 60 * 24 * 90
+                    ? d3.timeFormat("%b %d, %Y")(d)
+                    : d3.timeFormat("%b %Y")(d));
+
+            scatterAnnotations.append("g").attr("class", "y axis").call(yAxis);
+            scatterAnnotations.append("g").attr("class", "x axis")
+                .attr("transform", `translate(0,${scatterAreaHeight})`)
+                .call(xAxis);
+
+            scattersvg.selectAll(".y-label").remove();
+            scattersvg.append("text")
+                .attr("class", "axis-label y-label")
+                .attr("x", -(scatterMargin.top + scatterAreaHeight / 2))
+                .attr("y", 20)
+                .attr("transform", "rotate(-90)")
+                .text(scoreType === "userscore" ? "Userscore" : "Metascore");
+
+            scattersvg.selectAll(".x-label").remove();
+            scattersvg.append("text")
+                .attr("class", "axis-label x-label")
+                .attr("x", scatterMargin.left + scatterAreaWidth / 2)
+                .attr("y", scatterHeight - 5)
+                .text("Release Date");
+
+            function getRadius(numPoints) {
+                const maxRadius = 5;
+                const minRadius = 2;
+                return Math.max(minRadius, Math.min(maxRadius, maxRadius * (1 / Math.sqrt(numPoints / 1000))));
+            }
+
+            scatterChartArea.selectAll("circle")
+                .data(data, d => d.title)
+                .enter()
+                .append("circle")
+                .attr("fill", "steelblue")
+                .attr("cx", d => xScale(d.date))
+                .attr("cy", d => yScale(d[scoreType]))
+                .attr("r", d => getRadius(fullData.length))
+                .on("mouseover", function (event, d) {
+                    d3.select(this).attr("r", getRadius(fullData.length) + 2);
+                    tooltip
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 30) + "px")
+                        .style("display", "inline-block")
+                        .html(`<strong>${d.title}</strong><br/>Release Date: ${d3.timeFormat("%B %d, %Y")(d.date)}<br/>${scoreType}: ${d[scoreType]}`);
+                })
+                .on("mouseout", function () {
+                    d3.select(this).attr("r", getRadius(fullData.length));
+                    tooltip.style("display", "none");
+                })
+                .on("click", function (event, d) {
+                    d3.select("#detail-title").text(d.title);
+                    d3.select("#detail-release-date").text(d3.timeFormat("%B %d, %Y")(d.date));
+                    d3.select("#detail-rating").text(d.rating || "N/A");
+                    d3.select("#detail-genres").text(d.genres || "N/A");
+                    d3.select("#detail-description").text(d.description || "No description available.");
+                    d3.select("#detail-platforms").text(d.platforms || "N/A");
+                    d3.select("#detail-metascore").text(d.metascore !== null ? d.metascore : "N/A");
+                    d3.select("#detail-metascore-count").text(d.metascore_count || "0");
+                    d3.select("#detail-metascore-sentiment").text(d.metascore_sentiment || "N/A");
+                    d3.select("#detail-userscore").text(d.userscore !== null ? d.userscore : "N/A");
+                    d3.select("#detail-userscore-count").text(d.userscore_count || "0");
+                    d3.select("#detail-userscore-sentiment").text(d.userscore_sentiment || "N/A");
+                    d3.select("#detail-developer").text(d.developer || "N/A");
+                    d3.select("#detail-publisher").text(d.publisher || "N/A");
+                });
+        }
+
+        async function loadData() {
+            fullData = await d3.csv("datasets/filtered_file.csv", d3.autoType);
+            fullData.forEach(d => d.date = new Date(d.releaseDate));
+
+            const dateExtent = d3.extent(fullData, d => d.date);
+            const userScoreExtent = d3.extent(fullData, d => d.userscore);
+            const metaScoreExtent = d3.extent(fullData, d => d.metascore);
+
+            window.sliderState = {
+                dateExtent,
+                userScoreExtent,
+                metaScoreExtent
+            };
+
+            initSliders(dateExtent, userScoreExtent);
+            updateScatter("userscore");
+        }
+
+        function initSliders(dateExtent, scoreExtent) {
+            d3.select("#xMinSlider").property("value", 0);
+            d3.select("#xMaxSlider").property("value", 100);
+            d3.select("#yMinSlider").property("value", 0);
+            d3.select("#yMaxSlider").property("value", 100);
+        }
+
+        d3.select("#score-type").on("change", function () {
+            updateScatter(this.value);
+        });
+
+        d3.select("#reset-btn").on("click", () => {
+            const selectedScore = d3.select("#score-type").node().value;
+            updateScatter(selectedScore);
+        });
+
+        d3.select("#zoom-btn").on("click", function () {
+            const xMinPercent = +d3.select("#xMinSlider").property("value");
+            const xMaxPercent = +d3.select("#xMaxSlider").property("value");
+            const yMinPercent = +d3.select("#yMinSlider").property("value");
+            const yMaxPercent = +d3.select("#yMaxSlider").property("value");
+
+            const [xMin, xMax] = [
+                new Date(window.sliderState.dateExtent[0].getTime() + (xMinPercent / 100) * (window.sliderState.dateExtent[1] - window.sliderState.dateExtent[0])),
+                new Date(window.sliderState.dateExtent[0].getTime() + (xMaxPercent / 100) * (window.sliderState.dateExtent[1] - window.sliderState.dateExtent[0]))
+            ];
+
+            const scoreType = d3.select("#score-type").property("value");
+            const scoreExtent = scoreType === "userscore" ? window.sliderState.userScoreExtent : window.sliderState.metaScoreExtent;
+
+            const [yMin, yMax] = [
+                scoreExtent[0] + (yMinPercent / 100) * (scoreExtent[1] - scoreExtent[0]),
+                scoreExtent[0] + (yMaxPercent / 100) * (scoreExtent[1] - scoreExtent[0])
+            ];
+
+            const filtered = fullData.filter(d =>
+                d.date >= xMin && d.date <= xMax &&
+                d[scoreType] >= yMin && d[scoreType] <= yMax
+            );
+
+            updateScatter(scoreType, filtered);
+        });
+
+        loadData();
+    </script>
+</body>
+
+</html>
