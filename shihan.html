@@ -42,8 +42,8 @@
             background: rgba(0, 0, 0, 0.8);
             color: #fff;
             border-radius: 5px;
+            display: none;
         }
-
     </style>
 </head>
 
@@ -51,7 +51,6 @@
     <div class="leaderboard">
         <h2>Top 10 Games based on Metascore</h2>
         <div id="leaderboard-list"></div>
-
     </div>
 
     <p>The bubble chart shows the relationship between the release year and the metascore of games. The size of each
@@ -91,7 +90,6 @@
                 .attr("class", "item")
                 .text(d => d.title)
                 .on("click", function (event, d) {
-
                     scatterChartArea.selectAll("circle")
                         .attr("fill", d => colorScale(d.score))
                         .attr("r", d => Math.sqrt(d.count) * 5);
@@ -145,7 +143,7 @@
                 .attr("transform", "rotate(-90)")
                 .text("Metascore");
 
-            //group data by release year and metascore
+            // group data by release year and metascore
             let groupedData = {};
 
             for (let i = 0; i < TopMetacritic.length; i++) {
@@ -155,17 +153,16 @@
                 if (!groupedData[year]) {
                     groupedData[year] = {};
                 }
+
                 if (!groupedData[year][score]) {
                     groupedData[year][score] = {
                         count: 0,
                         titles: []
                     };
                 }
-
                 groupedData[year][score].count += 1;
                 groupedData[year][score].titles.push(game.title);
             }
-
             let data = [];
             for (let year in groupedData) {
                 for (let score in groupedData[year]) {
@@ -173,17 +170,19 @@
                     data.push({
                         year: +year,
                         score: +score,
+                        count: entry.count,
                         titles: entry.titles.join(", ")
                     });
                 }
             }
+
             scatterChartArea.selectAll("circle")
                 .data(data)
                 .join("circle")
                 .attr("fill", d => colorScale(d.score))
                 .attr("cx", d => yearScale(d.year))
                 .attr("cy", d => scoreScale(d.score))
-                .attr("r", d => Math.sqrt(d.count) * 5) //size based on count
+                .attr("r", d => Math.sqrt(d.count) * 5) // size based on count
                 .on("mouseover", function (event, d) {
                     d3.select(this)
                         .attr("stroke", "black")
@@ -193,8 +192,8 @@
                         .style("top", (event.pageY - 30) + "px")
                         .style("display", "inline-block")
                         .html(`<strong>Year:</strong> ${d.year}<br/>
-                               <strong>Score:</strong> ${d.score}<br/>
-                               <strong>Games:</strong> ${d.titles}`);
+                                <strong>Score:</strong> ${d.score}<br/>
+                                <strong>Games:</strong> ${d.titles}`);
                 })
                 .on("mouseout", function () {
                     d3.select(this)
