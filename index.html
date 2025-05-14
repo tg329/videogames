@@ -521,62 +521,31 @@
                 .attr("cx", d => d.x)
                 .attr("cy", d => d.y);
 
-            majorLayoffs.forEach((d, i) => d.rank = i + 1);
-                let rank = barChartArea.selectAll(".rank")
-                    .data(majorLayoffs)
-                    .join("text")
-                    .attr("class", "rank")
-                    .text(d => d.rank)
-                    .attr("x", d => d.x)
-                    .attr("y", d => d.y - 15)
-                    .style("font-size", "12px")
-                    .style("text-anchor", "middle");
-
-                let label = barChartArea.selectAll(".label")
-                    .data(majorLayoffs)
-                    .join("text")
-                    .attr("class", "label")
-                    .text(d => `${d.ship}`)
-                    .attr("x", d => d.x)
-                    .attr("y", d => d.y)
-                    .style("font-size", "10px")
-                    .style("text-anchor", "middle");
-
-                let label2 = barChartArea.selectAll(".label2")
-                    .data(majorLayoffs)
-                    .join("text")
-                    .attr("class", "label2")
-                    .text(d => `(${d.totalWorks} works)`)
-                    .attr("x", d => d.x)
-                    .attr("y", d => d.y + 15)
-                    .style("font-size", "8px")
-                    .style("text-anchor", "middle");
+            
 
             }
 
-            // for (i = 0; i < 200; i++){
-            //         simulation.tick();
-            // }
             simulation.tick(200);
             render();
 
             nodes= d3.selectAll('circle.node')
-                    .on('click', clicked)
-
-            // nodes.on("mouseover", function (event, d) {
-            //             d3.select(this)
-            //                 .transition()
-            //                 .duration(100)
-            //                 .attr("r",d=>radiusScale(d['Number of Layoffs']) * 1.05)
+                .on('click', function(event, d) {
+                  zoomOnItem(d)
+                })
+                .on("mouseover", function (event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(100)
+                            .attr("r",d=>radiusScale(d['Number of Layoffs']) * 1.005)
                             
 
-            //         }).on("mouseout", function(event, d) {
-            //             d3.select(this)
-            //                 .transition()
-            //                 .duration(1000)
-            //                 .attr("r",d=>radiusScale(d['Number of Layoffs']))
+                    }).on("mouseout", function(event, d) {
+                        d3.select(this)
+                            .transition()
+                            .duration(1000)
+                            .attr("r",d=>radiusScale(d['Number of Layoffs']))
                             
-                    // })
+                    })
 
 
 
@@ -587,7 +556,7 @@
                     enter => enter.append("circle")
                         .attr("class", `small-nodes`)
                         .attr("r", 1.5)
-                        .attr("fill", "red")
+                        .attr("fill", "blue")
                         .attr("visibility", "hidden")
 
                 )
@@ -606,7 +575,44 @@
                             .duration(1000)
                             .attr("r",1.5)
                             // simulation.alpha(1).restart();
+                    }).on("click", function (event, d) {
+                      companyDataPoint = majorLayoffs.filter(ml => ml['Company'] == d.company)[0]
+                      zoomOnItem(companyDataPoint);
                     })
+
+
+            // add labels
+            majorLayoffs.forEach((d, i) => d.rank = i + 1);
+                let rank = barChartArea.selectAll(".rank")
+                    .data(majorLayoffs)
+                    .join("text")
+                    .attr("class", "rank")
+                    .text(d => d.rank)
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y - 15)
+                    .style("font-size", "12px")
+                    .style("text-anchor", "middle");
+
+                let label = barChartArea.selectAll(".label")
+                    .data(majorLayoffs)
+                    .join("text")
+                    .attr("class", "label")
+                    .text(d => `${d.Company}`)
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y)
+                    .style("font-size", "10px")
+                    .style("text-anchor", "middle");
+
+                let label2 = barChartArea.selectAll(".label2")
+                    .data(majorLayoffs)
+                    .join("text")
+                    .attr("class", "label2")
+                    .text(d => `(${d["Number of Layoffs"]} Layoffs)`)
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y + 15)
+                    .style("font-size", "8px")
+                    .style("text-anchor", "middle")
+                    .attr("z-index", 9999)
 
 
             // add zoom to graph -----------------------------------------------------------------------------------------
@@ -627,7 +633,7 @@
                     .attr("visibility", (transform.k > 2) ? "visible" : "hidden")
             }
 
-            function clicked(event, d) {
+            function zoomOnItem(d){
                 console.log(d)
                 // simulation.stop();
                 requestTimelineData(d["Company"]);
@@ -647,138 +653,7 @@
                                     .scale(scale);
 
                 barChartArea.transition().duration(1000).call(zoom.transform, newTransform);
-
             }
-
-
-      // majorLayoffs = await d3.csv("datasets/majorLayoffs.csv")
-      // companies = []
-      // majorLayoffs.forEach(d => {
-      //   companies.push(d.Company);
-      //   d['Number of Layoffs'] = Number(d["Number of Layoffs"])
-      // });
-
-      // // Y axis: Counts
-      // layoffMax = d3.max(majorLayoffs, d => d["Number of Layoffs"])
-      // layoffExtent = d3.extent([0, layoffMax])
-
-      // const countScale = d3.scaleLinear()
-      //   .domain(layoffExtent)
-      //   .range([barAreaHeight, 0])
-
-      // let leftAxis = d3.axisLeft(countScale)
-      //   .tickFormat(d3.format("~f")) // no commas
-
-      // let leftGridlines = d3.axisLeft(countScale)
-      //   .tickSize(-barAreaWidth + 10)
-      //   .tickFormat("")
-
-      // annotations.append("g")
-      //   .attr("class", "y axis")
-      //   .attr("transform", `translate(${-10},${0})`)
-      //   .call(leftAxis)
-
-      // annotations.append("g")
-      //   .attr("class", "y gridlines")
-      //   .attr("transform", `translate(${-10},${0})`)
-      //   .call(leftGridlines);
-
-      // // X axis: Years
-      // const companyScale = d3.scaleBand()
-      //   .domain(companies)
-      //   .range([0, barAreaWidth])
-      //   .padding(0.05)
-
-      // let bottomAxis = d3.axisBottom(companyScale)
-
-      // annotations.append('g')
-      //   .attr('class', 'x axis')
-      //   .attr("transform", `translate(0,${barAreaHeight + 1})`)
-      //   .call(bottomAxis)
-      //   .selectAll("text")
-      //   .attr("transform", "translate(-5,0)rotate(-40)")
-      //   .style("text-anchor", "end")
-      //   .style("font-size", 12)
-
-      // // draw bars
-      // layoffBars = barChartArea.selectAll('rect.layoff').data(majorLayoffs)
-      //   .join('rect')
-      //   .attr('class', 'bar')
-      //   .attr('fill', 'black')
-      //   .attr('x', d => companyScale(d['Company']))
-      //   .attr('y', d => countScale(d['Number of Layoffs']))
-      //   .attr('height', d => countScale(layoffExtent[0]) - countScale(d["Number of Layoffs"]))
-      //   .attr('width', companyScale.bandwidth())
-      //   .attr('company', d => d['Company'])
-
-      // // add circles to bars to represent a single person
-      // function getCircleRadius() {
-      //   selectedBar = layoffBars.filter(d => d['Company'] === companies[0])
-      //   height = selectedBar.attr('height')
-      //   width = selectedBar.attr('width')
-      //   numCircles = selectedBar.datum()['Number of Layoffs']
-      //   diameter = Math.sqrt((height * width) / (numCircles))
-      //   return diameter / 2
-      // }
-
-      // // calculate circle radius
-      // function drawCircles(company, radius) {
-      //   diameter = radius * 2
-      //   selectedBar = layoffBars.filter(d => d['Company'] === company)
-      //   height = selectedBar.attr('height')
-      //   width = selectedBar.attr('width')
-      //   numCircles = selectedBar.datum()['Number of Layoffs']
-
-      //   // number of circles per row
-      //   perRow = Math.ceil(width / diameter)
-      //   data = Array(numCircles)
-      //   startX = companyScale(company) + radius
-      //   startY = countScale(0) - radius
-
-      //   circles = barChartArea.selectAll('circles.layoff').select(company).data(data)
-      //     .join(
-      //       enter => enter.append('circle')
-      //         .attr("fill", 'steelblue')
-      //         .attr("cx", (d, i) => startX + (diameter * (i % perRow)))
-      //         .attr("cy", (d, i) => startY - (diameter * Math.floor(i / perRow)))
-      //         .attr("r", radius)
-      //     )
-
-      //   circles.on("mouseover", function (event, d) {
-      //     d3.select(this)
-      //       .transition()
-      //       .duration(28)
-      //       .attr("r", radius * 4)
-      //   }).on("mouseout", function (event, d) {
-      //     d3.select(this)
-      //       .transition()
-      //       .duration(1350)
-      //       .attr("r", radius)
-      //   })
-
-
-      // }
-      // let radius = getCircleRadius();
-      // companies.forEach(d => {
-      //   drawCircles(d, radius)
-      // });
-
-      // // HOVERS
-      // const tooltip = d3.select("#tooltip");
-      // layoffBars.on("mouseover", function (event, d) {
-      //   const rect = this.getBoundingClientRect(); // Get screen position of the bar
-      //   tooltip
-      //     .style("visibility", "visible")
-      //     .style("opacity", 1)
-      //     .html(`<strong># Layoffs:</strong> ${d["Number of Layoffs"]}`)
-      //     .style("left", `${rect.left + rect.width / 2}px`)
-      //     .style("top", `${rect.top}px`); // 40px above the bar
-
-      //     requestTimelineData(d["Company"]);
-
-      // }).on("mouseout", function (event, d) {
-      //   // we cant have mouseovers for 2 things at once. Have the tooltuip appear when entering the rect, stay there until another rect is moused over. 
-      // })
 
       // SET UP FOR TIMELINE (CONSTANTS) ------------------------------------------------------------------------------------------------------
 
