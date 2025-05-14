@@ -276,6 +276,9 @@
     <!-- <div class="page2-display"> -->
       <div class="bar-display">
         <h2 class="bar-title">Major Game Company Layoffs</h2>
+        <h3 class="bar-title">Here are the top ten companies with the most significant layoffs.
+          <br> click on a company to view their layoff time line
+        </h2>
         <svg id="barchart" height="400" width="1200"> </svg>
         <div id="tooltip" class="tooltip">
         </div>
@@ -702,6 +705,9 @@
           .attr("class", "y-axis-left-TL")
           .attr("transform",`translate(${-10},${0})`)
 
+
+
+
       // X axis: Year
       yearScale = d3.scaleLinear()
           .range([0, timelineAreaWidth]); 
@@ -758,6 +764,7 @@
 
 
     requestTimelineData = function(company) {
+
         
         selectedCompanyLayoffs = companyLayoffs.filter(d => (d['Studio'] ? company.includes(d['Studio']) || d['Studio'].includes(company) : false )|| (d["Parent"] ? d['Parent'].includes(company) || company.includes(d['Parent']) : false))
         selectedCompanyGames = companyGames.filter(d => d['publisher'].includes(company) || company.includes(d['publisher']))
@@ -847,6 +854,27 @@
             .attr('fill', 'white')
 
 
+        // axes lables
+
+              timelineAnnotations.append('text')
+          .attr('class', 'y-label-left')
+          .attr('text-anchor', 'middle')
+          .attr('transform', 'rotate(-90)')
+          .attr('x', -timelineAreaHeight / 2)
+          .attr('dy', -50)
+          .text('# of Layoffs')
+          .style('fill', "rgb(255, 108, 108)")
+
+      timelineAnnotations.append('text')
+          .attr('class', 'y-label-right')
+          .attr('text-anchor', 'middle')
+          .attr('transform', 'rotate(90)')
+          .attr('x', timelineAreaHeight / 2)
+          .attr('y', -timelineAreaWidth)
+          .attr('dy', -40)
+          .text('Metacritic Score')
+          .style('fill', "rgb(255, 108, 108)")
+          
         // Hover Controls   
 
         const tooltip = d3.select("#gameTooltip");
