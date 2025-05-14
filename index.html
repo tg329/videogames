@@ -132,10 +132,9 @@
     .static-box {
       display: flex;
       flex: 0 0 6%;
-      background-color: lightgray;
-      padding: 14vw;
-      padding-left: 0px;
-      padding-right: 0px;
+      background-color: rgb(40, 47, 255);
+      padding: 25px;
+      /* padding: 5vw; */
     }
 
 
@@ -185,7 +184,8 @@
     .bar-title {
       text-align: center;
     }
-/* 
+
+    /* 
     .gridlines .domain {
           display: none;
           }
@@ -195,45 +195,102 @@
       } */
 
     .tooltip {
-        pointer-events: none;
-        visibility: hidden;
-        position: absolute;
-        background: rgba(0, 0, 0, 0.8);
-        transform: translate(-50%, -130%);  /* this is the only way i can translate the text for some reason */
-        /* lazy way to make sure tooltip is always on top */
-        z-index: 9999;
+      pointer-events: none;
+      visibility: hidden;
+      position: absolute;
+      background: rgba(0, 0, 0, 0.8);
+      transform: translate(-50%, -130%);
+      /* this is the only way i can translate the text for some reason */
+      /* lazy way to make sure tooltip is always on top */
+      z-index: 9999;
     }
 
     .tooltipgame {
-        pointer-events: none;
-        visibility: hidden;
-        position: absolute;
-        background: rgba(0, 0, 0, 0.8);
-        /* lazy way to make sure tooltip is always on top */
-        z-index: 9999;
+      pointer-events: none;
+      visibility: hidden;
+      position: absolute;
+      background: rgba(0, 0, 0, 0.8);
+      /* lazy way to make sure tooltip is always on top */
+      z-index: 9999;
     }
 
+    #game-description {
+      height: 88px;
+      font-size: 12px;
+      overflow-y: auto;
+      background-color: white;
+      padding: 15px;
+      color: blue;
+    }
 
+    .info-guide {
+      padding: 10px;
+    }
 
+    #game-title {
+      padding: 20px;
+      font-size: 18px;
+      padding-right: 10px;
+      padding-left: 10px;
+      background-color: rgb(144, 144, 144);
+      text-align: center;
+    }
 
+    .graph2 {
+      width: 60%;
+      height: auto;
+      padding: 30px;
+    }
+
+    .meta-info {
+      background-color: rgb(241, 241, 241);
+      color: black;
+      padding: 10px;
+      margin: 0px;
+      margin-top: -20px;
+      height: 350px;
+      overflow-y: auto;
+    }
   </style>
 </head>
 
 <body>
   <div class="static-box">
     <div class="graph1">
-      this is a placeholder. graphs will go here. 
-      this is a placeholder. graphs will go here.
-      this is a placeholder. graphs will go here. 
+      <div id="controls">
+        <label for="score-type">Y-axis Score Type:</label>
+        <select id="score-type">
+          <option value="userscore">Userscore</option>
+          <option value="metascore">Metascore</option>
+        </select>
+        <button id="reset-btn">View All</button>
+      </div>
+
+      <p class="info-guide">We visualize the relationship between video game release dates and their ratings. Choose
+        between user
+        or critic scores using the dropdown above. Click a month on the heatmaps below to view more specific time data.
+      </p>
+
+      <svg id="scatterplot" height="300" width="600"></svg>
 
 
     </div>
 
 
     <div class="graph2">
-      this is a placeholder. graphs will go here. 
-      this is a placeholder. graphs will go here.
-      this is a placeholder. graphs will go here.
+      <div id="game-details">
+        <p id="game-title">Click on a point to view game details.</p>
+        <div class="meta-info">
+          <p id="game-release-date"></p>
+          <p id="game-developer"></p>
+          <p id="game-publisher"></p>
+          <p id="game-score"></p>
+          <p id="game-genres"></p>
+          <p id="game-platforms"></p>
+          <p id="game-metascore"></p>
+          <p id="game-description"></p>
+        </div>
+      </div>
 
     </div>
 
@@ -272,7 +329,7 @@
       <div id="tooltip" class="tooltip">
       </div>
       <div id="gameTooltip" class="tooltipgame"></div>
-        <svg id="toptimeline" height="300" width="700"> </svg>
+      <svg id="toptimeline" height="300" width="700"> </svg>
     </div>
 
   </div>
@@ -280,6 +337,154 @@
 
 
   <script>
+
+    // ----------- SCATTERPLOT START -----------------------------------
+    const scattersvg = d3.select("#scatterplot");
+    const scatterWidth = +scattersvg.attr("width");
+    const scatterHeight = +scattersvg.attr("height");
+    const scatterMargin = { top: 10, right: 10, bottom: 45, left: 60 };
+    const scatterAreaWidth = scatterWidth - scatterMargin.left - scatterMargin.right;
+    const scatterAreaHeight = scatterHeight - scatterMargin.top - scatterMargin.bottom;
+
+
+    const scatterChartArea = scattersvg.append("g")
+      .attr("transform", `translate(${scatterMargin.left},${scatterMargin.top})`);
+    const scatterAnnotations = scatterChartArea.append("g");
+    const tooltip = d3.select("body").append("div").attr("class", "tooltip");
+
+    let fullData = [];
+    let currentData = [];
+    let xScale, yScale;
+
+
+
+    function updateScatter(scoreType, dataToUse = fullData) {
+      currentData = dataToUse;
+
+      scatterAnnotations.selectAll(".y.axis").remove();
+      scatterAnnotations.selectAll(".x.axis").remove();
+      scatterChartArea.selectAll("circle").remove();
+      scatterChartArea.selectAll(".brush").remove();
+
+      const yExtent = d3.extent(dataToUse, d => d[scoreType]);
+      yScale = d3.scaleLinear()
+        .domain(yExtent).nice()
+        .range([scatterAreaHeight, 0]);
+
+      xScale = d3.scaleTime()
+        .domain(d3.extent(dataToUse, d => d.date))
+        .range([0, scatterAreaWidth]);
+
+      const yAxis = d3.axisLeft(yScale);
+      //const xAxis = d3.axisBottom(xScale).tickFormat(d3.timeFormat("%b %Y"));
+      const xDomain = xScale.domain();
+      const timeSpan = xDomain[1] - xDomain[0];
+      const maxTicks = 5;
+
+      const xAxis = d3.axisBottom(xScale)
+        .ticks(Math.min(Math.max(scatterAreaWidth / 80, 5), maxTicks))
+        .tickFormat(d => {
+          return timeSpan < 1000 * 60 * 60 * 24 * 90
+            ? d3.timeFormat("%b %d, %Y")(d)
+            : d3.timeFormat("%b %Y")(d);
+        }
+        );
+
+      scatterAnnotations.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+      scatterAnnotations.append("g")
+        .attr("class", "x axis")
+        .attr("transform", `translate(0,${scatterAreaHeight})`)
+        .call(xAxis);
+
+      scattersvg.selectAll(".y-label").remove();
+      scattersvg.append("text")
+        .attr("class", "axis-label y-label")
+        .attr("x", -(scatterMargin.top + scatterAreaHeight / 2))
+        .attr("y", 20)
+        .attr("transform", "rotate(-90)")
+        .text(scoreType === "userscore" ? "Userscore" : "Metascore");
+
+      scattersvg.selectAll(".x-label").remove();
+      scattersvg.append("text")
+        .attr("class", "axis-label x-label")
+        .attr("x", scatterMargin.left + scatterAreaWidth / 2)
+        .attr("y", scatterHeight - 5)
+        .text("Release Date");
+
+      function getRadius(numPoints) {
+        const maxRadius = 5;
+        const minRadius = 2;
+        const radius = Math.max(minRadius, Math.min(maxRadius, maxRadius * (1 / Math.sqrt(numPoints / 1000))));
+        return radius;
+      }
+
+      scatterChartArea.selectAll("circle")
+        .data(dataToUse, d => d.title)
+        .enter()
+        .append("circle")
+        .attr("fill", "yellow")
+        .attr("opacity", 0.7)
+        .attr("cx", d => xScale(d.date))
+        .attr("cy", d => yScale(d[scoreType]))
+        .attr("r", d => getRadius(dataToUse.length))
+        //.style("pointer-events", "all") 
+        .on("mouseover", function (event, d) {
+          d3.select(this).attr("r", getRadius(dataToUse.length) + 2);
+          const formatDate = d3.timeFormat("%B %d, %Y");
+          tooltip
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 30) + "px")
+            .style("display", "inline-block")
+            .html(`<strong>${d.title}</strong><br/>Release Date: ${formatDate(d.date)}<br/>${scoreType}: ${d[scoreType]}`);
+        })
+        .on("mouseout", function () {
+          d3.select(this).attr("r", getRadius(dataToUse.length));
+          tooltip.style("display", "none");
+        })
+        .on("click", function (event, d) {
+          document.getElementById("game-title").textContent = `${d.title}`;
+          document.getElementById("game-release-date").textContent = `Release Date: ${d3.timeFormat("%B %d, %Y")(d.date)}`;
+          document.getElementById("game-score").textContent = `${scoreType === "userscore" ? "User Score" : "Meta Score"}: ${d[scoreType]}`;
+          document.getElementById("game-genres").textContent = `Genres: ${d.genres}`;
+          document.getElementById("game-description").textContent = `Description: ${d.description}`;
+          document.getElementById("game-platforms").textContent = `Platforms: ${d.platforms}`;
+          document.getElementById("game-metascore").textContent = `Metascore: ${d.metascore}`;
+          document.getElementById("game-developer").textContent = `Developer: ${d.developer}`;
+          document.getElementById("game-publisher").textContent = `Publisher: ${d.publisher}`;
+        });
+    }
+
+
+    async function loadData() {
+      fullData = await d3.csv("datasets/filtered_file.csv", d3.autoType);
+      //fullData = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType);
+      fullData.forEach(d => d.date = new Date(d.releaseDate));
+
+      updateScatter("userscore");
+    }
+
+    d3.select("#score-type").on("change", function () {
+      const selectedScore = this.value;
+      updateScatter(selectedScore, fullData);
+    });
+
+    d3.select("#reset-btn").on("click", () => {
+      const selectedScore = d3.select("#score-type").node().value;
+      updateScatter(selectedScore, fullData);
+    });
+
+    loadData();
+
+
+
+    // ----------- SCATTERPLOT END -----------------------------------
+
+
+
+
     // ----------- CALENDAR HEATMAP START -----------------------------------
     d3.csv("datasets/metacritic-time.csv", row => {
 
@@ -352,7 +557,17 @@
             .attr("width", monthBoxSize)
             .attr("height", monthBoxSize)
             .attr("fill", colorScale(count))
-            .attr("class", "month-box");
+            .attr("class", "month-box")
+            .on("click", function () {
+              const selectedYear = year;
+              const selectedMonth = monthIndex;
+              const filteredData = fullData.filter(d => {
+                const releaseDate = new Date(d.releaseDate);
+                return releaseDate.getFullYear() === selectedYear && releaseDate.getMonth() === selectedMonth;
+              });
+
+              updateScatter("userscore", filteredData);
+            });
 
           heatmapSvg.append("text")
             .attr("x", x + monthBoxSize / 2)
@@ -437,7 +652,7 @@
     const barsvg = d3.select("#barchart");
     const barWidth = barsvg.attr("width");
     const barHeight = barsvg.attr("height");
-    const barMargin = {top: 1, right: 1, bottom: 10, left: 1};
+    const barMargin = { top: 1, right: 1, bottom: 10, left: 1 };
 
     const barAreaWidth = barWidth - barMargin.left - barMargin.right;
     const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
@@ -447,213 +662,213 @@
 
     const annotations = barChartArea.append('g')
 
-     // ----------- LINECHART/TIMELINE START -----------------------------------------
+    // ----------- LINECHART/TIMELINE START -----------------------------------------
 
     const timelinesvg = d3.select("#toptimeline");
     const timelineWidth = timelinesvg.attr("width");
     const timelineHeight = timelinesvg.attr("height");
-    const timelineMargin = {top: 10, right: 60, bottom: 130, left: 60};
+    const timelineMargin = { top: 10, right: 60, bottom: 130, left: 60 };
 
     const timelineAreaWidth = timelineWidth - timelineMargin.left - timelineMargin.right;
     const timelineAreaHeight = timelineHeight - timelineMargin.top - timelineMargin.bottom;
 
     const timelineChartArea = timelinesvg.append("g")
-        .attr("transform", "translate("+(timelineMargin.left)+","+timelineMargin.top+")");
+      .attr("transform", "translate(" + (timelineMargin.left) + "," + timelineMargin.top + ")");
 
     const timelineAnnotations = timelineChartArea.append('g')
 
     const requestBarChartData = async function () {
 
-            majorLayoffs = await d3.csv("datasets/majorLayoffs.csv")
-                circlePositions = await d3.csv("datasets/physics-positions.csv")
+      majorLayoffs = await d3.csv("datasets/majorLayoffs.csv")
+      circlePositions = await d3.csv("datasets/physics-positions.csv")
 
 
-                companies = []
+      companies = []
 
-                majorLayoffs.forEach(d => {
-                    companies.push(d.Company);
-                    d.x = 0;
-                    d.y = 0;
-                    d['Number of Layoffs'] = Number(d["Number of Layoffs"])
-                });
+      majorLayoffs.forEach(d => {
+        companies.push(d.Company);
+        d.x = 0;
+        d.y = 0;
+        d['Number of Layoffs'] = Number(d["Number of Layoffs"])
+      });
 
 
-                const companyScale = d3.scaleBand()
-                    .domain(companies)
-                    .range([0, barAreaWidth])
-                    .padding(0.05)
+      const companyScale = d3.scaleBand()
+        .domain(companies)
+        .range([0, barAreaWidth])
+        .padding(0.05)
 
-                layoffMax = d3.max(majorLayoffs, d=>d["Number of Layoffs"])
-                layoffExtent = d3.extent([0, layoffMax])
+      layoffMax = d3.max(majorLayoffs, d => d["Number of Layoffs"])
+      layoffExtent = d3.extent([0, layoffMax])
 
-                const radiusScale = d3.scaleSqrt()
-                .domain(layoffExtent)
-                .range([5, 150]);
+      const radiusScale = d3.scaleSqrt()
+        .domain(layoffExtent)
+        .range([5, 150]);
 
-                const countScale = d3.scaleLinear()
-                    .domain(layoffExtent)
-                    .range([barAreaHeight, 0])
+      const countScale = d3.scaleLinear()
+        .domain(layoffExtent)
+        .range([barAreaHeight, 0])
 
-            // draw larger force simulation (for companies)
-            
-            const simulation = d3.forceSimulation(majorLayoffs)
-                .force("repulse", d3.forceManyBody().strength(-10))
-                .force("center", d3.forceCenter(barWidth / 2, barHeight / 2))
-                .force("collision", d3.forceCollide().radius(d=>radiusScale(d['Number of Layoffs']) + 3))
-                .force("x", d3.forceX(barWidth / 2))
-                .force("y", d3.forceY(barHeight / 2))
-                // .on("tick", render)
-                .stop();
+      // draw larger force simulation (for companies)
 
-            // render large company circles. 
-            function render() {
-            let nodes = barChartArea.selectAll("circle.node")
-                .data(majorLayoffs)
-                .join(
-                    enter => enter.append("circle")
-                        .attr("class", "node")
-                        .attr("r", d=>radiusScale(d['Number of Layoffs']))
-                        .attr("fill", "steelblue")
-                        .attr('stroke', 'black')
-                        .attr('stroke-width', 1)
+      const simulation = d3.forceSimulation(majorLayoffs)
+        .force("repulse", d3.forceManyBody().strength(-10))
+        .force("center", d3.forceCenter(barWidth / 2, barHeight / 2))
+        .force("collision", d3.forceCollide().radius(d => radiusScale(d['Number of Layoffs']) + 3))
+        .force("x", d3.forceX(barWidth / 2))
+        .force("y", d3.forceY(barHeight / 2))
+        // .on("tick", render)
+        .stop();
 
-                )
-                .attr("cx", d => d.x)
-                .attr("cy", d => d.y);
+      // render large company circles. 
+      function render() {
+        let nodes = barChartArea.selectAll("circle.node")
+          .data(majorLayoffs)
+          .join(
+            enter => enter.append("circle")
+              .attr("class", "node")
+              .attr("r", d => radiusScale(d['Number of Layoffs']))
+              .attr("fill", "steelblue")
+              .attr('stroke', 'black')
+              .attr('stroke-width', 1)
 
-            
-
-            }
-
-            simulation.tick(200);
-            render();
-
-            nodes= d3.selectAll('circle.node')
-                .on('click', function(event, d) {
-                  zoomOnItem(d)
-                })
-                .on("mouseover", function (event, d) {
-                        d3.select(this)
-                            .transition()
-                            .duration(100)
-                            .attr("r",d=>radiusScale(d['Number of Layoffs']) * 1.005)
-                            
-
-                    }).on("mouseout", function(event, d) {
-                        d3.select(this)
-                            .transition()
-                            .duration(1000)
-                            .attr("r",d=>radiusScale(d['Number of Layoffs']))
-                            
-                    })
+          )
+          .attr("cx", d => d.x)
+          .attr("cy", d => d.y);
 
 
 
-            // create little circles that will appear on zoom in --------------------------------
-            let smallNodes = barChartArea.selectAll(`circle.small-nodes`)
-                .data(circlePositions)
-                .join(
-                    enter => enter.append("circle")
-                        .attr("class", `small-nodes`)
-                        .attr("r", 1.5)
-                        .attr("fill", "blue")
-                        .attr("visibility", "hidden")
+      }
 
-                )
-                .attr("cx", d => d.x)
-                .attr("cy", d => d.y)
-                .on("mouseover", function (event, d) {
-                        d3.select(this)
-                            .transition()
-                            .duration(100)
-                            .attr("r",1.5*2)
-                            // simulation.alpha(1).restart();
+      simulation.tick(200);
+      render();
 
-                    }).on("mouseout", function(event, d) {
-                        d3.select(this)
-                            .transition()
-                            .duration(1000)
-                            .attr("r",1.5)
-                            // simulation.alpha(1).restart();
-                    }).on("click", function (event, d) {
-                      companyDataPoint = majorLayoffs.filter(ml => ml['Company'] == d.company)[0]
-                      zoomOnItem(companyDataPoint);
-                    })
+      nodes = d3.selectAll('circle.node')
+        .on('click', function (event, d) {
+          zoomOnItem(d)
+        })
+        .on("mouseover", function (event, d) {
+          d3.select(this)
+            .transition()
+            .duration(100)
+            .attr("r", d => radiusScale(d['Number of Layoffs']) * 1.005)
 
 
-            // add labels
-            majorLayoffs.forEach((d, i) => d.rank = i + 1);
-                let rank = barChartArea.selectAll(".rank")
-                    .data(majorLayoffs)
-                    .join("text")
-                    .attr("class", "rank")
-                    .text(d => d.rank)
-                    .attr("x", d => d.x)
-                    .attr("y", d => d.y - 15)
-                    .style("font-size", "12px")
-                    .style("text-anchor", "middle");
+        }).on("mouseout", function (event, d) {
+          d3.select(this)
+            .transition()
+            .duration(1000)
+            .attr("r", d => radiusScale(d['Number of Layoffs']))
 
-                let label = barChartArea.selectAll(".label")
-                    .data(majorLayoffs)
-                    .join("text")
-                    .attr("class", "label")
-                    .text(d => `${d.Company}`)
-                    .attr("x", d => d.x)
-                    .attr("y", d => d.y)
-                    .style("font-size", "10px")
-                    .style("text-anchor", "middle");
-
-                let label2 = barChartArea.selectAll(".label2")
-                    .data(majorLayoffs)
-                    .join("text")
-                    .attr("class", "label2")
-                    .text(d => `(${d["Number of Layoffs"]} Layoffs)`)
-                    .attr("x", d => d.x)
-                    .attr("y", d => d.y + 15)
-                    .style("font-size", "8px")
-                    .style("text-anchor", "middle")
-                    .attr("z-index", 9999)
+        })
 
 
-            // add zoom to graph -----------------------------------------------------------------------------------------
 
-            var zoom = d3.zoom()
-                    .scaleExtent([1,20])
-                    .translateExtent([[-50,-50],[barWidth+50,barHeight+50]])  // to lock to edges
-                    .on("zoom", mapZoomed);
-  
-            barChartArea.call(zoom);
+      // create little circles that will appear on zoom in --------------------------------
+      let smallNodes = barChartArea.selectAll(`circle.small-nodes`)
+        .data(circlePositions)
+        .join(
+          enter => enter.append("circle")
+            .attr("class", `small-nodes`)
+            .attr("r", 1.5)
+            .attr("fill", "blue")
+            .attr("visibility", "hidden")
 
-            function mapZoomed({transform}) {       
-                barChartArea.attr("transform", transform.toString() );
+        )
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y)
+        .on("mouseover", function (event, d) {
+          d3.select(this)
+            .transition()
+            .duration(100)
+            .attr("r", 1.5 * 2)
+          // simulation.alpha(1).restart();
 
-                d3.selectAll("circle.small-nodes")
-                    .transition(200)
-                    .attr("opacity", (transform.k > 3) ? 1 : 0)
-                    .attr("visibility", (transform.k > 2) ? "visible" : "hidden")
-            }
+        }).on("mouseout", function (event, d) {
+          d3.select(this)
+            .transition()
+            .duration(1000)
+            .attr("r", 1.5)
+          // simulation.alpha(1).restart();
+        }).on("click", function (event, d) {
+          companyDataPoint = majorLayoffs.filter(ml => ml['Company'] == d.company)[0]
+          zoomOnItem(companyDataPoint);
+        })
 
-            function zoomOnItem(d){
-                console.log(d)
-                // simulation.stop();
-                requestTimelineData(d["Company"]);
 
-                let x = d.x; // center x of state/county
-                let y = d.y; // center y of state/county
-                let radius = radiusScale(d['Number of Layoffs'])
-    
-                let scale = Math.max(1, Math.min(10, 0.9 / Math.max( radius / barWidth, 
-                                                                    radius / barHeight )));
-        
-                let translate = [barWidth / 2 - x * scale, barHeight / 2 - y * scale];
-        
+      // add labels
+      majorLayoffs.forEach((d, i) => d.rank = i + 1);
+      let rank = barChartArea.selectAll(".rank")
+        .data(majorLayoffs)
+        .join("text")
+        .attr("class", "rank")
+        .text(d => d.rank)
+        .attr("x", d => d.x)
+        .attr("y", d => d.y - 15)
+        .style("font-size", "12px")
+        .style("text-anchor", "middle");
 
-                let newTransform = d3.zoomIdentity
-                                    .translate(translate[0],translate[1])
-                                    .scale(scale);
+      let label = barChartArea.selectAll(".label")
+        .data(majorLayoffs)
+        .join("text")
+        .attr("class", "label")
+        .text(d => `${d.Company}`)
+        .attr("x", d => d.x)
+        .attr("y", d => d.y)
+        .style("font-size", "10px")
+        .style("text-anchor", "middle");
 
-                barChartArea.transition().duration(1000).call(zoom.transform, newTransform);
-            }
+      let label2 = barChartArea.selectAll(".label2")
+        .data(majorLayoffs)
+        .join("text")
+        .attr("class", "label2")
+        .text(d => `(${d["Number of Layoffs"]} Layoffs)`)
+        .attr("x", d => d.x)
+        .attr("y", d => d.y + 15)
+        .style("font-size", "8px")
+        .style("text-anchor", "middle")
+        .attr("z-index", 9999)
+
+
+      // add zoom to graph -----------------------------------------------------------------------------------------
+
+      var zoom = d3.zoom()
+        .scaleExtent([1, 20])
+        .translateExtent([[-50, -50], [barWidth + 50, barHeight + 50]])  // to lock to edges
+        .on("zoom", mapZoomed);
+
+      barChartArea.call(zoom);
+
+      function mapZoomed({ transform }) {
+        barChartArea.attr("transform", transform.toString());
+
+        d3.selectAll("circle.small-nodes")
+          .transition(200)
+          .attr("opacity", (transform.k > 3) ? 1 : 0)
+          .attr("visibility", (transform.k > 2) ? "visible" : "hidden")
+      }
+
+      function zoomOnItem(d) {
+        console.log(d)
+        // simulation.stop();
+        requestTimelineData(d["Company"]);
+
+        let x = d.x; // center x of state/county
+        let y = d.y; // center y of state/county
+        let radius = radiusScale(d['Number of Layoffs'])
+
+        let scale = Math.max(1, Math.min(10, 0.9 / Math.max(radius / barWidth,
+          radius / barHeight)));
+
+        let translate = [barWidth / 2 - x * scale, barHeight / 2 - y * scale];
+
+
+        let newTransform = d3.zoomIdentity
+          .translate(translate[0], translate[1])
+          .scale(scale);
+
+        barChartArea.transition().duration(1000).call(zoom.transform, newTransform);
+      }
 
       // SET UP FOR TIMELINE (CONSTANTS) ------------------------------------------------------------------------------------------------------
 
@@ -662,14 +877,14 @@
 
       const parseDate = d3.timeParse("%Y-%m-%d");
       companyLayoffs.forEach(d => {
-        
+
         d['Headcount'] = Number(d["Headcount"])
         d['Date'] = parseDate(d['Date'])
 
       });
 
       companyGames.forEach(d => {
-        
+
         d['metascore'] = Number(d["metascore"])
         d['releaseDate'] = parseDate(d['releaseDate'])
 
@@ -681,114 +896,114 @@
 
       // Y axis: Counts
       headcountScale = d3.scaleLinear()
-          .range([timelineAreaHeight, 0])
-      
+        .range([timelineAreaHeight, 0])
+
       timelineAnnotations.append("g")
-          .attr("class", "y-axis-left-TL")
-          .attr("transform",`translate(${-10},${0})`)
+        .attr("class", "y-axis-left-TL")
+        .attr("transform", `translate(${-10},${0})`)
 
       // X axis: Year
       yearScale = d3.scaleLinear()
-          .range([0, timelineAreaWidth]); 
+        .range([0, timelineAreaWidth]);
 
       timelineAnnotations.append('g')
-          .attr('class', 'x-axis-TL')
-          .attr("transform",`translate(0,${timelineAreaHeight + 1})`)
-      
+        .attr('class', 'x-axis-TL')
+        .attr("transform", `translate(0,${timelineAreaHeight + 1})`)
+
       // Draw trend line
 
       timelineChartArea.append("path")
-          .attr("class", "line-TL")
-          .attr("fill", "none")  
-          .attr("stroke", "steelblue")
-          .attr("stroke-width", 2)
+        .attr("class", "line-TL")
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2)
 
-        // draw bars
+      // draw bars
 
-        width = 12;
-        companylayoffBars = timelineChartArea.selectAll('rect.layoffs').data(companyLayoffs)
-          .join('rect')
-          .attr("class", 'layoffs')
-          .attr('fill', 'steelblue')
+      width = 12;
+      companylayoffBars = timelineChartArea.selectAll('rect.layoffs').data(companyLayoffs)
+        .join('rect')
+        .attr("class", 'layoffs')
+        .attr('fill', 'steelblue')
 
-        // add vertical line for unclear layoff numbers
-        verticalLines = timelineChartArea.selectAll("line.news").data(companyLayoffs)
-              .join("line")
-              .attr("class", "news")
-              .attr('stroke-width', 2)
-              .attr('opacity', 1)
-              .attr('stroke', 'orange')
-              .style("stroke-dasharray", ("3, 3"))  // <== This line here!!
+      // add vertical line for unclear layoff numbers
+      verticalLines = timelineChartArea.selectAll("line.news").data(companyLayoffs)
+        .join("line")
+        .attr("class", "news")
+        .attr('stroke-width', 2)
+        .attr('opacity', 1)
+        .attr('stroke', 'orange')
+        .style("stroke-dasharray", ("3, 3"))  // <== This line here!!
 
-        // Second Y Axis: Games
+      // Second Y Axis: Games
 
-        metacriticExtent = d3.extent(companyGames, d=>d["metascore"])
+      metacriticExtent = d3.extent(companyGames, d => d["metascore"])
 
-        metacriticScale = d3.scaleLinear()
-            .range([timelineAreaHeight, 0])
+      metacriticScale = d3.scaleLinear()
+        .range([timelineAreaHeight, 0])
 
-        timelineAnnotations.append("g")
-            .attr("class", "y-axis-right-TL")
-            .attr("transform",`translate(${timelineAreaWidth},${0})`)
+      timelineAnnotations.append("g")
+        .attr("class", "y-axis-right-TL")
+        .attr("transform", `translate(${timelineAreaWidth},${0})`)
 
-        let gameCircles = timelineChartArea.selectAll("circle.gamesTL").data(companyGames)
-            .join("circle")
-            .attr("class", "gamesTL")
-            .attr('r', 3)
-            .attr('fill', 'white')
-            
-        // Hover Controls   
+      let gameCircles = timelineChartArea.selectAll("circle.gamesTL").data(companyGames)
+        .join("circle")
+        .attr("class", "gamesTL")
+        .attr('r', 3)
+        .attr('fill', 'white')
 
-        TLtooltip = d3.select("#gameTooltip");
+      // Hover Controls   
+
+      TLtooltip = d3.select("#gameTooltip");
 
 
-    requestTimelineData = function(company) {
-        
-        selectedCompanyLayoffs = companyLayoffs.filter(d => (d['Studio'] ? company.includes(d['Studio']) || d['Studio'].includes(company) : false )|| (d["Parent"] ? d['Parent'].includes(company) || company.includes(d['Parent']) : false))
+      requestTimelineData = function (company) {
+
+        selectedCompanyLayoffs = companyLayoffs.filter(d => (d['Studio'] ? company.includes(d['Studio']) || d['Studio'].includes(company) : false) || (d["Parent"] ? d['Parent'].includes(company) || company.includes(d['Parent']) : false))
         selectedCompanyGames = companyGames.filter(d => d['publisher'].includes(company) || company.includes(d['publisher']))
 
         // Y axis: Counts
-        companyLayoffExtent = d3.extent([0, d3.max(selectedCompanyLayoffs, d=>d["Headcount"])])
+        companyLayoffExtent = d3.extent([0, d3.max(selectedCompanyLayoffs, d => d["Headcount"])])
         headcountScale.domain(companyLayoffExtent)
-        
+
         TLleftAxis = d3.axisLeft(headcountScale)
-            .tickFormat(d3.format("~f")) // no commas
-        
+          .tickFormat(d3.format("~f")) // no commas
+
         d3.select(".y-axis-left-TL")
           .transition()
           .duration(300)
           .call(TLleftAxis);
-        
+
         companyDataPoint = majorLayoffs.filter(d => d['Company'] == company)[0]
         yearExtent = [companyDataPoint["Start Date"], companyDataPoint["End Date"]]
         yearScale.domain(yearExtent)
         TLbottomAxis = d3.axisBottom(yearScale)
-        .tickFormat(d3.timeFormat("%Y"));
-        
+          .tickFormat(d3.timeFormat("%Y"));
+
         d3.select(".x-axis-TL")
           .transition()
           .duration(300)
           .call(TLbottomAxis);
-        
+
         // Draw trend line
 
         var lineGen = d3.line()
-            .x( d => yearScale(d['Date']) )
-            .y( d => headcountScale(d['Headcount'] ? d['Headcount'] : 0) )
-            // .curve(d3.curveMonotoneX);  
-        
+          .x(d => yearScale(d['Date']))
+          .y(d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
+        // .curve(d3.curveMonotoneX);  
+
         d3.select(".line-TL")
-            .datum(selectedCompanyLayoffs)
-            .attr("d", lineGen);
+          .datum(selectedCompanyLayoffs)
+          .attr("d", lineGen);
 
         // draw bars
 
         width = 12;
-        companylayoffBars= timelineChartArea.selectAll('rect.layoffs').data(selectedCompanyLayoffs)
+        companylayoffBars = timelineChartArea.selectAll('rect.layoffs').data(selectedCompanyLayoffs)
           .join('rect')
           .attr("class", 'layoffs')
           .attr('fill', 'steelblue')
-          .attr('x', d => yearScale(d['Date']) - width/2)
+          .attr('x', d => yearScale(d['Date']) - width / 2)
           .attr('y', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
           .attr('height', d => headcountScale(companyLayoffExtent[0]) - headcountScale(d['Headcount'] ? d['Headcount'] : 0))
           .attr('width', width)
@@ -796,24 +1011,24 @@
         // add dots to graph to indicate news
         // add vertical line for unclear layoff numbers
         verticalLines = timelineChartArea.selectAll("line.news").data(selectedCompanyLayoffs)
-              .join("line")
-              .attr("class", "news")
-              .attr('stroke-width', 2)
-              .attr('opacity', 1)
-              .attr('stroke', 'orange')
-              .style("stroke-dasharray", ("3, 3"))  // <== This line here!!
-              .attr('x1', d=>  d['Headcount'] ? 0 : yearScale(d['Date'])) // if no headcount, place a line at the corresponding date
-              .attr('y1', headcountScale(0))
-              .attr('x2', d=> d['Headcount'] ? 0 : yearScale(d['Date']))
-              .attr('y2', headcountScale(companyLayoffExtent[1]))
+          .join("line")
+          .attr("class", "news")
+          .attr('stroke-width', 2)
+          .attr('opacity', 1)
+          .attr('stroke', 'orange')
+          .style("stroke-dasharray", ("3, 3"))  // <== This line here!!
+          .attr('x1', d => d['Headcount'] ? 0 : yearScale(d['Date'])) // if no headcount, place a line at the corresponding date
+          .attr('y1', headcountScale(0))
+          .attr('x2', d => d['Headcount'] ? 0 : yearScale(d['Date']))
+          .attr('y2', headcountScale(companyLayoffExtent[1]))
 
         // Second Y Axis: Games
 
-        metacriticExtent = d3.extent(selectedCompanyGames, d=>d["metascore"])
+        metacriticExtent = d3.extent(selectedCompanyGames, d => d["metascore"])
         metacriticScale.domain(metacriticExtent)
-      
+
         let rightAxis = d3.axisRight(metacriticScale)
-            .tickFormat(d3.format("~f")) // no commas
+          .tickFormat(d3.format("~f")) // no commas
 
         d3.select(".y-axis-right-TL")
           .transition()
@@ -821,13 +1036,13 @@
           .call(rightAxis);
 
         let gameCircles = timelineChartArea.selectAll("circle.gamesTL")
-            .data(selectedCompanyGames)
-            .join("circle")
-            .attr("class", "gamesTL")
-            .attr('cy', d => metacriticScale(d["metascore"]))
-            .attr('cx', d=> yearScale(d['releaseDate']))
-            .attr('r', 3)
-            .attr('fill', 'white')
+          .data(selectedCompanyGames)
+          .join("circle")
+          .attr("class", "gamesTL")
+          .attr('cy', d => metacriticScale(d["metascore"]))
+          .attr('cx', d => yearScale(d['releaseDate']))
+          .attr('r', 3)
+          .attr('fill', 'white')
 
 
         // Hover Controls   
@@ -839,25 +1054,25 @@
 
           console.log(d)
 
-            d3.select(this)
-                .attr('r', 5)
+          d3.select(this)
+            .attr('r', 5)
 
-            const rect = this.getBoundingClientRect(); // Get screen position of the bar
+          const rect = this.getBoundingClientRect(); // Get screen position of the bar
 
-            tooltip
-                .style("visibility", "visible")
-                .style("opacity", 1)
-                .html(`<strong> ${d["title"]} </strong>: ${d['metascore']} `)
-                .style("left", `${rect.right + 10}px`)
-                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
-        
-            
-        }).on("mouseout", function(event, d) {
+          tooltip
+            .style("visibility", "visible")
+            .style("opacity", 1)
+            .html(`<strong> ${d["title"]} </strong>: ${d['metascore']} `)
+            .style("left", `${rect.right + 10}px`)
+            .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
 
-            d3.select(this)
-                .attr('r', 3)
 
-            tooltip
+        }).on("mouseout", function (event, d) {
+
+          d3.select(this)
+            .attr('r', 3)
+
+          tooltip
             .style("visibility", "visible")
             .style("opacity", 0)
 
@@ -866,38 +1081,38 @@
 
         companylayoffBars.on("mouseover", function (event, d) {
 
-            d3.select(this)
-                .attr('r', 5)
+          d3.select(this)
+            .attr('r', 5)
 
-            console.log(d)
+          console.log(d)
 
-            const rect = this.getBoundingClientRect(); // Get screen position of the bar
+          const rect = this.getBoundingClientRect(); // Get screen position of the bar
 
-            tooltip
-                .style("visibility", "visible")
-                .style("opacity", 1)
-                .html(`<strong> Layoffs </strong>: ${d['Headcount']} `)
-                .style("left", `${rect.right + 10}px`)
-                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
+          tooltip
+            .style("visibility", "visible")
+            .style("opacity", 1)
+            .html(`<strong> Layoffs </strong>: ${d['Headcount']} `)
+            .style("left", `${rect.right + 10}px`)
+            .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
 
 
-        }).on("mouseout", function(event, d) {
+        }).on("mouseout", function (event, d) {
 
-            d3.select(this)
-                .attr('r', 4)
+          d3.select(this)
+            .attr('r', 4)
 
-            tooltip
+          tooltip
             .style("visibility", "visible")
             .style("opacity", 0)
 
         })
-        
+
+      }
+
     }
 
-  }
-
     requestBarChartData();
-    
+
 
 
 
