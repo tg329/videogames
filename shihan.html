@@ -6,24 +6,16 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0 auto;
-            padding: 20px;
-            max-width: 1200px;
-        }
-
         .leaderboard {
             position: absolute;
-            top: 120px;
+            top: 20px;
             left: 1000px;
             width: 300px;
-            padding: 10px;
+            padding: 20px;
         }
 
         .leaderboard h2 {
             text-align: center;
-            margin-bottom: 10px;
         }
 
         .leaderboard .item {
@@ -47,33 +39,25 @@
         .tooltip {
             position: absolute;
             padding: 8px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.8);
             color: #fff;
             border-radius: 5px;
-            pointer-events: none;
-            display: none;
         }
 
-        .axis-label {
-            font-size: 14px;
-            font-weight: bold;
-        }
     </style>
 </head>
 
 <body>
     <div class="leaderboard">
-        <h2>Top 10 Games</h2>
+        <h2>Top 10 Games based on Metascore</h2>
         <div id="leaderboard-list"></div>
+
     </div>
 
-    <p> A metascore is a weighted average of reviews from critics and users. The score is calculated based on the
-        reviews of the game, with a higher score indicating a better reception. </p>
-    <p>The scatterplot shows the
-        relationship between the release year and the metascore of the top 10 games. Click on a game in the leaderboard
-        to highlight it.</p>
-        
-    <svg id="scatterplot" height="500" width="800"></svg>
+    <p>The bubble chart shows the relationship between the release year and the metascore of games. The size of each
+        bubble represents the number of games with the same release year and metascore.</p>
+
+    <svg id="scatterplot" height="850" width="800"></svg>
 
     <script>
         const scattersvg = d3.select("#scatterplot");
@@ -91,21 +75,14 @@
 
         const tooltip = d3.select("body").append("div").attr("class", "tooltip");
 
-        let currentActive = null;
-
-        const requestscatterData = async function () {
+        const bubble = async function () {
             const TopMetacritic = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType);
-            const vg = await d3.csv("datasets/vgchartz-2024.csv", d3.autoType);
 
             TopMetacritic.forEach(d => {
                 d.releaseYear = new Date(d.releaseDate).getFullYear();
             });
-    
-            console.log(TopMetacritic);
 
             const topGames = TopMetacritic.sort((a, b) => b.metascore - a.metascore).slice(0, 10);
-
-            console.log(topGames);
 
             const leaderboard = d3.select("#leaderboard-list");
             leaderboard.selectAll("div")
@@ -114,38 +91,46 @@
                 .attr("class", "item")
                 .text(d => d.title)
                 .on("click", function (event, d) {
+
                     scatterChartArea.selectAll("circle")
-                        .attr("fill", "steelblue");
+                        .attr("fill", d => colorScale(d.score))
+                        .attr("r", d => Math.sqrt(d.count) * 5);
 
                     leaderboard.selectAll(".item").classed("active", false);
                     d3.select(this).classed("active", true);
 
                     scatterChartArea.selectAll("circle")
-                        .filter(cd => cd.title === d.title)
-                        .attr("fill", "red");
+                        .filter(cd => cd.titles.includes(d.title))
+                        .attr("fill", "red")
+                        .attr("r", d => Math.sqrt(d.count) * 8);
                 });
 
             const scoreScale = d3.scaleLinear()
                 .domain([50, 100])
                 .range([scatterAreaHeight, 0]);
 
-            const leftAxis = d3.axisLeft(scoreScale).tickFormat(d3.format(""));
-            scatterAnnotations.append("g").attr("class", "y axis").call(leftAxis);
-
             const yearExtent = d3.extent(TopMetacritic, d => d.releaseYear);
-            const paddedExtent = [Math.floor(yearExtent[0]), Math.ceil(yearExtent[1])];
             const yearScale = d3.scaleLinear()
-                .domain(paddedExtent)
-                .range([0, scatterAreaWidth]);
+                .domain([Math.floor(yearExtent[0]), Math.ceil(yearExtent[1])])
+                .range([20, scatterAreaWidth]);
 
-            const bottomAxis = d3.axisBottom(yearScale)
-                .tickFormat(d3.format("d"))
-                .ticks(paddedExtent[1] - paddedExtent[0]);
+            const colorScale = d3.scaleSequential(d3.interpolateBlues)
+                .domain([50, 100]);
+
+            scatterAnnotations.append("g")
+                .attr("class", "y axis")
+                .call(d3.axisLeft(scoreScale).tickFormat(d3.format("")));
 
             scatterAnnotations.append("g")
                 .attr("class", "x axis")
                 .attr("transform", `translate(0,${scatterAreaHeight})`)
-                .call(bottomAxis);
+                .call(d3.axisBottom(yearScale).tickFormat(d3.format("d")));
+
+            scattersvg.append("text")
+                .attr("class", "chart-title")
+                .attr("x", scatterWidth / 2)
+                .attr("y", 20)
+                .text("Metascore vs. Release Year");
 
             scattersvg.append("text")
                 .attr("class", "axis-label")
@@ -160,31 +145,64 @@
                 .attr("transform", "rotate(-90)")
                 .text("Metascore");
 
+            //group data by release year and metascore
+            let groupedData = {};
+
+            for (let i = 0; i < TopMetacritic.length; i++) {
+                let game = TopMetacritic[i];
+                let year = game.releaseYear;
+                let score = game.metascore;
+                if (!groupedData[year]) {
+                    groupedData[year] = {};
+                }
+                if (!groupedData[year][score]) {
+                    groupedData[year][score] = {
+                        count: 0,
+                        titles: []
+                    };
+                }
+
+                groupedData[year][score].count += 1;
+                groupedData[year][score].titles.push(game.title);
+            }
+
+            let data = [];
+            for (let year in groupedData) {
+                for (let score in groupedData[year]) {
+                    let entry = groupedData[year][score];
+                    data.push({
+                        year: +year,
+                        score: +score,
+                        titles: entry.titles.join(", ")
+                    });
+                }
+            }
             scatterChartArea.selectAll("circle")
-                .data(TopMetacritic)
+                .data(data)
                 .join("circle")
-                .attr("fill", "steelblue")
-                .attr("cx", d => yearScale(d.releaseYear))
-                .attr("cy", d => scoreScale(d.metascore))
-                .attr("r", 5)
+                .attr("fill", d => colorScale(d.score))
+                .attr("cx", d => yearScale(d.year))
+                .attr("cy", d => scoreScale(d.score))
+                .attr("r", d => Math.sqrt(d.count) * 5) //size based on count
                 .on("mouseover", function (event, d) {
                     d3.select(this)
-                    .attr("r", 8);
+                        .attr("stroke", "black")
+                        .attr("stroke-width", 2);
 
                     tooltip.style("left", (event.pageX + 10) + "px")
                         .style("top", (event.pageY - 30) + "px")
                         .style("display", "inline-block")
-                        .html(`<strong>${d.title}</strong><br/>Year: ${d.releaseYear}<br/>Score: ${d.metascore}`);
+                        .html(`<strong>Year:</strong> ${d.year}<br/>
+                               <strong>Score:</strong> ${d.score}<br/>
+                               <strong>Games:</strong> ${d.titles}`);
                 })
                 .on("mouseout", function () {
                     d3.select(this)
-                    .attr("r", 5);
-                    
+                        .attr("stroke", "none");
                     tooltip.style("display", "none");
                 });
         };
-
-        requestscatterData();
+        bubble();
     </script>
 
 </body>
