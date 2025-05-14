@@ -154,7 +154,9 @@
             simulation.tick(200);
             render();
 
-            nodes= d3.selectAll('circle.node');
+            nodes= d3.selectAll('circle.node')
+                    .on('click', clicked)
+
             // nodes.on("mouseover", function (event, d) {
             //             d3.select(this)
             //                 .transition()
@@ -168,7 +170,7 @@
             //                 .duration(1000)
             //                 .attr("r",d=>radiusScale(d['Number of Layoffs']))
                             
-            //         }).on('click', clicked)
+                    // })
 
 
 
@@ -287,6 +289,7 @@
                         .attr("class", `small-nodes`)
                         .attr("r", 1.5)
                         .attr("fill", "red")
+                        .attr("visibility", "hidden")
 
                 )
                 .attr("cx", d => d.x)
@@ -295,7 +298,7 @@
                         d3.select(this)
                             .transition()
                             .duration(100)
-                            .attr("r",1.5*4)
+                            .attr("r",1.5*2)
                             // simulation.alpha(1).restart();
 
                     }).on("mouseout", function(event, d) {
@@ -328,9 +331,10 @@
 
                 console.log(transform.k)
 
-                // d3.selectAll("circle.small-nodes").remove();
-                //     .transition(100)
-                //     .attr("visibility", (transform.k > 3) ? "visible" : "hidden")
+                d3.selectAll("circle.small-nodes")
+                    .transition(200)
+                    .attr("opacity", (transform.k > 3) ? 1 : 0)
+                    .attr("visibility", (transform.k > 2) ? "visible" : "hidden")
 
                 // if (transform.k > 3){
                 //     smallSimulation.alpha(1).restart();
@@ -359,7 +363,7 @@
         
             function clicked(event, d) {
                 console.log(d)
-                simulation.stop();
+                // simulation.stop();
 
 
                 let x = d.x; // center x of state/county

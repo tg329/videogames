@@ -1669,7 +1669,6 @@ id,company,x,y
 1667,Electronic Arts,201.453,281.694
 1668,Electronic Arts,254.931,276.221
 1669,Electronic Arts,234.412,344.724
-id,company,x,y
 0,Embracer Group,533.440,569.246
 1,Embracer Group,463.567,393.555
 2,Embracer Group,563.190,565.352
@@ -9560,7 +9559,6 @@ id,company,x,y
 7887,Embracer Group,435.144,473.203
 7888,Embracer Group,557.116,537.720
 7889,Embracer Group,318.688,522.328
-id,company,x,y
 0,Epic Games,378.084,391.322
 1,Epic Games,340.275,327.502
 2,Epic Games,384.559,385.151
@@ -10431,7 +10429,6 @@ id,company,x,y
 867,Epic Games,310.825,355.004
 868,Epic Games,349.948,392.862
 869,Epic Games,334.509,415.234
-id,company,x,y
 0,Microsoft Game Studios,673.497,367.799
 1,Microsoft Game Studios,625.919,257.323
 2,Microsoft Game Studios,684.373,363.974
@@ -13312,7 +13309,6 @@ id,company,x,y
 2877,Microsoft Game Studios,708.490,310.906
 2878,Microsoft Game Studios,545.182,314.059
 2879,Microsoft Game Studios,710.200,350.014
-id,company,x,y
 0,Riot Games,293.145,538.689
 1,Riot Games,269.072,489.657
 2,Riot Games,295.277,535.297
@@ -13875,7 +13871,6 @@ id,company,x,y
 559,Riot Games,289.258,538.425
 560,Riot Games,264.472,540.417
 561,Riot Games,304.329,519.530
-id,company,x,y
 0,SEGA,288.169,448.965
 1,SEGA,266.885,405.537
 2,SEGA,301.475,446.866
@@ -14314,7 +14309,6 @@ id,company,x,y
 435,SEGA,259.134,424.118
 436,SEGA,259.625,427.013
 437,SEGA,240.833,457.156
-id,company,x,y
 0,Sony Interactive Entertainment,527.632,137.475
 1,Sony Interactive Entertainment,490.270,53.847
 2,Sony Interactive Entertainment,552.423,138.345
@@ -15883,7 +15877,6 @@ id,company,x,y
 1565,Sony Interactive Entertainment,435.764,109.279
 1566,Sony Interactive Entertainment,498.448,53.864
 1567,Sony Interactive Entertainment,500.794,183.895
-id,company,x,y
 0,Take-Two Interactive,461.506,349.409
 1,Take-Two Interactive,438.560,297.997
 2,Take-Two Interactive,465.355,346.069
@@ -16514,7 +16507,6 @@ id,company,x,y
 627,Take-Two Interactive,469.606,328.499
 628,Take-Two Interactive,468.754,325.966
 629,Take-Two Interactive,468.887,340.026
-id,company,x,y
 0,Ubisoft,538.755,268.089
 1,Ubisoft,504.039,203.488
 2,Ubisoft,537.086,261.728
@@ -17536,7 +17528,6 @@ id,company,x,y
 1018,Ubisoft,467.510,233.038
 1019,Ubisoft,486.228,230.996
 1020,Ubisoft,543.015,255.418
-id,company,x,y
 0,Unity Technologies,403.163,239.737
 1,Unity Technologies,343.065,116.956
 2,Unity Technologies,429.191,237.107
