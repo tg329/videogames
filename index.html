@@ -277,7 +277,8 @@
       <div class="bar-display">
         <h2 class="bar-title">Major Game Company Layoffs</h2>
         <h3 class="bar-title">Here are the top ten companies with the most significant layoffs.
-          <br> click on a company to view their layoff time line
+          <br> click on a company to view their layoff time line.
+          <br> Numbers are an estimate. Exact numbers are not always reported
         </h2>
         <svg id="barchart" height="400" width="1200"> </svg>
         <div id="tooltip" class="tooltip">
@@ -813,6 +814,7 @@
           .attr('y', d => headcountScale(d['Headcount'] ? d['Headcount'] : 0))
           .attr('height', d => headcountScale(companyLayoffExtent[0]) - headcountScale(d['Headcount'] ? d['Headcount'] : 0))
           .attr('width', width)
+          .attr('fill', "#4b7159")
 
         // add dots to graph to indicate news
         // add vertical line for unclear layoff numbers
