@@ -214,6 +214,12 @@
     }
 
 
+    /* .bar-display {
+      display: flex;
+      flex-direction: column;  
+    } */
+
+
 
 
   </style>
@@ -266,14 +272,22 @@
 
   <div class="page" id="page2">
 
-    <div class="bar-display">
-      <h2 class="bar-title">Major Game Company Layoffs</h2>
-      <svg id="barchart" height="700" width="800"> </svg>
-      <div id="tooltip" class="tooltip">
-      </div>
-      <div id="gameTooltip" class="tooltipgame"></div>
+    <!-- <div class="page2-display"> -->
+      <div class="bar-display">
+        <h2 class="bar-title">Major Game Company Layoffs</h2>
+        <svg id="barchart" height="700" width="800"> </svg>
+        <div id="tooltip" class="tooltip">
+        </div>
+        <div id="gameTooltip" class="tooltipgame"></div>
         <svg id="toptimeline" height="300" width="700"> </svg>
-    </div>
+      </div>
+      <!-- <svg id="Alltimeline" height="300" width="700"> </svg> -->
+
+    <!-- </div> -->
+    
+
+
+
 
   </div>
 
@@ -809,7 +823,10 @@
 
         // Second Y Axis: Games
 
-        metacriticExtent = d3.extent(selectedCompanyGames, d=>d["metascore"])
+        // metacriticExtent = d3.extent(selectedCompanyGames, d=>d["metascore"])
+        metacriticMin = d3.min(selectedCompanyGames, d=>d['metascore']) - 5;
+        console.log(metacriticMin)
+        metacriticExtent = [metacriticMin, 100]
         metacriticScale.domain(metacriticExtent)
       
         let rightAxis = d3.axisRight(metacriticScale)
@@ -834,6 +851,51 @@
 
         const tooltip = d3.select("#gameTooltip");
 
+
+        function linkToSource(d){
+          // open page to source of layoff information if it exists. 
+          link = d["Source"]
+          if (link.includes("https://")){
+            window.open(link, '_blank').focus();
+            // console.log(hyperlink)
+          }
+        }
+
+        verticalLines.on("mouseover", function (event, d) {
+          console.log(d)
+
+            d3.select(this)
+                .attr('stroke-width', 3)
+
+            const rect = this.getBoundingClientRect(); // Get screen position of the bar
+
+            tooltip
+                .style("visibility", "visible")
+                .style("opacity", 1)
+                .html(`<strong> Layoffs </strong>: Exact Number Unknown `)
+                .style("left", `${rect.right + 10}px`)
+                .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
+
+              if (d["Source"].includes("https://")){
+                 tooltip.html(`<strong> Layoffs: </strong>: Exact Number Unknown']} 
+                              <br> Click to visit news link`)
+              }
+        
+            
+        }).on("mouseout", function(event, d) {
+
+            d3.select(this)
+                .attr('stroke-width', 2)
+
+            tooltip
+            .style("visibility", "visible")
+            .style("opacity", 0)
+
+        }).on("click", function (event, d){
+          linkToSource(d)
+
+        })
+
         gameCircles.on("mouseover", function (event, d) {
 
 
@@ -850,7 +912,8 @@
                 .html(`<strong> ${d["title"]} </strong>: ${d['metascore']} `)
                 .style("left", `${rect.right + 10}px`)
                 .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
-        
+
+              
             
         }).on("mouseout", function(event, d) {
 
@@ -880,6 +943,15 @@
                 .style("left", `${rect.right + 10}px`)
                 .style("top", `${rect.top + rect.height / 2}px`); // 40px above the bar
 
+              if (d["Source"].includes("https://")){
+                 tooltip.html(`<strong> Layoffs </strong>: ${d['Headcount']} 
+                              <br> Click to visit news link`)
+              }
+        
+
+            //   console.log(d['Source'])
+            // document.getElementById("myFrame").src = d['Source']
+
 
         }).on("mouseout", function(event, d) {
 
@@ -889,6 +961,9 @@
             tooltip
             .style("visibility", "visible")
             .style("opacity", 0)
+
+        }).on("click", function (event, d){
+          linkToSource(d)
 
         })
         
