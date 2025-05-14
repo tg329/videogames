@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Final Project - Scatterplot with Year Slider</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .axis-label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #controls {
+            margin-bottom: 20px;
+        }
+
+        button {
+            margin-left: 10px;
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+
+        .brush .handle {
+            fill: #444;
+            stroke: #fff;
+            cursor: ew-resize;
+            rx: 5;
+            ry: 5;
+        }
+
+        .brush .selection {
+            fill: #ccc;
+            fill-opacity: 0.4;
+            stroke: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="controls">
+        <label for="score-type">Y-axis Score Type:</label>
+        <select id="score-type">
+            <option value="userscore">Userscore</option>
+            <option value="metascore">Metascore</option>
+        </select>
+        <button id="reset-btn">Reset View</button>
+    </div>
+
+    <p>This scatterplot shows the relationship between video game release dates and their ratings. Use the slider on the x-axis to filter by year.</p>
+
+    <svg id="scatterplot" height="550" width="800"></svg>
+
+    <div id="game-details" style="margin-top: 20px; font-size: 16px;">
+        <h3>Game Details</h3>
+        <div id="details-content">
+            <p><strong>Title:</strong> <span id="detail-title">Click a point to view details.</span></p>
+            <p><strong>Release Date:</strong> <span id="detail-release-date"></span></p>
+            <p><strong>Rating:</strong> <span id="detail-rating"></span></p>
+            <p><strong>Genres:</strong> <span id="detail-genres"></span></p>
+            <p><strong>Description:</strong> <span id="detail-description"></span></p>
+            <p><strong>Platforms:</strong> <span id="detail-platforms"></span></p>
+            <p><strong>Metascore:</strong> <span id="detail-metascore"></span> (<span id="detail-metascore-sentiment"></span> from <span id="detail-metascore-count"></span> reviews)</p>
+            <p><strong>User Score:</strong> <span id="detail-userscore"></span> (<span id="detail-userscore-sentiment"></span> from <span id="detail-userscore-count"></span> reviews)</p>
+            <p><strong>Developer:</strong> <span id="detail-developer"></span></p>
+            <p><strong>Publisher:</strong> <span id="detail-publisher"></span></p>
+        </div>
+    </div>
+
+    <script>
+        const scattersvg = d3.select("#scatterplot");
+        const scatterWidth = +scattersvg.attr("width");
+        const scatterHeight = +scattersvg.attr("height");
+        const scatterMargin = { top: 20, right: 20, bottom: 80, left: 100 };
+        const scatterAreaWidth = scatterWidth - scatterMargin.left - scatterMargin.right;
+        const scatterAreaHeight = scatterHeight - scatterMargin.top - scatterMargin.bottom;
+
+        const scatterChartArea = scattersvg.append("g")
+            .attr("transform", `translate(${scatterMargin.left},${scatterMargin.top})`);
+        const scatterAnnotations = scatterChartArea.append("g");
+        const tooltip = d3.select("body").append("div").attr("class", "tooltip");
+
+        let fullData = [];
+        let xScale, yScale;
+        let currentScoreType = "userscore";
+        let currentBrushExtent;
+
+        function getFilteredData(scoreType) {
+            if (!currentBrushExtent) return fullData;
+            return fullData.filter(d => {
+                const x = xScale(d.date);
+                return x >= currentBrushExtent[0] && x <= currentBrushExtent[1];
+            });
+        }
+
+        function updateScatter(scoreType) {
+            const filteredData = getFilteredData(scoreType);
+
+            scatterAnnotations.selectAll(".y.axis").remove();
+            scatterAnnotations.selectAll(".x.axis").remove();
+            scatterChartArea.selectAll("circle").remove();
+            scattersvg.selectAll(".x-label, .y-label").remove();
+
+            const yExtent = d3.extent(filteredData, d => d[scoreType]);
+            yScale = d3.scaleLinear().domain(yExtent).nice().range([scatterAreaHeight, 0]);
+
+            xScale = d3.scaleTime()
+                .domain(d3.extent(fullData, d => d.date))
+                .range([0, scatterAreaWidth]);
+
+            const yAxis = d3.axisLeft(yScale);
+            const xAxis = d3.axisBottom(xScale)
+                .ticks(6)
+                .tickFormat(d3.timeFormat("%Y"));
+
+            scatterAnnotations.append("g").attr("class", "y axis").call(yAxis);
+            scatterAnnotations.append("g").attr("class", "x axis")
+                .attr("transform", `translate(0,${scatterAreaHeight})`)
+                .call(xAxis);
+
+            // Y-axis label
+            scattersvg.append("text")
+                .attr("class", "axis-label y-label")
+                .attr("x", -(scatterMargin.top + scatterAreaHeight / 2))
+                .attr("y", 20)
+                .attr("transform", "rotate(-90)")
+                .text(scoreType === "userscore" ? "Userscore" : "Metascore");
+
+            // X-axis label
+            scattersvg.append("text")
+                .attr("class", "axis-label x-label")
+                .attr("x", scatterMargin.left + scatterAreaWidth / 2)
+                .attr("y", scatterHeight - 25)
+                .text("Release Year");
+
+            // Plot circles
+            function getRadius(numPoints) {
+                const maxRadius = 5;
+                const minRadius = 2;
+                return Math.max(minRadius, Math.min(maxRadius, maxRadius * (1 / Math.sqrt(numPoints / 1000))));
+            }
+
+            scatterChartArea.selectAll("circle")
+                .data(filteredData, d => d.title)
+                .enter()
+                .append("circle")
+                .attr("fill", "steelblue")
+                .attr("cx", d => xScale(d.date))
+                .attr("cy", d => yScale(d[scoreType]))
+                .attr("r", d => getRadius(fullData.length))
+                .on("mouseover", function (event, d) {
+                    d3.select(this).attr("r", getRadius(fullData.length) + 2);
+                    tooltip
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 30) + "px")
+                        .style("display", "inline-block")
+                        .html(`<strong>${d.title}</strong><br/>Release Date: ${d3.timeFormat("%B %d, %Y")(d.date)}<br/>${scoreType}: ${d[scoreType]}`);
+                })
+                .on("mouseout", function () {
+                    d3.select(this).attr("r", getRadius(fullData.length));
+                    tooltip.style("display", "none");
+                })
+                .on("click", function (event, d) {
+                    d3.select("#detail-title").text(d.title);
+                    d3.select("#detail-release-date").text(d3.timeFormat("%B %d, %Y")(d.date));
+                    d3.select("#detail-rating").text(d.rating || "N/A");
+                    d3.select("#detail-genres").text(d.genres || "N/A");
+                    d3.select("#detail-description").text(d.description || "No description available.");
+                    d3.select("#detail-platforms").text(d.platforms || "N/A");
+                    d3.select("#detail-metascore").text(d.metascore !== null ? d.metascore : "N/A");
+                    d3.select("#detail-metascore-count").text(d.metascore_count || "0");
+                    d3.select("#detail-metascore-sentiment").text(d.metascore_sentiment || "N/A");
+                    d3.select("#detail-userscore").text(d.userscore !== null ? d.userscore : "N/A");
+                    d3.select("#detail-userscore-count").text(d.userscore_count || "0");
+                    d3.select("#detail-userscore-sentiment").text(d.userscore_sentiment || "N/A");
+                    d3.select("#detail-developer").text(d.developer || "N/A");
+                    d3.select("#detail-publisher").text(d.publisher || "N/A");
+                });
+
+            drawBrush();
+        }
+
+        function drawBrush() {
+            // Remove existing brush
+            scatterChartArea.selectAll(".brush").remove();
+
+            const brush = d3.brushX()
+                .extent([[0, scatterAreaHeight + 10], [scatterAreaWidth, scatterAreaHeight + 30]])
+                .on("end", brushed);
+
+            scatterChartArea.append("g")
+                .attr("class", "brush")
+                .call(brush)
+                .selectAll(".handle")
+                .attr("height", 20)
+                .attr("y", -5)
+                .attr("width", 12)
+                .attr("rx", 10)
+                .attr("ry", 10);
+
+            // Restore previous brush if any
+            if (currentBrushExtent) {
+                scatterChartArea.select(".brush")
+                    .call(brush.move, currentBrushExtent);
+            }
+
+            function brushed(event) {
+                if (!event.selection) return;
+                currentBrushExtent = event.selection;
+                updateScatter(currentScoreType);
+            }
+        }
+
+        async function loadData() {
+            fullData = await d3.csv("datasets/filtered_file.csv", d3.autoType);
+            fullData.forEach(d => d.date = new Date(d.releaseDate));
+            updateScatter(currentScoreType);
+        }
+
+        d3.select("#score-type").on("change", function () {
+            currentScoreType = this.value;
+            updateScatter(currentScoreType);
+        });
+
+        d3.select("#reset-btn").on("click", () => {
+            currentBrushExtent = null;
+            updateScatter(currentScoreType);
+        });
+
+        loadData();
+    </script>
+</body>
+
+</html>
