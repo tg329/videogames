@@ -53,24 +53,25 @@
         <div id="leaderboard-list"></div>
     </div>
 
-    <p>The bubble chart shows the relationship between the release year and the metascore of games. The size of each
-        bubble represents the number of games with the same release year and metascore.</p>
-
+    <h2>Game Metascore & Release Date</h2>
     <svg id="scatterplot" height="850" width="800"></svg>
 
+    <h2>Number of Games Released Per Year</h2>
+    <svg id="bar-chart" height="500" width="800"></svg>
+
     <script>
-        const scattersvg = d3.select("#scatterplot");
-        const scatterWidth = scattersvg.attr("width");
-        const scatterHeight = scattersvg.attr("height");
-        const scatterMargin = { top: 20, right: 20, bottom: 50, left: 100 };
+        const bubblesvg = d3.select("#scatterplot");
+        const bubbleWidth = bubblesvg.attr("width");
+        const bubbleHeight = bubblesvg.attr("height");
+        const bubbleMargin = { top: 20, right: 20, bottom: 50, left: 100 };
 
-        const scatterAreaWidth = scatterWidth - scatterMargin.left - scatterMargin.right;
-        const scatterAreaHeight = scatterHeight - scatterMargin.top - scatterMargin.bottom;
+        const bubbleAreaWidth = bubbleWidth - bubbleMargin.left - bubbleMargin.right;
+        const bubbleAreaHeight = bubbleHeight - bubbleMargin.top - bubbleMargin.bottom;
 
-        const scatterChartArea = scattersvg.append("g")
-            .attr("transform", `translate(${scatterMargin.left},${scatterMargin.top})`);
+        const bubbleChartArea = bubblesvg.append("g")
+            .attr("transform", `translate(${bubbleMargin.left},${bubbleMargin.top})`);
 
-        const scatterAnnotations = scatterChartArea.append("g");
+        const bubbleAnnotations = bubbleChartArea.append("g");
 
         const tooltip = d3.select("body").append("div").attr("class", "tooltip");
 
@@ -90,14 +91,14 @@
                 .attr("class", "item")
                 .text(d => d.title)
                 .on("click", function (event, d) {
-                    scatterChartArea.selectAll("circle")
+                    bubbleChartArea.selectAll("circle")
                         .attr("fill", d => colorScale(d.score))
                         .attr("r", d => Math.sqrt(d.count) * 5);
 
                     leaderboard.selectAll(".item").classed("active", false);
                     d3.select(this).classed("active", true);
 
-                    scatterChartArea.selectAll("circle")
+                    bubbleChartArea.selectAll("circle")
                         .filter(cd => cd.titles.includes(d.title))
                         .attr("fill", "red")
                         .attr("r", d => Math.sqrt(d.count) * 8);
@@ -105,45 +106,42 @@
 
             const scoreScale = d3.scaleLinear()
                 .domain([50, 100])
-                .range([scatterAreaHeight, 0]);
+                .range([bubbleAreaHeight, 0]);
 
             const yearExtent = d3.extent(TopMetacritic, d => d.releaseYear);
             const yearScale = d3.scaleLinear()
                 .domain([Math.floor(yearExtent[0]), Math.ceil(yearExtent[1])])
-                .range([20, scatterAreaWidth]);
+                .range([20, bubbleAreaWidth]);
 
             const colorScale = d3.scaleSequential(d3.interpolateBlues)
                 .domain([50, 100]);
 
-            scatterAnnotations.append("g")
+            bubbleAnnotations.append("g")
                 .attr("class", "y axis")
                 .call(d3.axisLeft(scoreScale).tickFormat(d3.format("")));
 
-            scatterAnnotations.append("g")
+            bubbleAnnotations.append("g")
                 .attr("class", "x axis")
-                .attr("transform", `translate(0,${scatterAreaHeight})`)
+                .attr("transform", `translate(0,${bubbleAreaHeight})`)
                 .call(d3.axisBottom(yearScale).tickFormat(d3.format("d")));
 
-            scattersvg.append("text")
-                .attr("class", "chart-title")
-                .attr("x", scatterWidth / 2)
+            bubblesvg.append("text")
+                .attr("x", bubbleWidth / 2)
                 .attr("y", 20)
                 .text("Metascore vs. Release Year");
 
-            scattersvg.append("text")
-                .attr("class", "axis-label")
-                .attr("x", scatterMargin.left + scatterAreaWidth / 2)
-                .attr("y", scatterHeight - 5)
+            bubblesvg.append("text")
+                .attr("x", bubbleMargin.left + bubbleAreaWidth / 2)
+                .attr("y", bubbleHeight - 5)
                 .text("Release Year");
 
-            scattersvg.append("text")
-                .attr("class", "axis-label")
-                .attr("x", -(scatterMargin.top + scatterAreaHeight / 2))
+            bubblesvg.append("text")
+                .attr("x", -(bubbleMargin.top + bubbleAreaHeight / 2))
                 .attr("y", 20)
                 .attr("transform", "rotate(-90)")
                 .text("Metascore");
 
-            // group data by release year and metascore
+            // Group data by release year and metascore
             let groupedData = {};
 
             for (let i = 0; i < TopMetacritic.length; i++) {
@@ -176,7 +174,7 @@
                 }
             }
 
-            scatterChartArea.selectAll("circle")
+            bubbleChartArea.selectAll("circle")
                 .data(data)
                 .join("circle")
                 .attr("fill", d => colorScale(d.score))
@@ -201,8 +199,84 @@
                     tooltip.style("display", "none");
                 });
         };
+
         bubble();
     </script>
+
+    <script>
+        const barChart = async function () {
+            const TopMetacritic = await d3.csv("datasets/metacriticFILTERED.csv", d3.autoType);
+
+            const yearCounts = {};
+            for (let i = 0; i < TopMetacritic.length; i++) {
+                const year = new Date(TopMetacritic[i].releaseDate).getFullYear();
+                if (!yearCounts[year]) {
+                    yearCounts[year] = 0;
+                }
+                yearCounts[year]++;
+            }
+
+            const barData = Object.entries(yearCounts)
+                .map(([year, count]) => ({ year: +year, count }))
+                .sort((a, b) => a.year - b.year);
+
+            const barSvg = d3.select("#bar-chart");
+            const barMargin = { top: 20, right: 20, bottom: 50, left: 50 };
+            const barWidth = barSvg.attr("width") - barMargin.left - barMargin.right;
+            const barHeight = barSvg.attr("height") - barMargin.top - barMargin.bottom;
+
+            const barChartArea = barSvg.append("g")
+                .attr("transform", `translate(${barMargin.left},${barMargin.top})`);
+
+            const xScale = d3.scaleBand()
+                .domain(barData.map(d => d.year))
+                .range([0, barWidth]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, d3.max(barData, d => d.count)])
+                .range([barHeight, 0]);
+
+            barChartArea.selectAll(".bar")
+                .data(barData)
+                .join("rect")
+                .attr("x", d => xScale(d.year))
+                .attr("y", d => yScale(d.count))
+                .attr("width", xScale.bandwidth())
+                .attr("height", d => barHeight - yScale(d.count))
+                .attr("fill", "steelblue")
+                .on("mouseover", function (event, d) {
+                    d3.select(this).attr("fill", "darkblue");
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 30) + "px")
+                        .style("display", "inline-block")
+                        .html(`<strong>Year:</strong> ${d.year}<br/><strong>Games:</strong> ${d.count}`);
+                })
+                .on("mouseout", function () {
+                    d3.select(this).attr("fill", "steelblue");
+                    tooltip.style("display", "none");
+                });
+
+            barChartArea.append("g")
+                .attr("transform", `translate(0,${barHeight})`)
+                .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
+
+            barChartArea.append("g")
+                .call(d3.axisLeft(yScale));
+
+            barSvg.append("text")
+                .attr("x", barWidth / 2 + barMargin.left)
+                .attr("y", barHeight + barMargin.top + 40)
+                .text("Release Year");
+
+            barSvg.append("text")
+                .attr("x", -(barHeight / 2) - barMargin.top)
+                .attr("y", 15)
+                .attr("transform", "rotate(-90)")
+                .text("# of Games");
+        };
+        barChart();
+    </script>
+
 
 </body>
 
